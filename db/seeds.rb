@@ -9,6 +9,76 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg")
 
+post_eleven=Post.create(title: "React Edit Form: What Appears in the Text Area", paragraphs: "As I wrote at the end of my blog last week, there were a few things that I still wanted to work on for the National Park Trip Planner application I have been building, including authorization to restrict who could access a user’s park collection and notes, CSS for the park collection page, and changing the edit form for notes to populate the text area with the note that a user would like to edit. This blog will be about the last of these objectives, and I will write about the other topics in a separate post. newpar,
+
+Although it took me awhile to figure out how to create a better edit form, the solution was relatively simple. Before, there was a callback function for when the edit button was pushed that sent the note to be edited up to App.js. App.js set the text of the entry to be edited in state and then sent it down to ExpandParksInParkCollection.js where the particular park in the collection is displayed, along with any notes a user has taken. There, it became the placeholder of the edit form, which was conditionally rendered after the boolean in state in App.js ‘updateNote’ was set by the onClick event to true. What I wanted to do was to change the placeholder into text that could actually be edited instead of disappearing when a user started typing in the text area. newpar,
+
+To do this, I added a function to ExpandParksInParkCollection.js that is called when the edit form is clicked on. The onClick is still a callback, but it sends the note to the function that is in the same component as the form so that it can do two things. 1. It still calls the updateNoteForm function and sends the note up to App.js where the id of the note is stored in state in order to be used in the url when later sending the updated note in a PATCH fetch to the back end. It also still changes the boolean ‘updateNote’ in state in App.js from false to true so that the edit form will be conditionally rendered in ExpandParksInParkCollection.js. 2. The benefit of making a function in ExpandParksInParkCollection.js to handle the onClick is that I can also reset state in that component. When the onClick is fired, updatedNotes in state is assigned the value of the text of the entry. That way, when the edit form appears, that value is in the edit form and can be changed or added to. This is state in that component: newpar,
+
+import React from 'react'; \n
+export default class ExpandParksInParkCollection extends React.Component{ \n
+state={ \n
+notes: '', \n
+updatedNotes: '' \n
+} newpar,
+
+This is the switchToEdit function: newpar,
+
+switchToEdit=(the_note)=>{ \n
+this.props.updateNoteForm({ \n
+note: the_note \n
+}) \n
+this.setState({ \n
+updatedNotes: the_note.entry \n
+}) \n
+} newpar,
+
+Here is the function where the notes are mapped over for display and where you can also see where the onClick event is called: newpar,
+
+returnTheNotes=()=>{ \n
+return this.props.currentNotes.map(note=>{ \n
+return  <React.Fragment> \n
+<li>{note.entry}</li> \n
+<div className='notes-display-container'> \n
+<p className='delete-note' onClick={()=>this.props.deleteANote(note.id)}>Delete</p> \n
+<p onClick={()=>this.switchToEdit(note)} className='edit-note'>Edit</p> \n
+</div> \n
+</React.Fragment> \n
+}) \n
+} newpar,
+
+Here are the two forms conditionally rendered, the edit form if the edit button has been clicked and the new note form if it has not been. newpar,
+
+{this.props.updateNote ? \n
+<form onSubmit={this.submitUpdatedNotesForm}> \n
+<textarea id='comment-box' type='text' wrap='hard' name='updatedNotes' value={this.state.updatedNotes} onChange={this.updateTheNotes}/> \n
+<br></br> \n
+<input className='submit-buttons' type='submit' value='submit'/> \n
+</form> \n
+: \n
+<form onSubmit={this.submitNotesForm}> \n
+<br></br>
+<textarea id='comment-box' type='text' wrap='hard' name='notes' value={this.state.notes} placeholder='Enter a new note here' onChange={this.changeTheNotes}/> \n
+<br></br> \n
+<input className='submit-buttons' type='submit' value='submit'/> \n
+</form> \n
+} newpar,
+
+One of the things that was surprising to me was that the text that a user wanted to edit did not disappear when the user starts typing. Since there is an onChange event to allow the user to change the note that is stored in state and sent to the back end, I thought that onChange would make the text that displayed disappear, leaving me no better off than when there was a placeholder. Somehow that is not the case, though. The text that was stored in state as updatedNote when the edit button was clicked displays in the text area, and then the onChange allows a user to edit it at will and add to it. If there were not an onChange event, then the initial value would be fixed. This is the updateNotes function called through the onChange event: newpar,
+
+updateTheNotes=(event)=>{ \n
+this.setState({ \n
+updatedNotes: event.target.value \n
+}) \n
+} newpar,
+
+The event.target.value is this.state.updatedNotes from before edited in whatever way the user chooses to edit it. The original text appears first before any changes occur, and then state changes again to reflect what the user does with this text. If the value of the text area had not been set as this.state.updatedNotes but instead had been set directly with the text entry, then the value of the text area would have been fixed. Setting it in state allowed for the edits to happen. newpar,
+
+This topic warrants its own attention, because it is something I had trouble getting information about on-line. So, maybe it can help someone else trying to figure out how to populate their text area with what they would like to edit. newpar,
+    
+
+")
+
 post_ten=Post.create(title: "National Parking", paragraphs: "Something that I continue working on is my national parks trip planner application. Being holed up in my apartment as the Coronavirus takes over New York, this app is more aspirational than ever. However, I learn from continuing to build it, even if no one is using it to actually plan any trips. newpar,
 
 What I worked on in the last week was refactoring the notes feature. Before, users could post a note for any park that they had saved in their collection, and they could update or delete their note, persisting the changes to the back end. ‘Note’ was an attribute of a park collection. I wanted to change this to make ‘Note’ its own model so that people could save multiple notes for any given park in their collection and revise and delete the notes as often as they wanted. newpar,
