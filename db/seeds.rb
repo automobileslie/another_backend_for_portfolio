@@ -48,7 +48,7 @@ this-is-code-in-blog
 def by_search \n
     require 'rest_client' \n
     query= params[:query] \n
-    address= 'https://developer.nps.gov/api/v1/parks?&API_KEY=#{ENV['NPS_API_KEY']}&q=' \n
+    address= 'https://developer.nps.gov/api/v1/parks?&API_KEY=(INSERT INTERPOLATION WITH .ENV AND KEY HERE)&q=' \n
     complete_search_address=address+query \n
     nps_data= RestClient.get(complete_search_address) \n
     nps_search_parsed= JSON.parse(nps_data) \n
