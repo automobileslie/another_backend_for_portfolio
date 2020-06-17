@@ -9,6 +9,192 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg")
 
+post_ten=Post.create(title: "National Parking", paragraphs: "Something that I continue working on is my national parks trip planner application. Being holed up in my apartment as the Coronavirus takes over New York, this app is more aspirational than ever. However, I learn from continuing to build it, even if no one is using it to actually plan any trips. newpar,
+
+What I worked on in the last week was refactoring the notes feature. Before, users could post a note for any park that they had saved in their collection, and they could update or delete their note, persisting the changes to the back end. ‘Note’ was an attribute of a park collection. I wanted to change this to make ‘Note’ its own model so that people could save multiple notes for any given park in their collection and revise and delete the notes as often as they wanted. newpar,
+
+The first thing that I did was to remove note as an attribute of park_collection and make it a model of its own. So my tables for these two models now look like this in the database schema: newpar,
+
+create_table 'notes', force: :cascade do |t| \n
+    t.integer 'park_collection_id' \n
+    t.text 'entry', default: 'Add notes here by typing in the text box below' \n
+    t.datetime 'created_at', precision: 6, null: false \n
+    t.datetime 'updated_at', precision: 6, null: false \n
+    end \n
+    create_table 'park_collections', force: :cascade do |t| \n
+    t.string 'park_id' \n
+    t.text 'description' \n
+    t.string 'directions_url' \n
+    t.string 'url' \n
+    t.string 'full_name' \n
+    t.integer 'user_id' \n
+    t.datetime 'created_at', precision: 6, null: false \n
+    t.datetime 'updated_at', precision: 6, null: false \n
+    end newpar,
+
+    A note includes the id of a park_collection, because it belongs to park_collection, and a park_collection includes the user_id since it belongs to a user. I did not want the notes to be saved for a park in general. That is not something I would have been able to do as the application is currently set up, because I am not storing the data fetched from the National Park Service API on my back-end and giving myself the ability to add attributes to it or connect it with models on the back end. Instead, the notes are available as a part of a user’s park collection. They are for personal use rather than for providing comments or information to other users. newpar,
+    
+    Next, I created a note_serializer so that I would be able to render the notes as json with the help of the notes_controller and fetch the notes from the backend to display on the front end. This is the way the serializer appears: newpar,
+
+    class NoteSerializer < ActiveModel::Serializer \n
+        attributes :id, :entry, :park_collection_id \n
+        belongs_to :park_collection \n
+        end newpar,
+
+    Then, in the park_collection_serializer I had to indicate that when a note is deleted, it should also be deleted from the park_collection. I did this with dependent: :destroy, something that Guligena Aierken showed me when we worked on a group project together a couple of months ago. newpar,
+
+    https://medium.com/@g.aierken /anchor newpar,
+
+    class ParkCollectionSerializer < ActiveModel::Serializer \n
+        attributes :id, :user_id, :park_id, :description, :directions_url, :url, :full_name \n
+        belongs_to :user \n
+        has_many :notes, dependent: :destroy \n
+        end newpar,
+
+    The next thing I had to work on was the controller, which I built up as I worked on the front end. Something I still have to do is to make sure that only the user who is logged in can access his or her notes. Authorization for obtaining access to the routes needs some work across the board on the back-end, in fact. Since this application is not deployed on-line, there are no security risks at the moment, but it would be important to change this if the application were to go live. This is how the controller for the notes looks at the moment: newpar,
+
+        class NotesController < ApplicationController \n
+            def index \n
+            notes=Note.all \n
+            render json: notes \n
+            end \n
+            def show \n
+            parkCollection=ParkCollection.find_by(params[:id]) \n
+            render json: parkCollection.notes \n
+            end \n
+            def create \n
+            note = Note.create(note_params) \n
+            render json: note \n
+            end \n
+            def update \n
+            note=Note.find(params[:id]) \n
+            note.update(entry: params[:entry]) \n
+            render json: note \n
+            end \n
+            def destroy \n
+            note=Note.find(params[:id]) \n
+            note.destroy \n
+            render json: {message: 'Your note has been deleted.'} \n
+            end \n
+            def note_params \n
+            params.permit(:entry, :park_collection_id) \n
+            end \n
+            end newpar,
+    
+            So, that is mainly what is going on on the back end as far as the notes are concerned. newpar,
+
+            The fetch to the National Park Service API is not directly related to the notes. When a user goes to the website, there is a list of all of the states and territories in the U.S. where there are national parks. When a user clicks on a location, then a fetch is made to the back end, which then makes a fetch to the National Park Service API for that particular location. Then, a list of parks for that location appears on the front end. A user can click on any of the parks in the list to get more information about it or add it to his or her or their collection. If a user adds a park, then a park_collection is created on the back-end. This may sound a little confusing, because on the front end each user only has one park collection. However, on the back end, each time a user adds a park, it becomes a ‘park_collection’ on the back end. So, what is referred to as one collection on the front end is actually a collection of ‘collections’ in the database. Because each park collection belongs to the User model on the back end, I am able to load the collections belonging to a user when the user logs in by calling park_collections as an instance method on a particular user. When a user logs in, a token is set, giving them access to the site’s different features and allowing them to have access to their information. In the setToken function, I fetch information from the back-end using the user id, so that they will be able to see all their parks, among other things. I also put some information in localStorage so that if the user navigates away from the page without logging out, they will be able to return without having to log back in. newpar,
+
+            setToken = (token, id) => { \n
+                localStorage.token = token; \n
+                localStorage.userId = id; \n
+                fetch(`http://localhost:3000/users/${id}`, { \n
+                headers: { \n
+                'Authorization': token \n
+                } \n
+                }) \n
+                .then(r => r.json()) \n
+                .then(user => { \n
+                this.setState({ \n
+                username: user.username, \n
+                token: token, \n
+                userId: id, \n
+                parkCollection: user.park_collections \n
+                }) \n
+                localStorage.setItem('theParkCollection', JSON.stringify(user.park_collections)) \n
+                let the_username= user.username \n
+                localStorage.setItem('username', the_username) \n
+                }) \n
+                } newpar,
+                
+        So, the above code gives the front end access to a set of information including parks that are already saved to a user’s profile. However, I have not yet fetched the notes. I decided to wait until a user is in the park collection section of the application to make this fetch. When a user goes to their collection, there is a list of names of parks, if any have been added. When a user clicks on one of the parks, then a function that has been passed down from App.js is called. It is a callback function, with the component ParksForParkCollection sending up information about the particular park in question. newpar,
+
+        selectAPark=(the_park)=>{ \n
+            fetch(`http://localhost:3000/park_collections`) \n
+            .then(r => r.json()) \n
+            .then(data=> { \n
+            let filteredData= data.filter(this_data=>{ \n
+            return parseInt(this_data.user_id)===parseInt(this.state.userId) \n
+            }) \n
+            let newFilteredData= filteredData.filter(this_data_here=>{ \n
+            return this_data_here.park_id===the_park.park_id \n
+            }) \n
+            this.setState({ \n
+            parkClickedOn: the_park, \n
+            isAParkExpanded: true, \n
+            filterAll: false, \n
+            currentNotes: newFilteredData[0].notes \n
+            }) \n
+            }) \n
+            }  newpar,
+            
+    The fetch goes to the park_collections route on the back end. Then, I filter the data that is sent back so that I have a new array of information pertaining only to the logged in user’s park_collections, instead of the entire set of all park_collections. That is stored in the variable filteredData. After that, I filter the new array down further to return an array of park_collections for the specific park that a user has clicked on. That new array is stored in the variable newFilteredData. At that point, I am able to call notes as an instance variable on the filtered park collection. Then, I set state so that currentNotes contains the notes for the park the user has clicked on in the park collection on the front end. When a user leaves the show page in park collection for a specific park, currentNotes is reset to an empty array. newpar,
+
+    The next step was to allow the user to edit and delete notes. There was already a form on the show page for a park in a user’s park collection for creating a new note. I added a ‘p’ tag that said edit and one that said ‘delete’ with an event listener on each of them that was an OnClick callback function sending information back to functions in App.js. For ‘delete’, the function in App.js was deleteANote. That function makes a DELETE fetch to the back end. What I sent back in the callback was the id of the particular note to be deleted. I filter the deleted note out of the currentNotes in order to reset state to reflect the deletion. Then, I make the delete fetch to the url for that note. Here is that function: newpar,
+
+    deleteANote=(note)=>{ \n
+let theNewNotes=this.state.currentNotes.filter(the_note=>{ \n
+return parseInt(note)!==parseInt(the_note.id) \n
+}) \n
+fetch(`http://localhost:3000/notes/${parseInt(note)}`, { \n
+method: 'DELETE' \n
+}) \n
+.then(r=>r.json()) \n
+.then(data=>{ \n
+this.setState({ \n
+currentNotes: theNewNotes, \n
+theNoteToEdit: '', \n
+updateNote: false \n
+}) \n
+}) \n
+} newpar,
+
+Allowing for notes to be edited was a little more complicated. The callback function that is triggered when ‘edit’ is clicked on is: newpar,
+
+updateNoteForm=(theNote)=>{ \n
+this.setState({ \n
+updateNote: !this.state.updateNote, \n
+noteId: theNote.id, \n
+theNoteToEdit: theNote.entry \n
+}) \n
+} newpar,
+
+UpdateNote is a boolean in state that indicates whether or note the user is trying to edit a note. It is set to false from the beginning, and updateNoteForm changes that boolean to true. The id and text of the note to be edited are also set in state in App.js for reasons I will get into. The value of updateNote is sent down to park_collection, and if the value is true, then the edit form is conditionally rendered with the text of the note to edit being the placeholder in the text area. I would like to refactor this to fill in the text-area with the text of the note that they are revising, instead of just having it as a placeholder that disappears when they start typing in the input area. That way they will not have to copy and paste the part of the note that they may want to keep into the text box. When the value of updateNote is false, the form for creating a new note is displayed and functional instead of the edit form. Both are controlled forms. newpar,
+
+When the user submits the edit form for a note, the callback function editNote in App.js that had been passed down is triggered. newpar,
+
+editNote=(note)=>{ \n
+let theNotes= this.state.currentNotes.filter(note=>{ \n
+return note.id!==parseInt(this.state.noteId) \n
+}) \n
+fetch(`http://localhost:3000/notes/${parseInt(this.state.noteId)}`, { \n
+method: 'PATCH', \n
+headers: {
+'Content-type': 'application/json', \n
+'Accepts': 'application/json' \n
+}, \n
+body: JSON.stringify({ \n
+entry: note.entry \n
+}) \n
+}) \n
+.then(r=>r.json()) \n
+.then(updatedNote=>{ \n
+this.setState({ \n
+currentNotes: [...theNotes, updatedNote], \n
+noteId: '', \n
+updateNote: !this.state.updateNote, \n
+theNoteToEdit: '' \n
+}) \n
+}) \n
+} newpar,
+
+The filter removes the note that is being edited from the currentNotes array and stores the new array without it in a variable. When the user clicked on a note to edit, the application saved the id of the note in state in App.js, so that way we have the id necessary for making a PATCH fetch to the right url. After the patch has been sent, with the data we receive back we can reset state. I used a spread operator to update the notes in currentNotes in state. Then, I cleared the deck so that we are no longer in edit mode. The value of noteId and theNoteToEdit is set back to an empty string, and updateNote is set back to false. When the user clicks submit after entering in the edit form, the revised note appears in place of the old one, and the form for creating a new note appears. newpar,
+
+Things left to do include working on authorization for the routes on the back end, refactoring to change the CSS layout of the page for individual parks in a user’s collection, and changing the text area for the edit form so that the text to be edited appears, not just as a placeholder, in the text box. newpar,
+
+")
+
+
 post_nine=Post.create(title: "Repeated String Function", paragraphs: "Recently, I wrote a function in response to a problem on hackerrank.com and after solving it in one way learned another way of approaching it from another developer. The function takes in a string that can repeat infinitely many times and a number that indicates the length of the string in this instance and returns the number of times the letter ‘a’ appears in the lengthened string. For example, if s is ‘aght’ and n is 7, then the string you would want to count the a’s of would be ‘aghtagh’. As I have written before, hackerrank’s test cases have been helpful in getting me to consider lots of edge cases and to make sure functions work as they are supposed to under different circumstances. In this case, it was helpful, but eventually the code I came up with was working in my console while appearing to time out and abort in the website’s environment for some of the test cases, when there were larger numbers involved. I am still not sure why this happened; it is a subject for further research. One opportunity that arose from this, however, was that I was prompted to consult the discussion board to see if other developers had insights that could clarify my confusion. As such, this is basically a post about solving a problem and then learning from someone else a much easier way of tackling it. newpar,
 
 This is the not-DRY function I wrote that I do not recommend using, although I learned a lot from the process of thinking through it and as far as I know it is not technically wrong. A couple of curly braces at the end have been omitted. I will walk through it and then discuss the succinct solution that someone else had. newpar,
