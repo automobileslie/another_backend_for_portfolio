@@ -15,6 +15,7 @@ What I worked on in the last week was refactoring the notes feature. Before, use
 
 The first thing that I did was to remove note as an attribute of park_collection and make it a model of its own. So my tables for these two models now look like this in the database schema: newpar,
 
+this-is-code-in-blog
 create_table 'notes', force: :cascade do |t| \n
     t.integer 'park_collection_id' \n
     t.text 'entry', default: 'Add notes here by typing in the text box below' \n
@@ -36,6 +37,7 @@ create_table 'notes', force: :cascade do |t| \n
     
     Next, I created a note_serializer so that I would be able to render the notes as json with the help of the notes_controller and fetch the notes from the backend to display on the front end. This is the way the serializer appears: newpar,
 
+    this-is-code-in-blog
     class NoteSerializer < ActiveModel::Serializer \n
         attributes :id, :entry, :park_collection_id \n
         belongs_to :park_collection \n
@@ -45,6 +47,7 @@ create_table 'notes', force: :cascade do |t| \n
 
     https://medium.com/@g.aierken /anchor newpar,
 
+    this-is-code-in-blog 
     class ParkCollectionSerializer < ActiveModel::Serializer \n
         attributes :id, :user_id, :park_id, :description, :directions_url, :url, :full_name \n
         belongs_to :user \n
