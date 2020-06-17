@@ -44,7 +44,8 @@ return( \n
 
 In the parent component, I wrote a function that makes a POST fetch to the Ruby on Rails API back end, sending the search term in the body. The reason that it is a POST fetch instead of a GET is that once the fetch goes to the controller that fetches from the third-party API, the search term has to be appended to the API’s url. To inform the controller of what to append, I am posting information in the body of the fetch. This is the action in the controller: newpar,
 
-def by_search
+this-is-code-in-blog
+def by_search \n
     require 'rest_client' \n
     query= params[:query] \n
     address= 'https://developer.nps.gov/api/v1/parks?&API_KEY=#{ENV['NPS_API_KEY']}&q=' \n
@@ -54,7 +55,7 @@ def by_search
     render json: nps_search_parsed \n
     end newpar,
 
-And this is the function on the front end that makes the POST fetch: \n
+And this is the function on the front end that makes the POST fetch: newpar,
 
 filterBySearchTerm=(search)=>{ \n
 this.setState({ \n
