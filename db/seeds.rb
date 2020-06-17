@@ -113,7 +113,7 @@ This is tangential, but I like to end my blog posts with a song whenever possibl
 
 ./Images/Search_Bar_with_Cave.jpg newpar,
 
-./Images/Search_Results_for_Cave.jps newpar,
+./Images/Search_Results_for_Cave.jpg newpar,
 
 ./Images/Oregon_Caves.jpg newpar,
 
