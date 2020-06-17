@@ -111,7 +111,7 @@ Then, any of the names of parks that are shown in the list can be clicked on to 
 
 This is tangential, but I like to end my blog posts with a song whenever possible. This came to mind and relates to the theme of search and travel. I am not sure what cave it was filmed in, but yes there are caves in some national parks, such as… newpar,
 
-./Images/Search_Bar_With_Cave.jpg newpar,
+./Images/Search_Bar_with_Cave.jpg newpar,
 
 ./Images/Search_Results_for_Cave.jps newpar,
 
