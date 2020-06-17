@@ -9,6 +9,123 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg")
 
+post_twelve=Post.create(title: "Search Bar in React With a 3rd Party API", paragraphs: "Making a search bar when fetching from a third party API with a large set of data required a few more steps than when I was building one for an application that had all of the data stored on the back end. newpar,
+
+The first step was having a search bar component and displaying it in the place where I wanted it. The one that I designed is a controlled form that when submitted triggers a call-back function that was passed down to it as a prop and sends the search term back to the parent component. When it is submitted it also resets the input field so that it is blank until a user types inside of it. newpar,
+
+export default class Searchbar extends React.Component{ \n
+state={ \n
+searchTerm: ''
+} \n
+doingASearch=(event)=>{ \n
+this.setState({ \n
+[event.target.name]: event.target.value \n
+}) \n
+} \n
+submitSearch=(event)=>{ \n
+event.preventDefault(); \n
+this.props.filterBySearchTerm(this.state.searchTerm) \n
+this.setState({ \n
+searchTerm: '' \n
+}) \n
+} \n
+render(){ \n
+return( \n
+<form onSubmit={this.submitSearch}> \n
+<label htmlFor='searchTerm'> \n
+<strong>Search by park name: </strong> \n
+<input type='text' name='searchTerm' value={this.state.searchTerm} onChange={this.doingASearch}/> \n
+<input type='submit' value='submit'/> \n
+</label> \n
+</form> \n
+) \n
+} \n
+} newpar,
+
+In the parent component, I wrote a function that makes a POST fetch to the Ruby on Rails API back end, sending the search term in the body. The reason that it is a POST fetch instead of a GET is that once the fetch goes to the controller that fetches from the third-party API, the search term has to be appended to the API’s url. To inform the controller of what to append, I am posting information in the body of the fetch. This is the action in the controller: newpar,
+
+def by_search
+    require 'rest_client' \n
+    query= params[:query] \n
+    address= 'https://developer.nps.gov/api/v1/parks?&API_KEY=#{ENV['NPS_API_KEY']}&q=' \n
+    complete_search_address=address+query \n
+    nps_data= RestClient.get(complete_search_address) \n
+    nps_search_parsed= JSON.parse(nps_data) \n
+    render json: nps_search_parsed \n
+    end newpar,
+
+And this is the function on the front end that makes the POST fetch: \n
+
+filterBySearchTerm=(search)=>{ \n
+this.setState({ \n
+theLocationFilter: search, \n
+}) \n
+fetch('http://localhost:3000/searchparks', { \n
+method: 'POST', \n
+headers: { \n
+'Content-Type': 'application/json', \n
+'Accepts': 'application/json' \n
+}, \n
+body: JSON.stringify({ \n
+query: search \n
+}) \n
+}) \n
+.then(r=>r.json()) \n
+.then(thePark=>{ \n
+if(thePark.data.length>0){ \n
+this.setState({ \n
+searchTerm: search, \n
+filterAll: false, \n
+searchPark: thePark.data, \n
+isLoading: false \n
+}) \n
+} \n
+else{ \n
+this.setState({ \n
+theLocationFilter: search, \n
+filterAll: false, \n
+isLoading: false, \n
+searchError: 'No parks found' \n
+}) \n
+} \n
+}) \n
+} newpar,
+
+I store the query params in a variable in the controller’s by_search action and then append it to the base url with &q= at the end. The documentation for the third-party API that I am fetching from specifies how to search by a particular term in its documentation. It also required some trial and error as well as looking up information from other developers on-line to get the format right. For example, it was not clear whether the query term needed to be in quotation marks or in brackets, etc. It turns out that &q= with no quotation marks works, but putting the term in quotes does not. So, if I wanted to search for ‘Belmont’ — which incidentally is the name of a street near where I went to college in Chicago (DePaul) but is also part of the name of a national monument in Washington D.C. (Belmont-Paul Women’s Equality) — I would need to add ‘&q=Belmont’ to the end of the url. Because everything but the query string will be the same when a user uses the search bar, the main address for the fetch in the controller is the same, and the variable storing the query string is added to this base to get the complete address. Rest Client then makes a GET fetch to the third-party API, and the data sent back is parsed and rendered as JSON to the front end. The key for the API is stored in the .env file, which is hidden and not visible on my Github repository but is made available to the controller with the help of the dotenv gem. newpar,
+
+When the data makes its way to the front end, there are a lot of little things that have to happen. The devil is in the details! newpar,
+
+First, it is possible that the search term did not have any matches. In that case, searchError in state is set to a string that says ‘No parks found,’ and that will display on the results page. Even though that is not extremely helpful to users, at least it sends them the message that there were no matches and tells them that they should try again. At that point, if a user clicks on the ‘Return to Parks’ button or just navigates to a different tab on the navigation bar, they will have a clean slate for another search. That is better than, let’s say, redirecting them to some page that seems out of context with no explanation of why they are there and no message about whether or not their search has been successful (I have been seeing some weird redirects and ambiguous results pages on other sites lately, so I know from experience how obscure the results of clicking a button on-line can be!). newpar,
+
+If the data sent back is not just an empty array, then I set state so that the park that matches the search term is displayed. It is possible that multiple matches could come up when a user is looking for one particular park. For example, when I type in ‘Grand Canyon’, three parks are displayed: ‘Grand Canyon National Park,’ ‘John Muir National Historic Site,’ and ‘Parashant National Monument.’ This is because the Grand Canyon is mentioned in the description for all three of these parks. In my opinion, that narrows the search well enough. Users can easily zero in on the Grand Canyon in this way without having to know which state the park is in to use the search-by-state option in the application, which pulls up a list of parks based on a state that the user selects. newpar,
+
+On the other hand, if a user types in nonsense a lot of things can happen. newpar,
+
+#1, if there are absolutely no matches, then the data returned will have a length of zero, so the error message will display, and there is no harm done. newpar,
+
+If, however, the user types in something like ‘to,’ as I did for testing purposes, there might be an unhelpful number of matches, not narrowing the range of parks down in any useful way. Actually, for that particular query, I think it matches all of the parks in the API, but there is a limit of 50 by default — so it renders the first fifty. While it might be fun to test this further, my guess is that it is not a way most users are likely to use the search bar. And if they do, at this point it is not crashing the site but is just rendering parks organized along mysterious lines not relevant for most people planning trips. newpar,
+
+All of the other items set in state when the data is returned from the fetch are for the sake of signaling different conditions to the application. When the function is initially called, I set the locationFilter so that a page flashing ‘Parks are loading’ is displayed in case there is any lag time until the parks that match the search appear. The filterAll item is set to false in order to conditionally render a different component with the list of parks that include the search term instead of the component that is on the landing page for the route, which displays a heading, the search bar, and a list of states and territories that can be selected to search by location. Lastly, searchTerm is a string of what the user entered into the input field, and searchPark is the information about particular parks returned from the API. The searchTerm is used in the heading of the results to remind the user of what they were looking for. The searchPark information is mapped over to display the results of the search in a list. newpar,
+
+Then, any of the names of parks that are shown in the list can be clicked on to render a show page for that particular park. When users click on a ‘Return to List’ button from the show page of a park, it takes them back to the short list of search results, and when they click on the ‘Return to Parks’ button from there it clears all of the search results and takes them back to the landing page for the Parks route. newpar,
+
+This is tangential, but I like to end my blog posts with a song whenever possible. This came to mind and relates to the theme of search and travel. I am not sure what cave it was filmed in, but yes there are caves in some national parks, such as… newpar,
+
+./Images/Search_Bar_With_Cave.jpg newpar,
+
+./Images/Search_Results_for_Cave.jps newpar,
+
+./Images/Oregon_Caves.jpg newpar,
+
+
+https://www.nps.gov/orca/index.htm /anchor newpar,
+
+https://www.youtube.com/embed/hXCKLJGLENs newpar,
+
+https://www.youtube.com/embed/KLQS6xo40kI newpar,  
+
+")
+
 post_eleven=Post.create(title: "React Edit Form: What Appears in the Text Area", paragraphs: "As I wrote at the end of my blog last week, there were a few things that I still wanted to work on for the National Park Trip Planner application I have been building, including authorization to restrict who could access a user’s park collection and notes, CSS for the park collection page, and changing the edit form for notes to populate the text area with the note that a user would like to edit. This blog will be about the last of these objectives, and I will write about the other topics in a separate post. newpar,
 
 Although it took me awhile to figure out how to create a better edit form, the solution was relatively simple. Before, there was a callback function for when the edit button was pushed that sent the note to be edited up to App.js. App.js set the text of the entry to be edited in state and then sent it down to ExpandParksInParkCollection.js where the particular park in the collection is displayed, along with any notes a user has taken. There, it became the placeholder of the edit form, which was conditionally rendered after the boolean in state in App.js ‘updateNote’ was set by the onClick event to true. What I wanted to do was to change the placeholder into text that could actually be edited instead of disappearing when a user started typing in the text area. newpar,
