@@ -9,6 +9,496 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg")
 
+post_fourteen=Post.create(title: "Roman Numeral Conversion Algorithm", paragraphs: "One of the algorithms that I worked on earlier this week converts roman numerals into integers. Sometimes when I write a function for the sake of practice on sites like LeetCode.com or Hackerrank.com, I wonder if or when I would ever use it. However, as someone who is not from Ancient Rome, this function struck me as useful — in spite of my sense that I might have actually memorized the roman numeral system in less time than it took to write a function that would make that conversion for me. But I digress… newpar,
+
+What was tricky about this problem was that there were a lot of conditions to articulate. It is undoubtedly the longest function I have written, which makes me suspect that there must be a much shorter solution to this problem, as is usually the case. newpar,
+
+let romanToInt = (s) => { \n
+    
+    let stringToArray= s.split('') \n
+    
+    let count=0 \n
+let i; \n
+    
+    for(i=0; i<stringToArray.length; i++){ \n
+        
+        if (i!==(stringToArray.length-1)){ \n
+            
+            if(stringToArray[i]==='I'){ \n
+            
+                if(stringToArray[i+1]==='X'){ \n
+               count+=9 \n
+                } \n
+            
+                else if(stringToArray[i+1]==='V'){ \n
+                count+=4 \n
+                } \n
+           
+                else{ \n
+                count+=1 \n
+                } \n
+            } \n
+           
+            else if(stringToArray[i]==='X'){ \n
+             
+                if(stringToArray[i+1]==='L'){ \n
+                count+=40 \n
+                } \n
+            
+                else if(stringToArray[i+1]==='C'){ \n
+                count+=90 \n
+                } \n
+                
+                 else if(stringToArray[i-1] && stringToArray[i-1]==='I'){ \n
+                       count+=0 \n
+                   } \n
+             
+                else{ \n
+                count+=10 \n
+                } \n
+            } \n
+        
+            else if(stringToArray[i]==='C'){ \n
+             
+                if(stringToArray[i+1]==='D'){ \n
+                count+=400 \n
+                } \n
+            
+                else if (stringToArray[i+1]==='M'){ \n
+                count+=900 \n
+                } \n
+                
+                else if(stringToArray[i-1] && stringToArray[i-1]==='X'){ \n
+                       count+=0 \n
+                   }  \n
+             
+                else{ \n
+                count+=100 \n
+                }   \n
+            } \n
+        
+        else if(stringToArray[i]==='V') { \n
+            if(stringToArray[i-1]){ \n
+                
+                if (stringToArray[i-1]==='I'){ \n
+                    count+=0 \n
+                } \n
+                
+                else{ v
+                    count+=5 \n
+                } \n
+            } \n
+             
+            else{ \n
+                count+=5 \n
+            } \n
+            
+        } \n
+        
+        else if(stringToArray[i]==='L'){ \n
+            if(stringToArray[i-1]){ \n
+                if (stringToArray[i-1]==='X'){ \n
+                    count+=0 \n
+                } \n
+                
+                else{ \n
+                    count+=50 \n
+                }  \n
+            } \n
+            
+            else{ \n
+                count+=50 \n
+            } \n
+        } \n
+        
+          else if(stringToArray[i]==='D'){ \n
+            if(stringToArray[i-1]){ \n
+                if (stringToArray[i-1]==='C'){ \n
+                    count+=0 \n
+                } \n
+                
+                else{ \n
+                    count+=500 \n
+                } \n
+            } \n
+            
+            else{ \n
+                count+=500 \n
+            } \n     
+        } \n
+        
+         else if(stringToArray[i]==='M'){ \n
+            if(stringToArray[i-1]){ \n
+                if (stringToArray[i-1]==='C'){ \n
+                    count+=0 \n
+                } \n
+                
+                else{ \n
+                    count+=1000 \n
+                } \n
+            } \n
+            
+            else{ \n
+                count+=1000 \n
+            } \n     
+        } \n
+        
+        
+            } \n
+        
+    else{ \n
+        
+        if (stringToArray[i]==='I'){ \n
+            count+=1 \n
+        } \n
+        
+        else if(stringToArray[i]==='V'){ \n
+            
+            if(stringToArray[i-1]){ \n
+                
+                if(stringToArray[i-1]==='I'){ \n
+                    count+=0 \n
+                } \n
+                else{ \n
+                    count+=5 \n
+                } \n
+            } \n
+            else{ \n
+                count+=5 \n
+            }  \n
+        } \n
+        
+        else if(stringToArray[i]==='X'){ \n
+            if(stringToArray[i-1]){ \n
+                
+                if(stringToArray[i-1]==='I'){ \n
+                    count+=0 \n
+                } \n
+                else{ \n
+                    count+=10 \n
+                } \n
+            } \n
+            else{ \n
+                count+=10 \n
+            }  \n
+            
+        } \n
+        
+        else if (stringToArray[i]==='L'){ \n
+            if(stringToArray[i-1]){ \n
+                
+                if(stringToArray[i-1]==='X'){ \n
+                    count+=0 \n
+                } \n
+                else{ \n
+                    count+=50 \n
+                } \n
+            } \n
+            else{ \n
+                count+=50 \n
+            } \n
+            
+        } \n
+        
+        else if (stringToArray[i]==='C'){ \n
+           if(stringToArray[i-1]){ \n
+                
+                if(stringToArray[i-1]==='X'){ \n
+                    count+=0 \n
+                } \n
+                else{ \n
+                    count+=100 \n
+                } \n
+            } \n
+            else{ \n
+                count+=100 \n
+            } \n
+            
+        } \n
+        
+        else if(stringToArray[i]==='D'){ \n
+             if(stringToArray[i-1]){ \n
+                
+                if(stringToArray[i-1]==='C'){ \n
+                    count+=0 \n
+                } \n
+                else{ \n
+                    count+=500 \n
+                } \n
+            } \n
+            else{ \n
+                count+=500 \n
+            } \n
+            
+        } \n
+        
+        else if (stringToArray[i]==='M'){ \n
+            if(stringToArray[i-1]){ \n
+                
+                if(stringToArray[i-1]==='C'){ \n
+                    count+=0 \n
+                } \n
+                else{ \n
+                    count+=1000 \n
+                } \n
+            } \n
+            else{ \n
+                count+=1000 \n
+            }   \n
+            
+        } \n
+            
+    } \n
+          
+    } \n
+return count \n
+} newpar,
+
+The first step I took was to split the string ‘s’ into an array and save it to another variable. If ‘s’ was 'IV', then the array would be ['I', 'V']. Doing this allowed me to loop through each character and add up the numerals to convert them into an integer, saved to the variable ‘count.’ The first condition in the loop was to specify what to do if the item was not in the last index position. Within that condition, I went through each numeral to indicate how the count should change (or not change). newpar,
+
+For ‘I’, if the numeral in the next position was ‘X’ then the count would go up by 9, or if it was ‘V’ then it would go up by 4. Otherwise, it would go up by one. newpar,
+
+If the numeral was ‘X’, there would be a few possibilities. For each numeral, we basically have to teach the function to read the whole context, often including what comes before a character and what comes after it (if there is anything before or after — and specifying whether or not something comes before or after is another condition to spell out in some cases). For ‘X’, if the next character is ‘L’, then the count goes up by 40, and if it is C it goes up by 90. Then, if there is anything before ‘X’ and if what is before it is ‘I’, then that means the count will go up by 0. That is because if ‘I’ is before ‘X’ in the for loop, ‘IX’ has already been taken together and increased the count by 9 (as I spelled out in the last step). If I didn’t have this condition then when the loop made it to ‘X’ it would add another ten to the count. Finally, if none of these conditions were met, then the count would go up by ten. newpar,
+
+If the character was ‘C’ and the next character was ‘D’, the count would go up by 400. If the next character was ‘M’, the count would increase by 900. But if the character before ‘C’ was ‘X’, then the count would not increase, because ‘XC’ is 90 and would have already been taken into account by a previous condition. If none of these conditions were met, then the count would go up by 100. newpar,
+
+For the character ‘V’, if there was a numeral before it and if that numeral was ‘I’, then the count would not go up, because ‘IV’ would have already been calculated. Otherwise, it would increase by 5. newpar,
+
+The logic for ‘L’ is the same as that for ‘V.’ If it is preceded by ‘X’ the count stays the same, because other than being a t-shirt size ‘XL’ also means 40. If nothing comes before it or what does come before it is not ‘X’ then 50 is added to the count. newpar,
+
+The condition for ‘D’ also follows this pattern of reading only the numeral before it and not the one after it. If what is before it is ‘C’, then the count does not go up, because ‘CD’ is 400— and that would have already been added to the count by the time the loop made it to the D. Otherwise, the count would go up by 500. newpar,
+
+Lastly, if the numeral was ‘M’ and there was either nothing before it or what was before it was not ‘C’, the count would go up by 1000. If what came before it was ‘M’, the count would not go up, because that would have been 900 and would have already been added. newpar,
+
+If you are still awake, I will now go ahead and go through the next part of the function that accounts for the case in which the loop is at the last index position of the array. newpar,
+
+If you are not awake... Wake up, O World; O World, awake! newpar,
+
+https://allpoetry.com/poem/12318010-The-Wakeupworld-by-Countee-Cullen /anchor newpar,
+
+https://www.youtube.com/embed/pfnvyF2zwMw newpar,
+
+Now that you are awake… newpar,
+
+If ‘I’ is the last numeral in the array, then 1 is simply added to the count. Easy! newpar,
+
+If ‘V’ is the last numeral, then the logic is actually the same as if it was in any other position in the array. Which means, this is an opportunity for refactoring!!! I will give you a couple of minutes to go work on that. Meet me back here when you are done. newpar,
+
+Great, thank you for coming back. Now, if ‘L’ is the last numeral in the array, then the logic is ALSO the same as it would be for any other position in the array. WAIT A MINUTE! I am sensing a pattern here. There is a lot of repetitive code. That is not D.R.Y.! newpar,
+
+***UPDATE: I refactored the code above to get the following. There is undoubtedly still room for improvement, but this is what I have so far: newpar,
+
+let romanToInt = (s)=> { \n
+    
+    let stringToArray= s.split('') \n
+    
+    let count=0 \n
+let i; \n
+    
+    for(i=0; i<stringToArray.length; i++){ \n
+                    
+            if(stringToArray[i]==='I'){ \n
+if (i===stringToArray.length-1) \n                    {
+                
+                    count+=1 \n
+} \n
+else{ \n
+            
+                if(stringToArray[i+1]==='X'){ \n
+               count+=9 \n
+                } \n
+            
+                else if(stringToArray[i+1]==='V'){ \n
+                count+=4 \n
+                } \n
+else{ \n
+                count+=1 \n
+                } \n
+            
+            } \n
+            } \n
+else if(stringToArray[i]==='X'){ \n
+if (i!==(stringToArray.length-1)){ \n
+             
+                if(stringToArray[i+1]==='L'){ \n
+                count+=40 \n
+                } \n
+            
+                else if(stringToArray[i+1]==='C'){ \n
+                count+=90 \n
+                } \n
+else{ \n
+                count+=10 \n
+                } \n
+                } \n
+                
+                 else { \n
+                if(stringToArray[i-1] && stringToArray[i-1]==='I'){ \n
+                       count+=0 \n
+                   } \n
+             
+                else{ \n
+                count+=10 \n
+                } \n
+                      } \n
+                      } \n
+        
+            else if(stringToArray[i]==='C'){ \n
+             
+                if(stringToArray[i+1]==='D'){ \n
+                count+=400 \n
+                } \n
+            
+                else if (stringToArray[i+1]==='M'){ \n
+                count+=900 \n
+                } \n
+                
+                else if(stringToArray[i-1] && stringToArray[i-1]==='X'){ \n
+                       count+=0 \n
+                   } \n  
+             
+                else{ \n
+                count+=100 \n
+                } \n
+            } \n
+        
+        else if(stringToArray[i]==='V') { \n
+            if(stringToArray[i-1]){ \n
+                
+                if (stringToArray[i-1]==='I'){ \n
+                    count+=0 \n
+                } \n
+                
+                else{ \n
+                    count+=5 \n
+                } \n
+            } \n
+            
+            else{ \n
+                count+=5 \n
+            } \n
+            
+        } \n
+        
+        else if(stringToArray[i]==='L'){ \n
+            if(stringToArray[i-1]){ \n
+                if (stringToArray[i-1]==='X'){ \n
+                    count+=0 \n
+                } \n
+                
+                else{ \n
+                    count+=50 \n
+                } \n
+            } \n
+            
+            else{ \n
+                count+=50 \n
+            } \n    
+        } \n
+        
+          else if(stringToArray[i]==='D'){ \n
+            if(stringToArray[i-1]){ \n
+                if (stringToArray[i-1]==='C'){ \n
+                    count+=0 \n
+                } \n
+                
+                else{ \n
+                    count+=500 \n
+                } \n
+            } \n
+            
+            else{ \n
+                count+=500 \n
+            } \n
+        } \n
+        
+         else if(stringToArray[i]==='M'){ \n
+            if(stringToArray[i-1]){ \n
+                if (stringToArray[i-1]==='C'){ \n
+                    count+=0 \n
+                } \n
+                
+                else{ \n
+                    count+=1000 \n
+                } \n
+            } \n
+            
+            else{ \n
+                count+=1000 \n
+            } \n
+        } \n
+} \n
+return count \n
+} newpar,
+
+
+
+")
+
+post_thirteen=Post.create(title: "Two Sum Function", paragraphs: "This is a post about a two sum function that I wrote while doing a practice problem on LeetCode. The function takes two arguments, the first one an array of numbers and the second one an integer. The integer is a sum of two of the numbers in the array. What the function is supposed to return is an array of the index numbers of the numbers in the original array that when added together equal the target number. newpar,
+
+The last sentence I wrote is an example of how language about coding can make code sound more complicated than it is. I would recommend going down to the examples below to recover from what I just did to you. newpar,
+
+Something that had me sidetracked for awhile was that I was trying to use indexOf() until I realized that in my excitement over the possibility of using this method I had overlooked the fact that indexOf() only returns the first match in an array. For example if we have newpar,
+
+this-is-code-in-blog
+let thisArray= [2, 5, 4, 7, 4] newpar,
+
+If I call indexOf on it to get the index of 4 newpar,
+
+this-is-code-in-blog
+thisArray.indexOf(4) newpar,
+
+It would give me 2, because that is the first matching index position. IndexOf() does not help me to get the index of the second 4 in the array. newpar,
+
+As a side note, it is also interesting to me that calling indexOf() for something that is not in the array it is called on — for example, thisArray.indexOf(1000) or thisArray.indexOf(17)— yields a -1. Why -1? It seems kind of arbitrary, but I like it! newpar,
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf /anchor newpar,
+
+This is the solution I came up with: newpar,
+
+let twoSum = function(nums, target) { \n
+let i; \n
+let newArray=[] \n
+for(i=0; i<nums.length; i++){ \n
+newArray.push([i, nums[i]]) \n
+} \n
+let n; \n
+let anotherArray=[]; \n
+for(n=0; n<newArray.length; n++){ \n
+newArray.forEach(array=>{ \n
+if(array[0]!==newArray[n][0]){ \n
+if (array[1]+newArray[n][1]===target){ \n
+anotherArray.push(newArray[n][0]) \n
+} \n
+} \n
+}) \n
+} \n
+let sortedArray=anotherArray.sort((a, b)=>{return a-b}) \n
+return sortedArray \n
+} newpar,
+
+In the first loop, I transformed the array ‘nums’ to give me an array of arrays. Each array in the array was a set of two numbers. The number at the zero index was the original index position that the number was in in ‘nums,’ and the second number in index position one was the number itself. For example, if ‘nums’ was [4, 7, 3, 6], then ‘newArray’ would be [[0, 4], [1, 7], [2, 3], [3, 6]]. \n
+
+In the second loop, I went through ‘newArray’ one array at a time, adding the number at index 1 to the number at index 1 in the other arrays and pushing the index number into a new array called ‘anotherArray’ if the sum was the target number. The loop allowed me to cycle through each array to compare it to the others, and the forEach allowed me to specify what I wanted to compare that array to, which was every other array. \n
+
+The reason I have the condition newpar,
+
+this-is-code-in-blog
+if(array[0]!==newArray[n][0]) newpar,
+
+is so that a number at a specific index position is not compared to itself and is only compared to the other numbers in the original array. newpar,
+
+The result is that if ‘nums’ was [4, 7, 3, 6] and the target was 9, then ‘anotherArray’ would be [2, 3]. newpar,
+
+In this example, ‘anotherArray’ is already in ascending order; but in case it was not, the last step is sorting ‘anotherArray’. There is no harm in sorting an array that is already sorted, as far as I know. At least not in this context! newpar,
+
+Voila! newpar,
+
+https://www.youtube.com/embed/pMWxnjgvUQM newpar,
+
+")
+
 post_twelve=Post.create(title: "Search Bar in React With a 3rd Party API", paragraphs: "Making a search bar when fetching from a third party API with a large set of data required a few more steps than when I was building one for an application that had all of the data stored on the back end. newpar,
 
 The first step was having a search bar component and displaying it in the place where I wanted it. The one that I designed is a controlled form that when submitted triggers a call-back function that was passed down to it as a prop and sends the search term back to the parent component. When it is submitted it also resets the input field so that it is blank until a user types inside of it. newpar,
