@@ -9,6 +9,382 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg")
 
+post_twenty=Post.create(title: "Conditional Rendering in React", paragraphs: "./Images/What_If.jpg newpar,
+
+Although using JSX to build the front-end of applications in React allows me to write JavaScript more quickly, something that I have had to overcome is my desire to write out if/else statements in the render method of class components. The render method only accepts ternary expressions, and although they can be nested to your heart’s content, it can get very messy with a long breadcrumb trail of question marks and colons. newpar,
+
+What I have been doing to solve this problem is writing more functions above the render method in class components that return smaller pieces of JSX. Then, I can write another function whose sole responsibility is to spell out all the conditions for when to call the other functions that execute a particular block of code. Lastly, this “deciding” function that makes judgments about what to return can be called in the render method. Though I still end up using ternary expressions in the render method, this allows me to do it a little less often to keep things more under control as the if’s and else’s of the application multiply. newpar,
+
+    First solution /heading newpar,
+
+    For example, I might write a function like this that returns a span with some other things inside of it. newpar,
+
+    forNewListingSubmitted=()=>{ \n
+return <span className='submitted-new-listing-container'> \n
+<i role='img' className='submitted-new-listing-icon'>&#10004;</i> \n
+<h1>Your listing has been submitted.</h1> \n
+<button id='return-to-listings' onClick={this.props.returnToListingsIndex}>Return to Listings</button> \n
+</span> \n
+} newpar,
+
+Other functions in the same class could return different spans, like these. newpar,
+
+forNewDirectRequestsToDonate=()=>{ \n
+return <span className='submitted-new-listing-container'> \n
+<i role='img' className='submitted-new-listing-icon'>&#10004;</i> \n
+<h1>Your donation has been submitted.</h1> \n
+<p>When the requestor approves the submission, further directions will be provided for exchange.</p> \n
+<button id='return-to-listings' onClick={this.props.returnToListingsIndex}>Return to Listings</button> \n
+</span> \n
+} \n
+forNewDirectRequestsForItems=()=>{ \n
+return <span className='submitted-new-listing-container'> \n
+<i role='img' className='submitted-new-listing-icon'>&#10004;</i> \n
+<h1>Your request has been submitted.</h1> \n
+<p>When the donor approves the request, further directions will be provided for exchange.</p> \n
+<button id='return-to-listings; onClick={this.props.returnToListingsIndex}>Return to Listings</button> \n
+</span> \n
+} newpar,
+
+And then a third function would make the decision about which of those functions to call. That looks like this: newpar,
+chooseWhichToRender=()=>{ \n
+if(this.props.createdANewListing){ \n
+return this.forNewListingSubmitted() \n
+} \n
+else if(this.props.newDirectRequestForItem){ \n
+return this.forNewDirectRequestsForItems() \n
+} \n
+else{ \n
+return this.forNewDirectRequestsToDonate() \n
+} \n
+} newpar,
+
+Separating the logic out makes the class a little more organized and easy to follow. The final render method can then be as follows: newpar,
+
+render(){ \n
+return( \n
+this.chooseWhichToRender() \n
+) \n
+} newpar,
+
+It doesn’t get much easier than that! Though in this case the render method just has one function call, in other cases I might have more JSX that is rendered unconditionally, some ternary expressions, other components, or more function calls. This happens to be a simpler component, so it can serve to highlight the separation of concerns that I wanted to focus on. newpar,
+
+Second Solution /heading newpar,
+
+Actually, now that I think of it, another way to write the above which is a little D.R.Y.er is: newpar,
+
+forNewListingSubmitted=()=>{ \n
+return <h1> Your listing has been submitted.</h1> \n
+} \n
+forNewDirectRequestsForItems=()=>{ \n
+return <React.Fragment> \n
+<h1>Your request has been submitted.</h1> \n
+<p>When the donor approves the request, further directions will be provided for exchange.</p> \n
+</React.Fragment> \n
+} \n
+forNewDirectRequestsToDonate=()=>{ \n
+return <React.Fragment> \n
+<h1>Your donation has been submitted.</h1> \n
+<p>When the requestor approves the submission, further directions will be provided for exchange.</p> \n
+<React.Fragment> \n
+} \n
+chooseWhichToRender=()=>{ \n
+if(this.props.createdANewListing){ \n
+return this.forNewListingSubmitted() \n
+} \n
+else if(this.props.newDirectRequestForItem){ \n
+return this.forNewDirectRequestsForItems() \n
+} \n
+else{ \n
+return this.forNewDirectRequestsToDonate() \n
+} \n
+} \n
+render(){ \n
+return( \n
+<span className='submitted-new-listing-container'> \n
+<i role='img' className='submitted-new-listing-icon'>&#10004;</i> \n
+{this.chooseWhichToRender()} \n
+<button id='return-to-listings' onClick={this.props.returnToListingsIndex}>Return to Listings</button> \n
+</span> \n
+) \n
+} newpar,
+
+This has more in the render method, because the parts that do not change based on any conditions are there so that I do not have to repeat the same lines over and over. However, the functions that return smaller parts of code that are only rendered under certain conditions work in the same way, just returning less code. The “deciding” function doesn’t change at all. newpar,
+
+    Third Solution /heading newpar,
+
+    You could also combine the four functions above the render method into one to look like this: newpar,
+
+    chooseWhichToRender=()=>{ \n
+if(this.props.createdANewListing){ \n
+return <h1> \n
+Your listing has been submitted.</h1> \n
+} \n
+else if(this.props.newDirectRequestForItem){ \n
+return <React.Fragment> \n
+<h1>Your request has been submitted.</h1> \n
+<p>When the donor approves the request, further directions will be provided for exchange.</p> \n
+</React.Fragment> \n
+} \n
+else{ \n
+return <React.Fragment> \n
+<h1>Your donation has been submitted.</h1> \n
+<p>When the requestor approves the submission, further directions will be provided for exchange.</p> \n
+</React.Fragment> \n
+} \n
+} \n
+render(){ \n
+return( \n
+<span className='submitted-new-listing-container'> \n
+<i role='img' className='submitted-new-listing-icon'>&#10004;</i> \n
+{this.chooseWhichToRender()} \n
+<button id='return-to-listings' onClick={this.props.returnToListingsIndex}>Return to Listings</button> \n
+</span> \n
+) \n
+} newpar,
+
+And there you have it! Three ways to do the same thing. newpar,
+
+    In the spirit of hoping and wishing that what you want to conditionally render will in fact appear when and where you want it to, this song came to mind. It also conveys some of the suspense and struggle of my first Hackathon, which I just (barely) survived. newpar,
+
+    https://www.youtube.com/embed/eLU_woRD8Dg newpar,
+
+
+")
+
+post_nineteen=Post.create(title: "The Elephant in the Room", paragraphs: "In switching computers for the first time as a developer, I have been experiencing what it is like to have to set up my coding environment all over again. What I have mainly learned from this is how much I do not know, which is always a bewildering realization. There is still a lot of work for me to do, and this post is not going to be a success story. Actually, I just want to share one line of code, and it is related to using PostgreSql as a database for a Ruby on Rails API. newpar,
+    
+While trying to complete the task of setting up my environment, I have also been working on getting my portfolio site up again after being dissatisfied with the initial deployment of it. Because of issues transferring data from one computer to another — at one point I spent a half an hour on hold with Apple Support just to ask how long I might theoretically need to wait for the Migration Assistant to finish before deciding that it wasn’t working — I ended up recreating the backend for my website. When I tried to use PostgreSql as the database, I got an error that said something like: 'PG::ConnectionBad: fe_sendauth: no password supplied.' One of the things that was so confusing about this was that because I had just installed postgres on the new computer, I thought that it meant I had not installed it correctly, that I had overlooked some detail that mattered more than I could know. Where it was that I needed to enter the password that had not been supplied was a mystery to me. newpar,
+
+./Images/Bad_Connection.jpg newpar,
+
+To make a long story short, the mistake was actually familiar, just not one that I had made in awhile. What I needed to do after creating the new Ruby on Rails API with a PostgreSql database and cd’ing into that directory was to enter newpar,
+
+    this-is-code-in-blog
+    rails db:create newpar,
+
+    before I could migrate. newpar,
+
+    That was it. newpar,
+
+    This is the blog that included that detail and pointed me in the right direction: newpar,
+
+    https://dev.to/rob__race/setting-up-rails-and-postgresql-5c0k /anchor newpar,
+
+    The reason it did not occur to me to first create the database before migrating was that Ruby on Rails uses sqlite3 as its default database, and when using the default you skip this step. newpar,
+
+    I am tempted to make a connection here. My old computer started to show its age due to its memory being strained after seven years of being crammed with a lot of little things that it was too late for me to go back and delete. I scrambled to rid myself of the detritus that I had accumulated to no avail. Then, once I had acquired a new computer, with all of the other things going on in life, I forgot the one small detail that everything else depended on. I will leave you to draw your own conclusions about what this all means. newpar,
+    
+    ")
+
+post_eighteen=Post.create(title: "Binary Search", paragraphs: "For the last few days, I have been working on binary searches to take a step in the direction of decreasing runtime and writing better-designed code as I learn more about Big O notation. This is a function that takes in an input of an array of numbers and an integer. It searches the array to see if the integer ‘n’ is present in the array. It does not need to know whether it is repeated and how many times it appears, just whether it is there at all. newpar,
+
+The first condition, which is actually the last part of the code that I wrote, is to check the length of the input array. If it is less than or equal to zero, then the function exits, returning ‘false’ to signify that the number is not present. The reason I added this is because I have discovered that doing a binary search on an empty array gets me stuck in an infinite loop. It is kind of like asking nothingness what its name is. I believe that the importance of providing an appropriate exit condition for a loop was mentioned at least in passing in a recent lecture on the subject of algorithms, but there are certain mistakes I have to make approximately 50 times before I begin to understand them. As a result, my computer has been through a lot lately. newpar,
+
+https://cs50.harvard.edu/x/2020/weeks/3/ /anchor newpar,
+
+The next step is sorting the array, because the goal of a binary search is to start from the middle, check the median against the target number, and if there is not already a match then determine which half of the array can be ignored. If the median on the first round is greater than the target number, then the right half of the array, which would contain values above the median, are eliminated, while the left half is searched. If the array is unsorted then there is no way of making the determination that either half of the array can be eliminated. newpar,
+
+The Variables /heading newpar,
+
+There are a number of variables initialized at the beginning of the function, including a startPoint, an endPoint, a subArray, a variable called ‘finished’, and a median. The subArray is initially a copy of the sortedArray, but its value will be reset later in the function, as will all of the other values except for sortedArray. I want to preserve the original sorted array but also use a subArray to indicate which section of the sortedArray should be searched as the loops go on. The startPoint gives the index of sortedArray where the binary search should begin, and the endPoint gives the index of where subArray, or the section of the array that is currently being searched, should end. Keeping sortedArray intact allows me to give the indexes for the start and finish points for the subArray. newpar,
+
+For example, if the input array is [9, 1, 4, 2, 7] and the target number is 9, the sortedArray will be [1, 2, 4, 7, 9]. Before I explain the rest of the code, I will just go through this in English. The median of the sortedArray is 4. 4 is not equal to the target value of 9, so all of the numbers between 1 and 4 are ignored at this point, and the values above 4 are searched on the next loop. Having the sortedArray intact allows me to specify this by setting the value of the startPoint to one index position higher (if there is one higher) than the current median of 4, or startPoint = median+1, which will translate to sortedArray[3], the item at the third index position of sortedArray. So, 7 becomes the new startPoint, and the endPoint remains the same, the last index position in the sortedArray, with the value of 9. newpar,
+
+Finding the SubArray /heading newpar,
+
+The subArray is set using slice(), which takes one integer of the index where the slice begins and another integer of the index where it ends — the second index, or the end point, is actually for the index position AFTER where you want to stop. If the subArray you want to examine is [7, 9] in the example above, that would be found using subArray.slice(3, 5). subArray is an array of the items that will be part of the next loop’s search, but the start and end points will be used independently of the subArray to find the median. That might sound confusing, so I will give another example to help explain it. newpar,
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice /anchor newpar,
+
+Say we are calling binarySearch with an array of [1, 7, 2, 4, 9, 16, 12, 4, 2, 13] and an n value of 9. The sortedArray would be [1, 2, 2, 4, 4, 7, 9, 12, 13, 16]. The length of the array is even, so the median would be [4, 7]. Since neither 4 nor 7 matches the target number of 9, and because 9 is greater than those values, the subArray becomes [9, 12, 13, 16]. We arrive at this by calculating subArray.slice(6, 10), the new startPoint being index 6 of sortedArray and the new finish point being at index 9(REMEMBER, slice takes as its second argument the number AFTER the last index you want to include in the slice). The median of the subArray on the next loop is found by taking parseInt((startPoint+endPoint)/2) and then parseInt((startPoint+endPoint)/2)+1 and pushing those values into an array. So, the median is [12, 13], and we check for the target number by asking whether sortedArray[12] or sortedArray[13]===n. newpar,
+
+https://www.youtube.com/embed/bS3O5zg290k newpar,
+
+Calculating the Median /heading newpar,
+
+Why do we need a subArray if we are describing the median as being at a position in sortedArray, or sortedArray[median]? The reason for this is that we have to calculate the median differently based on whether the length of the subArray is an even or odd number. That is what the condition if(subArray.length % 2 !==0) checks for. If when the length of the subArray is divided by 2, the remainder is not zero, then that means the length is an odd integer. If it is an odd number, it is a little easier. The median =(endPoint+startPoint)/2. newpar,
+
+If the length of the subArray is even, then the median will actually be an array of the two numbers at the center. (I know that googling helped me to figure this out, but unfortunately I lost track of which site eventually led me to that conclusion — I will try to be better about keeping track of my sources next week! But I think this also just hearkens back to middle school math!). The way I got the two numbers for the median was by performing the same operation of (endPoint+startPoint)/2 but taking the parseInt() of that value to round down for the first index and then taking the parseInt() of it and adding one to get the second index. Then, the function checks to see whether either of those numbers match the target number before calculating the new start and end points for the subArray. newpar,
+
+The While Loop, a.k.a. Conditions for Exit /heading newpar,
+
+The loop will stop running under two conditions. The first is if a match is found. Then, the subArray is emptied, finished is set to 1, and ‘true’ is returned before the function exits. The second condition is if a subArray is searched, the median does not match the target value, and we cannot move in the direction we would have to go in to keep searching because we have come to the end (or the beginning) of the array. For example, if the target number is 17, but the array ends at 5, then we would have to keep moving forward to get to a larger value — but alas, there are no more available in the array. In that case, ‘finished’ is set to 1, the subArray is set to [], and the function returns ‘false’ before exiting. Because of the condition of the while loop, as long as ‘finished’ is less than zero, the function will keep digging into the sortedArray to focus on smaller and smaller pieces of it before it either finds what it needs or admits its defeat. newpar,
+
+function binarySearch(array, n){ \n
+if(array.length<=0){ \n 
+return false \n
+} \n
+else{ \n
+let sortedArray= array.sort((a, b)=> a-b) \n
+let startPoint=0; \n
+
+let subArray= [...sortedArray]; \n
+
+let endPoint=subArray.length-1; \n
+
+let finished = 0; \n
+
+let median; \n
+
+
+while(finished<1){ \n
+
+    if(subArray.length % 2 !==0){ \n
+
+        median = (endPoint+startPoint)/2 \n
+       
+
+        if(sortedArray[median]===n){ \n
+
+            subArray=[]; \n
+
+            finished+=1; \n
+
+            return true; \n
+
+         } \n
+
+        else if(sortedArray[median]<n){ \n
+
+            if(sortedArray[median+1]){ \n
+
+                startPoint = median+1; \n
+
+                let subArrayLength= subArray.length \n
+
+                subArray= subArray.slice(startPoint, subArrayLength) \n
+
+
+             } \n
+
+
+
+            else{ \n
+
+                subArray=[] \n
+
+                return false; \n
+
+            } \n
+
+        } \n
+
+
+       else if(sortedArray[median]>n){ \n
+
+        if(sortedArray[median-1]){ \n
+
+            endPoint = median-1; \n
+
+            subArray= subArray.slice(startPoint, endPoint+1) \n
+
+
+        } \n
+
+
+        else{ \n
+
+            subArray=[] \n
+            return false; \n
+
+        } \n
+
+       } \n
+
+    } \n
+
+
+
+    else{ \n
+
+        let firstIndex = parseInt((startPoint+endPoint)/2) \n
+
+        let secondIndex = parseInt((startPoint+endPoint)/2)+1 \n
+
+        median= [firstIndex, secondIndex] \n
+
+        let thisIndex=median[0] \n
+
+        let anotherIndex=median[1] \n
+
+        if(sortedArray[thisIndex]===n || sortedArray[anotherIndex] ===n){ \n
+
+            subArray=[]; \n
+       
+            finished+=1; \n
+
+            return true; \n
+
+         } \n
+
+        else if(sortedArray[anotherIndex]<n){ \n
+
+            let newStart= median[1]+1 \n
+
+            if(sortedArray[newStart]){ \n
+
+
+                startPoint = median[1]+1; \n
+
+                let theLength= subArray.length \n
+
+                subArray= subArray.slice(startPoint, theLength) \n
+
+              } \n
+
+            else{ \n
+
+                subArray=[]; \n
+
+                return false; \n
+
+            } \n
+
+        } \n
+
+
+        else if(sortedArray[anotherIndex]>n){ \n
+
+             let thisStart= median[0]-1 \n
+
+            if (sortedArray[thisStart]){ \n
+
+                endPoint = median[0]-1; \n
+
+                subArray= subArray.slice(startPoint, endPoint+1); \n
+
+
+                } \n
+
+
+
+            else{ \n
+
+                subArray=[]; \n
+
+                return false; \n
+
+            } \n
+
+        } \n
+
+
+       } \n
+
+
+} \n
+
+return false; \n
+} \n
+} newpar,
+
+
+ 
+
+
+")
+
 post_seventeen=Post.create(title: "Code Encryption Exercise in C", paragraphs: "A practice problem that I just did for a class I am taking had me create a function for turning input into a coded message. It takes in a command-line argument of a number and a string of text that is then 'encrypted' so that the letters in the string are shifted the number of positions specified by the user. I put ‘encrypted’ in quotes, because this is not for the purpose of securing your app or website. It is just for fun! If this is the kind of thing that you do for fun. newpar,
     
 The problem set gave us a formula for making sure that once the function reaches the end of the alphabet it wraps back around to the beginning. I will explain that below. But first, let’s get the key, or the number of positions that the letters will be shifted. newpar,
@@ -115,7 +491,7 @@ To use the formula for making the alphabet wrap back around once we reach the en
 
 To convert from ASCII code to this 0–25 scale, I subtract 97 from lowercase letters and 65 from uppercase letters, because ‘A’ in ASCII code is 65, and ‘a’ is 97. Then I plug the value of that into the formula, take the resulting remainder number and convert that back into ASCII code by adding the 97 or 65 back to it. At that point, I can set the character in the array to this value. newpar,
 
-So now if you want to say ‘Hello!” but don’t want people to know that that is what you are saying, you can say “Mjqqt!” instead. Very useful! newpar,
+So now if you want to say ‘Hello!' but don’t want people to know that that is what you are saying, you can say “Mjqqt!” instead. Very useful! newpar,
 
 
 
