@@ -9,6 +9,247 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg")
 
+post_seventeen=Post.create(title: "Code Encryption Exercise in C", paragraphs: "A practice problem that I just did for a class I am taking had me create a function for turning input into a coded message. It takes in a command-line argument of a number and a string of text that is then 'encrypted' so that the letters in the string are shifted the number of positions specified by the user. I put ‘encrypted’ in quotes, because this is not for the purpose of securing your app or website. It is just for fun! If this is the kind of thing that you do for fun. newpar,
+    
+The problem set gave us a formula for making sure that once the function reaches the end of the alphabet it wraps back around to the beginning. I will explain that below. But first, let’s get the key, or the number of positions that the letters will be shifted. newpar,
+
+Getting the Key /heading newpar,
+
+The function takes two arguments on the command line, the first one is to make the file run and the second one is to get the key. newpar,
+
+this-is-code-in-blog
+int main(int argc, string argv[]) \n
+
+The second argument is an array of strings, but the function will make sure that it is both a string of digits and that the array only has one string in it. Otherwise, the user will see an error message. newpar,
+
+int the_key; \n
+int number_for_key; \n
+bool is_it_a_digit = true; \n
+for (int l = 0; l < strlen(argv[1]); l++) \n
+{ \n
+            if (isdigit(argv[1][l])) \n
+if (is_it_a_digit == false) \n
+{ \n
+                    is_it_a_digit = false; \n
+                } \n
+else \n
+{ \n
+                    is_it_a_digit = true; \n
+} \n
+else \n
+{ \n
+is_it_a_digit = false; \n
+} \n
+} \n
+if (is_it_a_digit == false) \n
+{ \n
+printf('Usage: ./caesar key'); \n
+return 1; \n
+} \n
+else \n
+{ \n
+number_for_key = atoi(argv[1]); \n
+} \n
+if (number_for_key > 0) \n
+{ \n
+the_key = atoi(argv[1]); \n
+} \n
+else \n
+{ \n
+printf('Usage: ./caesar key'); \n
+return 1; \n
+} newpar,
+
+The for loop goes through each character of the string in the array and checks to make sure that it is a digit. If it is not a digit, then the boolean is_it_a_digit is set to false. is_it_a_digit is set to true to begin with, and if it is at any point in the loop changed to false, there is no going back. If it has been set to false, then it stays false. That is so that if the unruly user enters something like y2k5 it will not end up going from the default of true to false then true then false and then finally true. If there are any non-digits entered, the boolean should be set to false so that later the function will error out. newpar,
+
+Next, I turn the string in the array, such as '343', into a number with the method atoi(). If the resulting number is greater than zero, then the key is set to that value. If it is less than or equal to zero, then the function exits and displays an error message. newpar,
+
+Handling the Plaintext Input /heading newpar,
+
+Now that we have the key — if we did not end up in error land — we are prompted for input of some text. newpar,
+
+string the_string = get_string('plaintext: '); \n
+int string_length = strlen(the_string); \n
+char array_of_new_string[string_length]; \n
+for (int i = 0; i < string_length; i++) \n
+{ \n
+if (the_string[i] >= 'a' && the_string[i] <= 'z') \n
+{ \n
+char character_with_key_added = (the_string[i] + the_key); \n
+char changed_character_with_key = character_with_key_added - 97; \n
+char the_remainder = changed_character_with_key % 26; \n
+char the_final_character = the_remainder + 97; \n
+array_of_new_string[i] = the_final_character; \n
+} \n
+else if (the_string[i] >= 'A' && the_string[i] <= 'Z') \n
+{ \n
+char character_with_key_added = (the_string[i] + the_key); \n
+char changed_character_with_key = character_with_key_added - 65; \n
+char the_remainder = changed_character_with_key % 26; \n
+char the_final_character = the_remainder + 65; \n
+array_of_new_string[i] = the_final_character; \n
+} \n
+else \n
+{ \n
+array_of_new_string[i] = the_string[i]; \n
+} \n
+} newpar,
+
+Once the user has entered an input, then the function loops over the string and asks of each character whether it is a lowercase letter, an uppercase letter, or something else. There is an array initiated with a length of the string of plaintext, char array_of_new_string[string_length]. The ‘char’ at the beginning of that tells us that what is stored in the array are characters. The brackets tell us that we are initializing an array. string_length is set to strlen(the_string), because we are transforming the message so that it is the same length just with different letters. newpar,
+
+At first, I wanted to create a new string instead of a new array, using the addition operator += to add the altered characters to it as the loop runs, as I would have done in JavaScript. However, I found that this was not possible in C. This stack overflow discussion helped me to come to the conclusion that it needed to be an array of characters: newpar,
+
+https://stackoverflow.com/questions/10279718/append-char-to-string-in-c /anchor newpar,
+
+In JavaScript, I would have split the input string into an array of characters and mapped over them or looped through them to transform the array of characters using the key before joining the new array of characters and then returning the secret message. Here, I loop through the string and set each item at the specified index position in the initialized array to a certain value so that later on in the function I can loop through the array and print it out for the user to see. newpar,
+
+If the character in the string is neither a lowercase nor an uppercase letter, then we do not transform it. It enters the new array unchanged and in the same place as it was originally in. Spaces and punctuation marks, for example, are preserved as they were. So, if you type in 'What the #*&%*&^?!' with a key of 6, you get 'Cngz znk #*&%*&^?!' as the ciphertext output. For example! newpar,
+
+./Images/Caesar_Program.jpg newpar,
+
+If the character is a lowercase letter, then first the key is added. As Brian points out in his helpful walkthrough video (thank you Brian, whoever you are), letters have numerical ASCII values, and if you add a number to them you will get a different character. For example ‘a’ + 2 = ‘c’, because the ASCII code for ‘a’ is 97 and adding two to that gives us 99, the ASCII value for ‘c’. You do not have to convert ‘a’ into a number before adding two to it and then turning the number back into a letter. What a relief! newpar,
+
+https://theasciicode.com.ar/ /anchor newpar,
+    
+To use the formula for making the alphabet wrap back around once we reach the end, however, we have to convert the new value (the letter plus the key). The formula is on a scale of 26, 26 letters in the alphabet. It counts up from zero, though, with ‘a’ equal to zero and ‘z’ equal to 25. This is so that if we have a character such as ‘b’ with a value of 1, 1 % 26 will give us a remainder of one. If the character is ‘y’ with the value of 24 and we add three to it to get 27, the formula will handle this by doing 27 % 26 (the remainder of 26 divided by 27) or 1. The letter at position 1 is ‘b’, three places “ahead” of ‘y’. newpar,
+
+To convert from ASCII code to this 0–25 scale, I subtract 97 from lowercase letters and 65 from uppercase letters, because ‘A’ in ASCII code is 65, and ‘a’ is 97. Then I plug the value of that into the formula, take the resulting remainder number and convert that back into ASCII code by adding the 97 or 65 back to it. At that point, I can set the character in the array to this value. newpar,
+
+So now if you want to say ‘Hello!” but don’t want people to know that that is what you are saying, you can say “Mjqqt!” instead. Very useful! newpar,
+
+
+
+
+
+    ")
+
+post_sixteen=Post.create(title: "Loops", paragraphs: "While beginning to learn C with the help of an on-line class, the problem sets I have been doing have also given me a chance to use and better understand do while and while loops after being committed to for loops for so long. newpar, 
+    
+https://cs50.harvard.edu/x/2020/ /anchor newpar,
+
+The problem sets I have been working on have had me prompting a user for input and then checking to make sure that that input conforms to certain standards. If it matches the while condition, then the loop runs again and again, until the user has been prompted into submission. newpar,
+
+I would like to add that if a user is continuously entering invalid information it might have something to do with the directions being unclear. Or the user may not be patient enough to fully read the directions — which I can relate to at times when I feel bombarded with information and want to skim to what is relevant for present purposes! newpar,
+
+Do While Loop /heading newpar,
+
+For example, we can use a do while loop to prompt a user for her age and stipulate that the age must be a positive integer. I was about to say a positive integer between 1 and 200, but then I thought that would sound a little unrealistic. Though I am not sure what the record of the oldest person is, I am sure it is less than 200. But if I remember correctly some people in the Bible were said to live several hundreds of years. So, let’s just say that the input has to be a positive integer greater than 0, as controversial as that prompt may be (and not user-friendly for those less than one year old)! newpar,
+
+    https://www.guinnessworldrecords.com/world-records/oldest-person/ /anchor newpar,
+
+    int age; \n
+    do \n
+    { \n
+     age = get_int('Age: '); \n
+    } \n
+    while (age < 1); newpar,
+
+Then, once the age entered is 1 or greater, any code after the do while loop will execute. The advantage of a do while loop is that the block of code will execute at least once before any condition is checked. That is what we want in this case, like carding someone who is trying to buy cigarettes and not giving in until we see id. newpar,
+
+While Loop /heading newpar,
+
+The while loop is a little bit less aggressive, in a way, because before any code is executed, a condition is checked. If the condition is not met, then the block of code associated with it does not run. For example, I just worked on a function for making change with the least amount of coins possible given a value that a user enters as input in response to a prompt. The while loops looked like this: newpar,
+
+int number_of_coins = 0; \n
+int change_still_owed = change_rounded_up; \n
+while (change_still_owed >= 25) \n
+{
+   number_of_coins += 1; \n
+   change_still_owed -= 25; \n
+}; \n
+while (change_still_owed < 25 && change_still_owed >= 10) \n
+{
+   number_of_coins += 1; \n
+   change_still_owed -= 10; \n
+}; \n
+while (change_still_owed < 10 && change_still_owed >= 5) \n
+{ \n
+   number_of_coins += 1; \n
+   change_still_owed -= 5; \n
+}; \n
+while (change_still_owed < 5 && change_still_owed >= 1) \n
+{ \n
+   number_of_coins += 1; \n
+   change_still_owed -= 1; \n
+}; newpar,
+
+Here the 'do' is implied. What is between the curly braces is executed if the while condition is met. If the user input was .52 (which gets rounded up to and converted into 52 then stored in the variable change_rounded_up), then the condition for the first while loop is met. The number of coins goes up by one, and the change_still_owed goes down by 25. Then the first while loop runs again, as the condition for it is met again. After that, change_still_owed is only 2. At that point, the last while loop will run once and then run again, since its condition is now the one that is being met. After that, change_still_owed will be at zero, and since none of the while loops will be triggered, whatever comes next in the function will execute. newpar,
+
+For Loop /heading newpar,
+
+A for loop sets a counter, a condition for executing a block of code, what to do after executing (incrementing or decrementing the counter), and a block of code. This is an example of a for loop that will print a number of hash marks according to the value that is passed into the function as an argument. newpar,
+
+    void hash(int n) \n
+    { \n
+    for (int i = 0; i < n; i++) \n
+    { \n
+    printf('#'); \n
+    } \n
+    }; newpar,
+
+    So if you call hash(2), the output will be '##'. The function loops from zero until the input number and prints a hash mark for each number as the counter increments. newpar,
+
+    Now that you have done your homework (or skimmed until the end of the page!), you deserve a treat. newpar,
+
+    https://www.youtube.com/embed/lrHYBcd44Og newpar,
+
+")
+
+post_fifteen=Post.create(title: "Last Words", paragraphs: "As the title suggests, I am having a rough week (maybe like some of you are), so I am going to keep it simple! This is a function I wrote for practice on LeetCode.com that takes an input of a string and returns an output of the length of the last word in that string. If there is only one word, then the output is the length of that word. If the input is an empty string, then the output is 0 (those are the conditions I account for in the second part of the function below under the else statement). Trailing spaces do not count as words, perhaps unlike in life when sometimes silence speaks volumes. newpar,
+
+The Split Method /heading newpar,
+
+The first method I use is my favorite fallback, the split method. The split method turns a string into an array, breaking it apart into pieces according to your specifications. First, I create a condition for input strings that have a blank space in them. If they fall under this condition, then I split along the blank space to separate each word. newpar,
+
+For example, if the input ‘s’ is 'hello world' then s.split(' ') becomes the array ['hello', 'world']. newpar,
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split /anchor newpar,
+
+The Trim Method /heading newpar,
+
+The trim method comes in handy here to get rid of any trailing or leading blank spaces that would be counted as words later on if I did not get rid of them. So, the input 'a nice time ' becomes 'a nice time'. The difference in the way this would look when split would be: ['a', 'nice', 'time', ''] versus ['a', 'nice', 'time']. If I took the length of the former array it would be 4, even though there are only three words. That might seem like almost no difference at all, but…. it could affect the results of something like a search bar if trailing spaces are taken too seriously? Don’t anyone get any ideas please. newpar,
+  
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/trim /anchor newpar,
+
+The Length Property /heading newpar,
+
+Calling .length on an array gives you the number of items separated by commas included in it. It is a property, not a method like trim() and split(), so it does not need the parentheses when it is used (though the difference between a property and a method is something I would like to learn more about). The length of ['hello', 'world'] would be two, because there are two items in the array. If splitString= ['hello', 'world'], then splitString.length=2. newpar,
+
+All of those letters don’t count for nothing, but they would have to be counted in a different way. That is what I do in the last step of the first condition (under the if statement) of the function lengthOfLastWord. First, I took the length of the whole array and saved that to a variable. Then, I went to the last index of the array like this: splitString[lengthOfSplitString-1]. This is abstracted since the string that comes as an input (s) is unknown. I tell it to go to the last index, whatever number that might be, which is the length of the string -1, since the index positions of arrays start with zero. The index position of 'world' in ['hello', 'world'] would be 1, even though it is the second item in the array. 'hello' is at position 0. newpar,
+
+Then, luckily, in addition to being able to take the length of an array, I am also allowed to take the length of a string. That is what I do at the end of the first condition to take the measure of 'world', at least the one that I am saying hello to. newpar,
+
+var lengthOfLastWord = function(s) { \n
+if(s.includes(' ')){ \n
+    
+    let splitString=s.trim().split(' ') \n
+ 
+    let lengthOfSplitString=splitString.length \n
+    
+    return splitString[lengthOfSplitString-1].length \n
+} \n
+    
+    else{ \n
+        if(s===''){ \n
+            return 0 \n
+        } \n
+        else{ \n
+            return s.trim().length \n
+        } \n
+        
+    } \n
+    
+}; newpar,
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/length /anchor newpar,
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/length /anchor newpar,
+
+https://www.youtube.com/embed/rblYSKz_VnI newpar,
+
+
+")
+
 post_fourteen=Post.create(title: "Roman Numeral Conversion Algorithm", paragraphs: "One of the algorithms that I worked on earlier this week converts roman numerals into integers. Sometimes when I write a function for the sake of practice on sites like LeetCode.com or Hackerrank.com, I wonder if or when I would ever use it. However, as someone who is not from Ancient Rome, this function struck me as useful — in spite of my sense that I might have actually memorized the roman numeral system in less time than it took to write a function that would make that conversion for me. But I digress… newpar,
 
 What was tricky about this problem was that there were a lot of conditions to articulate. It is undoubtedly the longest function I have written, which makes me suspect that there must be a much shorter solution to this problem, as is usually the case. newpar,
@@ -430,8 +671,6 @@ else{ \n
 } \n
 return count \n
 } newpar,
-
-
 
 ")
 
