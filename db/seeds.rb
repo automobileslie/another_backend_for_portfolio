@@ -9,6 +9,184 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg")
 
+post_twenty_one= Post.create(title: "Learning Java", paragraphs: "A couple of weeks ago, I had the task of starting to learn Java to complete a coding challenge. My instructions were to create a function to take in an input and then print out a set of statistics about the information entered. The statistics included the median, mean, and maximum and minimum values of a set of numbers. They also included the number of errors — errors being any inputs that were not positive integers. newpar,
+
+Resources /heading newpar,
+
+First, there were A LOT of resources that I consulted to approach this challenge, actually too many to enumerate. The first place I went was to the New York Public Library to get free access with the use of my library card to Lynda.com. On Lynda.com, I followed along with Kathryn Hodge’s tutorial Learning Java. For that course, she had us download the IntelliJ IDEA, which helped me to test code in an easy way as I got acquainted with Java for the first time, before starting to run programs on the command line after compiling. I also downloaded Java from Oracle. newpar,
+
+User Input /heading newpar,
+
+When I work with JavaScript to build applications, user input mainly comes into play when there are forms. There are input fields or text areas, for example, where a user types in information that is processed when the submit button is clicked. A user’s actions are also recorded by event listeners that read when a user clicks on something like a button or hovers over an element on the page, etc. There are a lot of ways that our computers are listening to us, whether or not they really hear what we are trying to say. newpar,
+
+For the Learning Java course, the way I was listening to the user was by prompting the user for information before a scanner read the input and printed out a response. Following the model of the work I did for the course, I started out my approach to the coding challenge by also putting prompts and a scanner to work to read input. This was helpful for testing purposes and to gain familiarity with the language before implementing my second solution, which involved reading input directly from the command line and passing that information into the main function as an array of strings. newpar,
+
+Compiling Code and Running the Program /heading newpar,
+
+this-is-code-in-blog
+javac Main.java newpar,
+
+In the class I have been taking that I keep plugging, the instructor informed us that compiling code changes it from source code into the binary language of zeroes and ones that computers understand. At some point in history way back when, poor unfortunate souls actually had to code in zeroes and ones. We, if we are using Java, just have to compile. So, while I am missing JavaScript, I will keep that in mind and be grateful for what I have. newpar,
+
+
+https://www.youtube.com/embed/Gi58pN8W3hY newpar,
+
+See, it could be a lot worse. newpar,
+
+Anyway, then after compiling I can run the file by typing newpar,
+
+this-is-code-in-blog
+java Main.java newpar,
+
+However, right after the file name, you also enter input to be passed into the function as an array of strings. For example, that might look like the following, which includes three examples. newpar,
+
+./Images/Learning_Java_Photo.jpg newpar,
+
+In the first case, the errors amount to 2, because ‘rf’ and ‘t’ are not numbers. The count includes the number of valid input values. The invalid input is not considered in determining the minimum, maximum, median, and mean. Likewise, in the second example, -4 is not a positive integer, so it is marked as an error and not included in the other calculations. The count is 4 to reflect the number of valid inputs. newpar,
+
+Behind the Scenes /heading newpar,
+
+So, that is what happens on the command line, but what is going on behind the scenes? newpar,
+
+First, the whole function is wrapped in newpar,
+
+public class Main {  newpar,
+
+
+and then on the first line the string of arguments is passed in, like this: newpar,
+
+public static void main(String[] args) { newpar,
+
+What the parameters between the parentheses indicate is that the input will be turned into an argument of strings. The user enters characters on the command line separated by spaces, and the function does the work for you of trimming all of the white space and separating the values into strings in an array (kind of like in the split method in JavaScript except for the trimming of white space). When I was using a scanner to read input, I had to do all of that work myself, so I appreciated that it was done for me when I switched to using a function that read standard input in this way. newpar,
+
+Next, the function checks for the number of arguments that the user entered. If there were zero arguments — because the user just hit enter or the space bar after typing in the file name — then this is what would happen: newpar,
+
+if (args.length == 0){ \n
+System.out.println('Count: n/a'); \n
+System.out.println('Min: n/a'); \n
+System.out.println('Max: n/a'); \n
+System.out.println('Mean: n/a'); \n
+System.out.println('Median: n/a'); \n
+System.out.println('Errors: 1'); \n
+} newpar,
+
+Here, args is the array of strings. We are able to take the length of args, and if it is equal to zero, the program can print out the above and quickly exit. newpar,
+
+If there is only one argument entered, then the statistics are also pretty simple to calculate, so this was another opportunity for the program to quickly exit. The following code handles that case. I also included notes to help explain what is happening in the code. newpar,
+
+// If only one piece of input is entered, then the program checks whether it is a non-digit. \n
+else if (args.length == 1) { \n
+char[] singleArgArray = args[0].toCharArray(); \n
+boolean includesNonDigits = false; \n
+for (int f = 0; f < singleArgArray.length; f++) { \n
+if (!(Character.isDigit(singleArgArray[f])) || singleArgArray[f]== ' ') { \n
+includesNonDigits = true; \n
+} \n
+} \n
+// If it is a non-digit, then the output is the following. \n
+if (includesNonDigits) { \n
+System.out.println('Count: n/a'); \n
+System.out.println('Min: n/a'); \n
+System.out.println('Max: n/a'); \n
+System.out.println('Mean: n/a'); \n
+System.out.println('Median: n/a'); \n
+System.out.println('Errors: 1'); \n
+} \n
+//If it is not a non-digit, then the count is 1, errors are 0, and the min, max, mean, and median are \n
+//all the same number, with the mean and median rounded to the nearest hundredth place. \n
+else { \n
+long theFinalCount; \n
+if(args[0] == '0'){ \n
+theFinalCount = 0; \n
+} \n
+else{ \n
+theFinalCount = Math.abs(Long.parseLong(args[0])); \n
+} \n
+double theMean = theFinalCount * 1.00; \n
+double theMedian = theFinalCount * 1.00; \n
+System.out.println('Count: ' + args.length); \n
+System.out.println('Min: ' + args[0]); \n
+System.out.println('Max: ' + args[0]); \n
+System.out.printf('Mean: %.2f', theMean); \n
+System.out.printf('Median: %.2f', theMedian); \n
+System.out.println('Errors: 0'); \n
+} \n
+} newpar,
+
+Because there was only one item in the array, I was able to turn it into an array of characters (again, like splitting a string down into individual characters in JavaScript) and then loop through the characters and ask of each one of them whether or not they were a digit using the Character.isDigit() method. I set a boolean called includesNonDigits to false to begin with. Then, as the characters are looped through, that boolean changes to true and stays true if any of the characters are not digits. After that, directions are given about what to do in the case that includesNonDigits is true versus in the case that it is false. If it is true, then the output is the same as it was when the user typed in zero arguments. newpar,
+
+If it is false, then the mean, median, maximum, and minimum are all the same number, which is the string in args parsed into a long (that is like an integer but can store larger numbers — and this is like ParseInt() in JavaScript but for bigger numbers). The mean and median are rounded to the nearest hundredth place by multiplying the parsed long value by 1.00. Then, the median and mean are printed out using System.out.printf() with the number of decimal points to be printed specified by the ‘.2’ in ‘%.2f’. ‘%.2f’ with the comma and the variable ‘theMedian’ following it is the way of interpolating a value to output. ‘%f’ stands in for a float value, and theMedian is that value. This is similar to doing string interpolation in C. newpar,
+
+For the rest of the function, I do something similar, but I have other variables to get the count, number of errors, minimum, maximum, and some other information as I loop through the strings in args. The next part of the function looks like this: newpar,
+
+else { \n
+    long count = 0; \n
+    long total = 0; \n
+    long min = Long.MAX_VALUE; \n
+    long max = 0; \n
+    int errors = 0; \n
+    long areAllNonPositiveIntegers = 0; \n
+    //A for-loop runs to calculate information about the input. \n
+    for (int m = 0; m < args.length; m++) { \n
+    //First, the string at args[m] is broken down into an array of characters. \n
+    //Then that array of characters is looped over to check whether args[m] contains any non-digits. \n
+    char[] thisArray = args[m].toCharArray(); \n
+    boolean areNonDigits = false; \n
+    for (int v = 0; v < thisArray.length; v++) { \n
+    if (!(Character.isDigit(thisArray[v]))) { \n
+    areNonDigits = true; \n
+    } \n
+    } \n
+    //If args[m] does not contain any non-digits, then it is parsed as a long. \n
+    if (!areNonDigits) { \n
+    long num = Long.parseLong(args[m]); \n
+    //Then, the function checks whether it is a positive integer. \n
+    //If it is, then num is added to the total to be used later to calculate the mean, \n
+    //and the count, which adds up the number of valid input items, goes up by one. \n
+    //I also add one to the variable areAllNonPositiveIntegers, which will be useful later. \n
+    if (num > 0) { \n
+    total+=num; \n
+    count += 1; \n
+    areAllNonPositiveIntegers += 1; \n
+    if (num < min) { \n
+    min = num; \n
+    } \n
+    if (num >= max) { \n
+    max = num; \n
+    } \n
+    } \n
+    //If num is not greater than zero, then args[m] is counted as an error. \n
+    else { \n
+    errors += 1; \n
+    } \n
+    } \n
+    //If there are non-digits in args[m], then args[m] is counted as an error. \n
+    else { \n
+    errors += 1; \n
+    } \n
+    } newpar,
+
+    I loop through args and then break down each string into an array of characters, just like I did when there was only one item in the array. newpar,
+
+    Then, I process information about each of those characters. For example, if it is a non-digit or a non-positive integer, then that string in args is marked as being an error and is not included in the count of valid integers. newpar,
+
+    If the string does not include any invalid characters, then it is parsed into a long and if that long is a positive integer it is added to the total. The total will be used later when it is divided by the count to get the mean of the valid input. If a string that has no invalid characters, has been parsed into a long, and is a positive integer is greater than the current maximum then it becomes the new maximum value. If it is less than the current minimum value, then it becomes the new minimum. That way, by the time the loop has completed, we will have the minimum and maximum values for the output. By the time the loop completes, we will also have the final count of the number of valid input values and the number or errors. newpar,
+
+    Something else that happens during this loop is that the variable ‘areAllNonPositiveIntegers’ goes up by one whenever a string in args does not include an invalid character. This variable will be used later on in the following way: if ‘areAllNonPositiveIntegers’ is equal to 0 at the end of the loop, then that means all of the input values were invalid. If that is the case, then the number of errors will be equal to the number of values that were input, and the rest of the values will be n/a. The program can exit at that point. newpar,
+
+    Otherwise, to get the mean and median values of the valid input… we have more work to do. For such a simple set of statistics, this is feeling like a lot! But once the function is set, we can pass in a lot of information, and it will be processed for us. Work done upfront can save time later on. If you need to get this same set of statistics over and over again, it is easier to write the function and then plug in the values to run repeatedly. Computers don’t have emotions; they can handle the stress of that repetition! newpar,
+
+    Summary of the Remainder of the Function /heading newpar,
+
+    Because I have already bombarded you with too much code, I will summarize what the rest of the function does. newpar,
+
+    I initialize a new array with a length of args.length minus the number of errors. I then loop through args all over again and loop through each of the characters in the strings to check whether there are any non-digits. If there are no non-digit/non-positive-integers in the current string, then the next item in the new array is set to the parsed (into a long) value of this string. The while loop continues until the array is full. If I was doing this in JavaScript, I would have been able to initialize an empty array along with the ‘count’, ‘errors’, ‘minimum’, and ‘maximum’ variables and pushed items into it while doing the earlier loop through args. But Java (and C) require that you specify the number of items in the array upon initialization, so that is why I had to do a separate loop — the function does not know how long the array of valid input will be until it determines the number of errors during that initial loop. newpar,
+
+    After all that, you are able to get the median and the mean of the array of valid numbers in ways that you can imagine and that I will not bore you with by spelling out! newpar,
+
+    Now, go use those statistics to do some sort of good deed. newpar,
+")
+
 post_twenty=Post.create(title: "Conditional Rendering in React", paragraphs: "./Images/What_If.jpg newpar,
 
 Although using JSX to build the front-end of applications in React allows me to write JavaScript more quickly, something that I have had to overcome is my desire to write out if/else statements in the render method of class components. The render method only accepts ternary expressions, and although they can be nested to your heart’s content, it can get very messy with a long breadcrumb trail of question marks and colons. newpar,
