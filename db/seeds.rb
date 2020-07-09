@@ -9,6 +9,129 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg")
 
+post_twenty_two= Post.create(title: "Blurred Images", paragraphs: "
+
+./Images/Blurred_Images.jpg newpar,
+
+
+Recently, while completing a function in C, my task was to average the red, green, and blue values of each pixel and its surrounding pixels in a bitmap in order to make an image appear blurry. A two-dimensional array called ‘image’ was passed into the function with its height and width specified, and it had to be looped over to transform each pixel. The average I had to find was of the color values for each pixel within one row and one column of the pixel currently being transformed in the loop. newpar,
+
+https://cs50.harvard.edu/x/2020/psets/4/filter/less/ /anchor newpar,
+
+That meant that if the pixel was in one of the corners of the two-dimensional array (think of a square four columns long and four columns wide, for example) then the average would be of the values of four pixels. If the pixel was on an edge, then it would be of six pixels. If it was neither a corner nor an edge, then it would be of nine pixels (including the pixel with the value to be transformed, the one to the left of it, the one to the right, the one directly below it, the one above it, and the ones diagonal to the left and right in the rows above and below it, forming a square of 3 x 3 inside the original image). newpar,
+
+Making a Copy /heading newpar,
+
+One of the first things I had to do was to create an empty nested array that would store values to be used to transform the image later on. The reason I had to do this was because if I transformed the color values in the array directly, then the averages taken as the loop proceeded would be of these transformed values and not the original ones. The third array below has a length of three, because that is where the new color values will be stored, with the average amount of red in the 0 position, blue in the 1 position, and green at the 2 index position. At the end of the function, once finalArray is full of the new values taken from the averages, ‘image’ is looped over again, and the color values stored in finalArray take the place of the original values. newpar,
+
+this-is-code-in-blog  
+int finalArray [height][width][3]; newpar,
+
+Loop the Loop /heading newpar,
+
+The function starts with an initial nested loop; the outside ‘for loop’ is set up like this: newpar,
+
+this-is-code-in-blog
+for (int i = 0; i < height; i++) newpar,
+
+and the inner loop starts with: newpar,
+
+this-is-code-in-blog
+for (int p = 0; p < width; p++) newpar,
+
+The inner loop allows each item in the row to be looped over before the outer loop moves on to the next column. newpar,
+
+Specifying the Conditions /heading newpar,
+
+After trial and error, I broke the problem down into three main if/else statements with more if/else if statements nested inside of them. newpar,
+
+The first condition was newpar,
+
+this-is-code-in-blog
+if (p == 0) newpar,
+
+and then inside of that condition there were three more: newpar,
+
+this-is-code-in-blog
+if (i == 0) \n
+else if (i == height - 1) \n
+else if (0 < i < height - 1) newpar,
+
+If ‘p’ and ‘i’ are both zero, that means the loop is on the top left corner. If ‘p’ is zero and ‘i’ is height - 1, then the loop is on the bottom left corner. If ‘p’ is zero and ‘i’ is greater than one but less than the height minus one, then the loop is on the top edge. newpar,
+
+This pattern continues with the two other conditions (p == width - 1 for the next one, and 0 < p < width - 1 for the one after that) and their own nested if/else if statements to cover the whole bitmap. newpar,
+
+This is the first ‘if’ statement, with all of the variables having been initialized earlier on. The variables ‘middleRed’, ‘middleBlue’, and ‘middleGreen’ are the same for all of the conditions here and later in the function, because they are for the current pixel in the loop. That is why they come before the first ‘if’ statement — so they have a wider scope. newpar,
+
+middleRed = image[i][p].rgbtRed; \n
+middleBlue = image[i][p].rgbtBlue; \n
+middleGreen = image[i][p].rgbtGreen; \n
+if (p == 0) \n
+            { \n
+                rightRed = image[i][p + 1].rgbtRed; \n
+                rightBlue = image[i][p + 1].rgbtBlue; \n
+                rightGreen = image[i][p + 1].rgbtGreen; \n
+bottomRightRed = image[i + 1][p + 1].rgbtRed; \n
+                bottomRightBlue = image[i + 1][p + 1].rgbtBlue; \n
+                bottomRightGreen = image[i + 1][p + 1].rgbtGreen; \n
+topRightRed = image[i - 1][p + 1].rgbtRed; \n
+                topRightBlue = image[i - 1][p + 1].rgbtBlue; \n
+                topRightGreen = image[i - 1][p + 1].rgbtGreen; \n
+belowRed = image[i + 1][p].rgbtRed; \n
+                belowBlue = image[i + 1][p].rgbtBlue; \n
+                belowGreen = image[i + 1][p].rgbtGreen; \n
+aboveRed = image[i - 1][p].rgbtRed; \n
+                aboveBlue = image[i - 1][p].rgbtBlue; \n
+                aboveGreen = image[i - 1][p].rgbtGreen; \n
+//top left corner \n
+                if (i == 0) \n
+                { \n
+                    averageRed = (middleRed + rightRed + bottomRightRed + belowRed) / 4.0; \n
+                    averageBlue = (middleBlue + rightBlue + bottomRightBlue + belowBlue) / 4.0; \n
+                    averageGreen = (middleGreen + rightGreen + bottomRightGreen + belowGreen) / 4.0; \n
+                } \n
+//bottom left corner \n
+                else if (i == height - 1) \n
+                { \n
+averageRed = (middleRed + rightRed + topRightRed + aboveRed) / 4.0; \n
+                    averageBlue = (middleBlue + rightBlue + topRightBlue + aboveBlue) / 4.0; \n
+                    averageGreen = (middleGreen + rightGreen + topRightGreen + aboveGreen) / 4.0; \n
+                } \n
+//left side edge \n
+                else if (0 < i < height - 1) \n
+                { \n
+                    averageRed = (middleRed + rightRed + bottomRightRed + topRightRed + aboveRed + belowRed) / 6.0; \n
+                    averageBlue = (middleBlue + rightBlue + bottomRightBlue + topRightBlue + aboveBlue + belowBlue) / 6.0; \n
+                    averageGreen = (middleGreen + rightGreen + bottomRightGreen + topRightGreen + aboveGreen + belowGreen) / 6.0; \n
+                } \n
+} newpar,
+
+Then, later on in the function, the averageRed, averageBlue, and averageGreen values for the pixel are rounded and added to finalArray. newpar,
+
+this-is-code-in-blog
+finalArray[i][p][0] = round(averageRed); \n
+finalArray[i][p][1] = round(averageBlue); \n
+finalArray[i][p][2] = round(averageGreen); newpar,
+
+Final Loop /heading newpar,
+
+After all of ‘image’ has been looped over and ‘finalArray’ is full, then another nested loop that has the same structure as the one before runs to set the values of red, blue, and green in ‘image’ equal to the averaged value stored in the corresponding position in finalArray. newpar,
+
+for (int v = 0; v < height; v++) \n
+{ \n
+for (int l = 0; l < width; l++) \n
+{ \n
+image[v][l].rgbtRed = finalArray[v][l][0]; \n
+            image[v][l].rgbtBlue = finalArray[v][l][1]; \n
+            image[v][l].rgbtGreen = finalArray[v][l][2]; \n
+} \n
+} newpar,
+
+And voila! You now have a blurry picture. But this time it was intentional. newpar,
+
+
+")
+
 post_twenty_one= Post.create(title: "Learning Java", paragraphs: "A couple of weeks ago, I had the task of starting to learn Java to complete a coding challenge. My instructions were to create a function to take in an input and then print out a set of statistics about the information entered. The statistics included the median, mean, and maximum and minimum values of a set of numbers. They also included the number of errors — errors being any inputs that were not positive integers. newpar,
 
 Resources /heading newpar,
