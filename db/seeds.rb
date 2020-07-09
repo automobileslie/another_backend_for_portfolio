@@ -9,9 +9,101 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg")
 
+post_twenty_three= Post.create(title: "How To Render Images In A React App", paragraphs: " 
+
+./Images/On_The_Wall.jpg this-is-an-image newpar,
+
+When I first started to render images in a React application, I remember being mystified about why an image might have to be required instead of imported like a component. Below are some examples of different ways of displaying an image on a page with explanations of what works and what does not. newpar,
+
+For a more theoretical overview of what the require method does, you could start here: newpar,
+
+https://nodejs.org/en/knowledge/getting-started/what-is-require/ /anchor newpar,
+
+Or to learn more about imports, you could go here: newpar,
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import /anchor newpar,
+
+Use Require /heading newpar,
+
+To use images in a React application, I start out by making a directory called 'Images' in the src directory and then dragging and dropping image files from my computer into it. Then, when I want an image to appear in a particular place on the page, there are a few different options for getting it to show up. newpar,
+
+One option is to use require() with the file name between the parentheses. If you use this method, then you do not have to import the file. For example, for my portfolio website, I have a profile photo that I display on the home page using an HTML <img> tag like this: newpar,
+
+
+<img className='profile-photo' src={require('./Images/Profile_picture.jpeg')} alt={'Carlie Anglemire'}/> newpar,
+
+The src here is a file path that is being required. This is the way it displays on the page (photo credit goes to my husband, who said a lot of silly things to get me to smile): newpar,
+
+./Images/With_Require.jpg this-is-an-image newpar,
+
+If I did not include require() and only typed in the file path as the src, like this: newpar,
+
+<img className='profile-photo' src='./Images/Profile_picture.jpeg' alt={'Carlie Anglemire'}/> newpar,
+
+Or this: newpar,
+
+<img className='profile-photo' src={'./Images/Profile_picture.jpeg'} alt={'Carlie Anglemire'}/> newpar,
+
+The result would have been this: newpar,
+
+./Images/No_Require.jpg this-is-an-image newpar,
+
+Importing Image Files /heading newpar,
+
+Another way of displaying an image is by importing it and then using it where you need it on the page. For example, at the top of the component, I could import it like this: newpar,
+
+this-is-code-in-blog  
+import ProfilePicture from './Images/Profile_picture.jpeg'; newpar,
+
+What I name the file path when I import it does not matter as long as I use the same name when I reference it later on in the component. Where I was using require() before, I can then use 'ProfilePicture' instead to get the same result: newpar,
+
+this-is-code-in-blog 
+<img className='profile-photo' src={ProfilePicture} alt={'Carlie Anglemire'}/> newpar,
+
+Which One Should I Use? /heading newpar,
+
+While the results are the same, if you are using a lot of images in your component, it might get tedious importing them all at the top and then referencing them one by one where you want them to display. I found using require() useful when I wanted to render an image dynamically instead of hard-coding the file path. newpar,
+
+For example, for the blog posts on my website, there are a number of images stored on the front end. On the back end, I have a model called Post for blog posts. Post has a few attributes, including a paragraphs attribute where I keep the content for the post (all text and markup for where I want images to display). When I want a particular image to display in a post, I include the file path where that image is on the front end, and then that file path is plugged into a require() in the way that I described above for the profile image. On the Ruby on Rails back end, I would have something like this: newpar,
+
+this-is-code-in-blog
+./Images/Bad_Connection.jpg newpar,
+
+The tag newpar signifies the end of a paragraph so that the image will be set off from the text that follows it. In the code on the front end, paragraph would be ./Images/Bad_Connection.jpg in this case. I added trim() to get rid of leading and trailing whitespace. paragraph is not something that is imported at the top of the file. It is part of the data fetched from the back end and stored in state in the parent component, then passed down to other components that need access to it. newpar,
+
+else if (paragraph.includes('./Images/')) {
+    return <img className='screenshots-for-blog' src={require(`${paragraph.trim()}`)} alt={paragraph} />
+    } newpar,
+
+The result of this is that paragraphs being mapped over that include ./Images/ will be rendered with an <img> HTML tag and with the file path required. newpar,
+
+Web Addresses for Images /heading newpar,
+
+While it is not possible to only give the file path without the require method for an image stored on the front end that is not imported at the top of the component, this is something that you can do if you are referencing an image somewhere on the internet. For example, the New York Public Library Digital Collections has a nice picture of a Siberian Wallflower that I might want to use as my new avatar! newpar,
+   
+./Images/Siberian_Wallflower.jpg this-is-an-image newpar,
+
+To get it to display like this: newpar,
+
+./Images/Carlie_Anglemire_Siberian_Wallflower.jpg this-is-an-image newpar,
+
+I can include the image like this: newpar,
+
+<img className='profile-photo' src='https://images.nypl.org/index.php?id=1589457&t=w' alt={'Carlie Anglemire'}/> newpar,
+
+In that case, everything displays fine and no require() or import is needed. newpar,
+
+https://www.youtube.com/embed/qchPLaiKocI newpar,
+
+
+
+
+
+")
+
 post_twenty_two= Post.create(title: "Blurred Images", paragraphs: "
 
-./Images/Blurred_Images.jpg newpar,
+./Images/Blurred_Images.jpg this-is-an-image newpar,
 
 
 Recently, while completing a function in C, my task was to average the red, green, and blue values of each pixel and its surrounding pixels in a bitmap in order to make an image appear blurry. A two-dimensional array called ‘image’ was passed into the function with its height and width specified, and it had to be looped over to transform each pixel. The average I had to find was of the color values for each pixel within one row and one column of the pixel currently being transformed in the loop. newpar,
@@ -163,7 +255,7 @@ java Main.java newpar,
 
 However, right after the file name, you also enter input to be passed into the function as an array of strings. For example, that might look like the following, which includes three examples. newpar,
 
-./Images/Learning_Java_Photo.jpg newpar,
+./Images/Learning_Java_Photo.jpg this-is-an-image newpar,
 
 In the first case, the errors amount to 2, because ‘rf’ and ‘t’ are not numbers. The count includes the number of valid input values. The invalid input is not considered in determining the minimum, maximum, median, and mean. Likewise, in the second example, -4 is not a positive integer, so it is marked as an error and not included in the other calculations. The count is 4 to reflect the number of valid inputs. newpar,
 
@@ -310,7 +402,7 @@ else { \n
     Now, go use those statistics to do some sort of good deed. newpar,
 ")
 
-post_twenty=Post.create(title: "Conditional Rendering in React", paragraphs: "./Images/What_If.jpg newpar,
+post_twenty=Post.create(title: "Conditional Rendering in React", paragraphs: "./Images/What_If.jpg this-is-an-image newpar,
 
 Although using JSX to build the front-end of applications in React allows me to write JavaScript more quickly, something that I have had to overcome is my desire to write out if/else statements in the render method of class components. The render method only accepts ternary expressions, and although they can be nested to your heart’s content, it can get very messy with a long breadcrumb trail of question marks and colons. newpar,
 
@@ -457,7 +549,7 @@ post_nineteen=Post.create(title: "The Elephant in the Room", paragraphs: "In swi
     
 While trying to complete the task of setting up my environment, I have also been working on getting my portfolio site up again after being dissatisfied with the initial deployment of it. Because of issues transferring data from one computer to another — at one point I spent a half an hour on hold with Apple Support just to ask how long I might theoretically need to wait for the Migration Assistant to finish before deciding that it wasn’t working — I ended up recreating the backend for my website. When I tried to use PostgreSql as the database, I got an error that said something like: 'PG::ConnectionBad: fe_sendauth: no password supplied.' One of the things that was so confusing about this was that because I had just installed postgres on the new computer, I thought that it meant I had not installed it correctly, that I had overlooked some detail that mattered more than I could know. Where it was that I needed to enter the password that had not been supplied was a mystery to me. newpar,
 
-./Images/Bad_Connection.jpg newpar,
+./Images/Bad_Connection.jpg this-is-an-image newpar,
 
 To make a long story short, the mistake was actually familiar, just not one that I had made in awhile. What I needed to do after creating the new Ruby on Rails API with a PostgreSql database and cd’ing into that directory was to enter newpar,
 
@@ -782,7 +874,7 @@ In JavaScript, I would have split the input string into an array of characters a
 
 If the character in the string is neither a lowercase nor an uppercase letter, then we do not transform it. It enters the new array unchanged and in the same place as it was originally in. Spaces and punctuation marks, for example, are preserved as they were. So, if you type in 'What the #*&%*&^?!' with a key of 6, you get 'Cngz znk #*&%*&^?!' as the ciphertext output. For example! newpar,
 
-./Images/Caesar_Program.jpg newpar,
+./Images/Caesar_Program.jpg this-is-an-image newpar,
 
 If the character is a lowercase letter, then first the key is added. As Brian points out in his helpful walkthrough video (thank you Brian, whoever you are), letters have numerical ASCII values, and if you add a number to them you will get a different character. For example ‘a’ + 2 = ‘c’, because the ASCII code for ‘a’ is 97 and adding two to that gives us 99, the ASCII value for ‘c’. You do not have to convert ‘a’ into a number before adding two to it and then turning the number back into a letter. What a relief! newpar,
 
@@ -1518,11 +1610,11 @@ Then, any of the names of parks that are shown in the list can be clicked on to 
 
 This is tangential, but I like to end my blog posts with a song whenever possible. This came to mind and relates to the theme of search and travel. I am not sure what cave it was filmed in, but yes there are caves in some national parks, such as… newpar,
 
-./Images/Search_Bar_with_Cave.jpg newpar,
+./Images/Search_Bar_with_Cave.jpg this-is-an-image newpar,
 
-./Images/Search_Results_for_Cave.jpg newpar,
+./Images/Search_Results_for_Cave.jpg this-is-an-image newpar,
 
-./Images/Oregon_Caves.jpg newpar,
+./Images/Oregon_Caves.jpg this-is-an-image newpar,
 
 
 https://www.nps.gov/orca/index.htm /anchor newpar,
@@ -1973,7 +2065,7 @@ In the first loop, I split and sorted each string in the original array so that 
 
 The next loop is meant to filter out any whitespace in a string. When I googled anagram, I saw the following example. newpar,
 
-./Images/Anagram_wikipedia.jpg newpar,
+./Images/Anagram_wikipedia.jpg this-is-an-image newpar,
 
 Seeing this example of the word ‘anagram’ having the anagram ‘nag a ram’ made me realize that I would have to filter out whitespace. The second loop returns the same array of arrays as the last one but with with empty strings removed. So, [‘ ’, ‘a’, ‘a’, ‘a’, ‘b’] becomes [‘a’, ‘a’, ‘a’, ‘b’]. If I did not do this, then the function would not read 'aaba' and 'a baa' as anagrams and would keep both of them in the end. newpar,
 
@@ -2134,13 +2226,16 @@ https://medium.com/@nicholas.feitel /anchor newpar,
 
 post_five=Post.create(title: "Local Storage in a National Park Trip Planner", paragraphs: "While working on my final project for Access Labs, I have been learning how to use localStorage so that users can navigate away from an app when they click on an external link and then return without having to log back in or refresh the page. This blog post is about what I have learned so far, particularly about storage that is not as permanent as saving something to the database but not as fleeting as saving something to state and not persisting it. It is a middle ground for keeping things around when you go away for a short while and want them to still be there when you come back. And if you never log out they may stay there for longer than you imagined they would. newpar, 
 In the last module, we worked on saving the token and user id to localStorage, but I wanted to practice adding more to it. I started with the username, because my greeting to the user was turning into this after they navigated away from the app and returned to it, until I put it in localStorage: newpar,
-./Images/Hello_again_undefined.jpg newpar,
+
+./Images/Hello_again_undefined.jpg this-is-an-image newpar,
 While that kind of greeting may raise interesting existential questions, it is not very friendly. newpar,
 National Parks Trip Planning App /heading newpar,
 The app I am making fetches from the National Park Services API on a Ruby on Rails backend in order to display a list of different parks using React on the frontend. Users can expand any of the parks on the list to get more information about them. They can click on a link to go to a National Park Services show-page or to get directions. There is a button for adding a park to your collection to help you track places you might like to go to. I am thinking of adding a feature to organize a user's park collection into long, middle, and short-term goals, places you might want to go to sooner rather than later and other places that it might take you awhile to make the time to visit. And I would like to have a text-box for each park in a user's collection for note-taking purposes. newpar,
 While it hasn't been scientifically proven that adding a park to your collection effectively motivates you to go there, it doesn't hurt to try. For example, maybe eventually I will go here: newpar,
-./Images/Belmont_Paul_Women's_Equality.jpg newpar,
-./Images/Showpage_for_park.jpg newpar, 
+
+./Images/Belmont_Paul_Women's_Equality.jpg this-is-an-image newpar,
+
+./Images/Showpage_for_park.jpg this-is-an-image newpar, 
 In addition to lectures from the last module I was in  and work that I did with with Guligena Aierken for a group project, I also got help from a couple of sources on the internet when I was trying to understand how local storage works: newpar,
 https://github.com/learn-co-students\nyc-dumbo-web-100719/tree/master/43-jwt-auth/ /anchor newpar,
 https://github.com/GAierken/Flatiron-Shopping-Frontend /anchor newpar,
@@ -2284,12 +2379,15 @@ class App extends React.Component { \n
     post_four=Post.create(title: "Plan a Garden Application", paragraphs: "I have been working on an app for garden planning to help practice using React on the front end with a Ruby on Rails API on the backend. One of the main issues I tackled while doing this project was handling an application that had multiple sources of truth on the front-end, and I got practice using ternary expressions and doing conditional rendering to help deal with this issue. newpar,
     Users can currently view the plants that are stored in the database, log a new plant that will post to the backend and render on the frontend, delete a plant from the frontend and backend, add a plant to their garden, remove a plant from their garden, select a plant to be featured (which displays an enlarged image of the plant along with information about it toward the top of the page under the Featured Plant heading), and edit the featured plant. AND they can turn the images of plants into a picture of a cat (Just for fun and to practice creating a toggle button, and because that is what I was asked by my instructors to do during my project review)! newpar,
     Below are a few images of the main page of the application: newpar,
-    ./Images/Top_of_page.jpg newpar,
-    ./Images/Plant_selection.jpg newpar,
+    
+    ./Images/Top_of_page.jpg this-is-an-image newpar,
+    
+    ./Images/Plant_selection.jpg this-is-an-image newpar,
     Something that was enjoyable about building this app at the beginning was creating my own API for the first time with images of plants and information about them from places that I like including seedsavers.org, the Brooklyn Botanic Garden, the New York Botanical Garden, and Golden Earthworm Organic Farm. The Farmer's Almanac on-line also helped me to fill in some of the gaps, and a few of the quotes that I used as plant information are from the on-line version of the Oxford English Dictionary, with access provided by the New York Public Library. I would also like to give a shout out to Ruben Vallejo for explaining some of the fundamentals of CSS to me and to Gene Grady for helping me to understand how to set up routes for the application. newpar,
     https://medium.com/@rv.results /anchor newpar,
     https://medium.com/@grady.gene.thomas /anchor newpar,
-    ./Images/Featured_plant.jpg newpar,
+    
+    ./Images/Featured_plant.jpg this-is-an-image newpar,
     In order to display pictures under Featured Plant I added an array to the state on the parent App.js component called pictureClickedOn, and to display photographs of plants in Your Garden I added the array selectedPlants. Below is the code for setting the state on the initial page load, with the plants being fetched from the backend in the componentDidMount method. The selectedPlants and pictureClickedOn arrays are empty until a user selects a plant to be featured or added to their garden. newpar,
     
     constructor(){ \n
@@ -2380,13 +2478,18 @@ class App extends React.Component { \n
     }) 
     } newpar,
     I like this example of the spread operator from MDN: newpar,
-    ./Images/Head_shoulders.jpg newpar,
+    
+    ./Images/Head_shoulders.jpg this-is-an-image newpar,
     https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax /anchor newpar,
     Lastly, the Turn Plants into Cats button on the navigation bar at the top of the page gave me a chance to practice toggling with a button. When a user clicks on the Turn Plants into Cats button, the pictures transform, and the text on the button itself changes from saying Turn Plants into Cats into saying Turn Cats into Plants. If there are any plants in Your Garden, they will also turn into cats. newpar,
-    ./Images/Turn_cats_into_plants.jpg newpar,
-    ./Images/Plants_to_cats_in_plant_selection.jpg newpar,
-    ./Images/Plants_to_cats_in_garden_and_plant_selection.jpg newpar,
-    ./Images/Featured_plant.jpg newpar,
+    
+    ./Images/Turn_cats_into_plants.jpg this-is-an-image newpar,
+    
+    ./Images/Plants_to_cats_in_plant_selection.jpg this-is-an-image newpar,
+    
+    ./Images/Plants_to_cats_in_garden_and_plant_selection.jpg this-is-an-image newpar,
+    
+    ./Images/Featured_plant.jpg this-is-an-image newpar,
     I was happy to have them as visitors, but I didn't want them to dominate the garden for too long. So, I created two functions, one for replacing the plant image url with a cat image url by setting state (but not persisting this change to the backend, so that another way of chasing the cats away would be to just refresh the page) and another for fetching the plant information from the backend again, just as I did in componentDidMount, and setting state so that the plant images would once again be displayed. A third function toggles between these two functions depending on whether the catButtonClicked array in state is true or false. newpar,
     changeToCats= () => { \n
     const toCats= this.state.plants.map(plant => { \n
@@ -2442,9 +2545,11 @@ class App extends React.Component { \n
         The lab asks us to fetch from a json file to display information about the first fifty monsters in the database on the first page. There is a backwards and forwards arrow at the bottom of the page, and when a user clicks the forward button the next fifty monsters should be displayed. A user should be able to scroll backwards and forwards through the large set of monsters this way. (It would also be helpful for the person testing the code to not have to scroll all the way to the bottom of the page to see what is being displayed. That is a lot of monsters to wade through!) We are also asked to include a form so that users can generate their own monsters (sometimes we are our own worst enemy). newpar,
 
         In addition to the above, in order to practice CRUD (create, read, update, delete), I made a delete and update function. Users can delete monsters with the click of a button (if only it were that easy in real life!). Or they can update a monster's name, age, or biography to essentially transform its identity, at least as it exists in the database and on the page. It is important to try to keep your monsters under control in whatever way you can. This is what the beginning of the page looks like. I did not write the bios, but I love them. newpar,
-        ./Images/Monsters_lab.jpg newpar,
+        
+        ./Images/Monsters_lab.jpg this-is-an-image newpar,
         When a user clicks on the Update this Monster button a form is generated like so, and when it is submitted the monster is updated in the database and on the page. newpar,
-        ./Images/Monsters_lab_update_form.jpg newpar,
+        
+        ./Images/Monsters_lab_update_form.jpg this-is-an-image newpar,
 
         fetch('http://localhost:3000/monsters') \n
         .then(r => r.json()) \n
@@ -2497,14 +2602,18 @@ class App extends React.Component { \n
     
 
     post_two=Post.create(title: "Time and Greetings in a JavaScript Function", paragraphs: "This post is about one of my first experiences handling time in JavaScript while completing the Fns as First Class Data: Do Behavior lab on Learn.co. One of the directives of the lab was to create a function that, given a time entered by a user in 24-hour format, will return a greeting appropriate for the time of day. newpar,
-    ./Images/Directions.jpg newpar,
+    
+    ./Images/Directions.jpg this-is-an-image newpar,
     The lab also gives us a hint to use the .split() method and parseInt() to process the time entered: newpar,
-    ./Images\note.jpg newpar,
+    
+    ./Images/Note.jpg this-is-an-image newpar,
     I am going to focus just on the greet function in this blog, as it gave me plenty to think about and work on. In the words of Miracle Legion, 'Just say hello. It means a lot to me.' newpar,
     The Solution I Arrived At /heading newpar,
     First, here are two solutions that I eventually arrived at (with some code that I will discuss later commented out): newpar,
-    ./Images/Solution.jpg newpar,
-    ./Images/Another_solution.jpg newpar,
+   
+    ./Images/Solution.jpg this-is-an-image newpar,
+    
+    ./Images/Another_solution.jpg this-is-an-image newpar,
     The first solution should work if I do not need an else statement returning something like TEST to signal an error. newpar,
     Before I came to the first solution, I worked on the second one, so the following explains my thought process for that.The parameter the_time would be replaced by an argument like 09:17 or 18:42 (6:42 p.m.) when a user enters the time of day, and this has to be split to remove the colon. It also has to be changed from a string into a number so the if and else statements can be formed with <, >, ≥, etc. operators to indicate what the returned greeting should be for different ranges of time. That is because these operators only work with numbers as far as I know. newpar,
     The purpose of the split method is to remove the colon, but it also breaks the argument into two separate strings that are put into an array. For example, for 16:00 the resulting array would be ['16', '00']. newpar,
@@ -2512,7 +2621,8 @@ class App extends React.Component { \n
     Misadventure #1 /heading newpar,
     Now, for some of the discoveries I made before arriving at those solutions! newpar,
     One of the mistakes I made was saving the first index and the second index of this_time to separate variables, one for the hour and one for the minutes. I thought that I could handle it that way, but it was a path that led to many misadventures. Below is one attempt to make it work. newpar,
-    ./Images/wrong_path_for_lab_1.jpg newpar,
+    
+    ./Images/wrong_path_for_lab_1.jpg this-is-an-image newpar,
     The Good Morning greeting was being returned reliably with this function. the Good Evening greeting was working starting at 18:00(it was supposed to be returned starting at 17:01). And between 12:00 and 17:00, Good Afternoon was being returned as long as it was on the hour (12:00, 13:00, etc.). For example, passing in 12:05 as an argument led to the result of TEST, when it should have returned Good Afternoon. newpar,
     The first else if statement was where problems were coming in. If I gave a range between 12 and 17 for the hour and did not include the part of the code involving the minutes, then if a user entered 17:12, the function returned Good Afternoon, when it should have returned Good Evening. newpar,
     Though I meant for 'the_minutes <01' to limit only the range of time for the hour of 17, it was read as applying to every hour between 12 and 17. At one point, I believe I got a slight variation of this to work somehow. However, even when it worked in my Chrome DevTools console, in the terminal where I was completing the lab it gave me the intriguing error of 'legacy octal literals are not allowed in strict mode.' It objected to being asked to process 01, or 00, etc. as a number. newpar,
@@ -2521,10 +2631,12 @@ class App extends React.Component { \n
     https://en.wikipedia.org/wiki/Radix /anchor newpar,
     Misadventure #2 /heading newpar,
     The last couple of things that I reviewed and learned more about thanks to this lab were the importance of variables and the way the .join() method works. Below is the solution I arrived at but without all of the variables in place. When I split the_time, that work was lost without a variable to hold the transformed the_time in, because the .split() method is non-destructive (it does not permanently alter what it operates on). So, none of the following operations and statements in the function work correctly later on if I do not starting saving to variables right away. newpar,
-    ./Images/wrong_path_for_lab_2.jpg newpar,
+    
+    ./Images/wrong_path_for_lab_2.jpg this-is-an-image newpar,
     Lastly, I tried using the .join() method before I used .concat(). I made the mistake of calling .join() instead of .join(''). You can see the different results of using one versus the other below. Also refer to the MDN for more information about ways to use this method. newpar,
     https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join /anchor newpar,
-    ./Images/wrong_path_3_for_lab.jpg newpar,
+    
+    ./Images/wrong_path_3_for_lab.jpg this-is-an-image newpar,
     At first I didn't know why .join() was not working, but testing the code in the console allowed me to see what was happening. The .join() method separates the elements that it brings together by a comma unless you specify some other way to join them in one string. 12,00 was the result of using .join() on an argument of 12:00, and this interestingly turned into 12 when I used .parseInt() on it, so people were being told Good Morning all day long. newpar,
     https://www.youtube.com/embed/wLDtuhtHTY4 newpar,
     However, .join('') (with no spaces between the quotation marks) resulted in the same string as when I used .concat(), so I could have done that. But when all else is equal, I generally consider it preferable to use methods with the word cat in them. You can decide for yourself. newpar,
@@ -2532,65 +2644,88 @@ class App extends React.Component { \n
 
     post_one=Post.create(title: "The Split Method and the Power of Punctuation", paragraphs: "This is my first blog, and it is going to be about the mysterious ways of the split method. I had the chance to learn more about this method while working on a lab called the OO Cash Register Lab during the first module of Flatiron School's Software Engineering program at Access Labs in Brooklyn, NY. So, I will write about some of my misadventures while completing that lab and what I learned about the split method along the way. newpar,
     The prompt asked us to do the following: newpar,
-    ./Images/Lab_description.jpg newpar,
+    
+    ./Images/Lab_description.jpg this-is-an-image newpar,
     https://learn.co/tracks/module-1-web-development-immersive-2-1/object-oriented-ruby/object-s-self/oo-cash-register /anchor newpar,
     One of the methods I was supposed to write would take parameters of a title of an item, the quantity of the item, and the price of it. It was supposed to update the total price of all items combined in the shopping cart and it was also supposed to add new items to the @items array to keep track of what was in the shopping cart. newpar,
     This is the beginning of the code to get you oriented: newpar,
-    ./Images/Beginning_of_code.jpg newpar,
+    
+    ./Images/Beginning_of_code.jpg this-is-an-image newpar,
     This is the first method I wrote, for adding an item to the cart: newpar,
-    ./Images/Method.jpg newpar,
+    
+    ./Images/Method.jpg this-is-an-image newpar,
     And below is the small part of the above that this blog is about. Dealing with quantity was what was most difficult for me at the time. The more stuff one has, the harder it can be to keep track of it. newpar,
     First, here is what worked, and then I will go through some of the things that didn't work. The binding.pry is included to show you how the array @items ends up looking under different conditions. newpar,
-    ./Images/Solution_first_blog.jpg newpar,
+    
+    ./Images/Solution_first_blog.jpg this-is-an-image newpar,
     When I call binding.pry on this, this is what I see: newpar,
-    ./Images/Solution_result.jpg newpar,
+    
+    ./Images/Solution_result.jpg this-is-an-image newpar,
     So, the tests are looking to see whether we can handle different quantities of an item, in this case books. (Anyone with towers of books surrounding them in their apartment can tell you that it is important to try to keep them organized, even if more often than not this is a losing battle!) newpar,
     Three books were added to the cart, and we see that reflected in the @items array. But it took me a long time to get to that point, so I will back up to show you some of the things that could (and did) go wrong. newpar,
     First, I explored just multiplying the title by the quantity, like so (the working code is commented out): newpar,
-    ./Images/Title_x_quantity.jpg newpar,
+    
+    ./Images/Title_x_quantity.jpg this-is-an-image newpar,
     But this is how that turned out: newpar,
-    ./Images/Bookbookbook.jpg newpar,
+    
+    ./Images/Bookbookbook.jpg this-is-an-image newpar,
     Instead of listing three new books in the cart, I have one big triple book. (Large volumes are not easy to carry around with you to read on the train, so this is a problem!) So, I knew with the help of binding.pry that I needed to find a way to split up the three books that did not currently want to be apart. This would also have to be the case for any quantity of items, not just for the test case of books. It occurred to me thanks to Learn.co's previous lessons that there was a method for that, the split method. Below is Ruby Doc's definition of the split method. newpar,
-    ./Images/Split_method.jpg newpar,
+    
+    ./Images/Split_method.jpg this-is-an-image newpar,
     https://ruby-doc.org/core-2.4.0/String.html#method-i-split /anchor newpar,
     Ruby Doc gives a number of examples of ways to split a string, and I will discuss a few of them. The problem that I ran into initially after suspecting that I should somehow put the split method to use was that there was nothing to split ['bookbookbook'] by, no punctuation marks and no white space, for example. Just calling .split on the array did nothing (yes, I am sure I tried that!). Using k as a delimiter, which you can try for fun like so: newpar,
-    ./Images/Splitting_with_k.jpg newpar,
+    
+    ./Images/Splitting_with_k.jpg this-is-an-image newpar,
     did this: newpar,
-    ./Images/Splitting_with_k_results.jpg newpar,
+    
+    ./Images/Splitting_with_k_results.jpg this-is-an-image newpar,
     That might have been good for Halloween last week, but it is not exactly what I was looking for! Also, we might want to add items to the cart that do not have a k in them, and in that case this would also not do anything we want it to do. newpar,
     Ruby Doc tells us that we can split along white space, like this, if there is white space to serve as a delimiter: newpar,
-    ./Images\nows_the_time.jpg newpar,
+    
+    ./Images/Nows_the_time.jpg this-is-an-image newpar,
     Or, it tells us, we could split along each letter, like this: newpar,
-    ./Images/Hello_split.jpg newpar,
+    
+    ./Images/Hello_split.jpg this-is-an-image newpar,
+
     to give us this: newpar,
-    ./Images/Book_by_the_letter.jpg newpar,
+    
+    ./Images/Book_by_the_letter.jpg this-is-an-image newpar,
     But that is a little like buying a book by the chapter, too many volumes instead of too few. newpar,
     Another example of a delimiter that Ruby Doc gives us that I like, in spite of how ineffectual it would appear to be for the OO Cash Register Lab is: newpar,
-    ./Images/Mellow_yellow.jpg newpar,
+    
+    ./Images/Mellow_yellow.jpg this-is-an-image newpar,
     Here is a link to that song, in case you are interested. Thank you Ruby Doc. newpar,
     https://www.youtube.com/watch?v=IQNBQI3UDag /anchor newpar,
     This was all enough to get me to go back to try to interpolate my way out of the problem before again coming back to kneel at the shrine of the split method. So, I tried to interpolate a comma between the items like this: newpar,
-    ./Images/Adding_a_comma_to_interpolation.jpg newpar,
+    
+    ./Images/Adding_a_comma_to_interpolation.jpg this-is-an-image newpar,
     and got this: newpar,
-    ./Images/Interpolating_with_comma_no_split_result.jpg newpar, 
+    
+    ./Images/Interpolating_with_comma_no_split_result.jpg this-is-an-image newpar, 
     It looked like I was getting closer, so I edited the above to also include a space after the comma, like this: newpar,
-    ./Images/Interpolating_with_comma_and_space.jpg newpar,    
+    
+    ./Images/Interpolating_with_comma_and_space.jpg this-is-an-image newpar,    
     to get this: newpar,
-    ./Images/Result_for_interpolating_with_comma_and_space.jpg newpar,   
+    
+    ./Images/Result_for_interpolating_with_comma_and_space.jpg this-is-an-image newpar,   
     Things were looking good, and I was feeling clever; but there was still an extra comma and space at the end of the string, and I still had one string of books instead of three separate strings. This is what brought me back to the split method. newpar,   
     The split method separates your string into smaller strings and adds the commas for you while leaving off the unwanted comma at the end. I knew that the split method was the answer, even though it was giving me so many problems. newpar, 
     What I ended up realizing was that the split method speaks the language of punctuation. There are other delimiters, but punctuation is one thing it likes to work with. Since I am a beginner at software engineering, I don't know first-hand whether computers are stupid, as some people say. But I think that there is something smart about the focus that the split method has on punctuation. newpar, 
     Learning how to punctuate properly can be a difficult thing to master. It is something that as a writer and speaker, one can also overthink and in doing so miss the mark. When punctuation does not serve primarily to convey a message clearly, it can serve a stylistic purpose. It can arrest people's attention, make them unengaged, or make them wonder about something that is left hanging. Punctuation helps us to organize our thoughts. It gives them a certain speed(the urgency of the exclamation point) or forces us to take our time (commas might gather speed, but they can also make us take our time depending on the context). So, I like that the split method speaks the language of punctuation, even though it took me awhile to appreciate this, and even though there are still things about the method that are a mystery to me. newpar,  
     So, that is how I got to the final result: newpar, 
-    ./Images/Solution_first_blog.jpg newpar,   
+    
+    ./Images/Solution_first_blog.jpg this-is-an-image newpar,   
     giving me: newpar, 
-    ./Images/Solution_result.jpg newpar,   
+    
+    ./Images/Solution_result.jpg this-is-an-image newpar,   
     I didn't have to add a space after the comma in the title interpolation, because the split method separates the strings in its resulting array according to the conventions of English grammar, or at least the grammar of arrays, with a comma and a space. Also, if I had added a space it would have actually just created other problems. newpar,
     I had to use flatten!, because without it I had a nested array, like this:  newpar,    
-    ./Images/Results_without_flatten.jpg newpar,  
+    
+    ./Images/Results_without_flatten.jpg this-is-an-image newpar,  
     This happened without the flatten! method being used on the array, because the @items variable was set equal to an empty array. Then, the split method turned the string into an array of strings, which is what I was pushing into the empty @items array. Flatten! collapses the nested arrays into one array that can later on be iterated over to display the contents of the shopping cart or do other things. newpar,  
     In spite of enjoying discovering that the split method speaks the language of punctuation, it turns out that I could have also achieved the same result by just adding a whitespace to the interpolation and then using white space as the delimiter, like this: newpar, 
-    ./Images/Splitting_along_white_space_copy.jpg newpar,    
+    
+    ./Images/Splitting_along_white_space_copy.jpg this-is-an-image newpar,    
     Since it doesn't matter whether you use a punctuation mark or white space to serve as a delimiter, you can rely on your own preferences (or your own whims at the moment) for either punctuated or blank space. newpar,
     ")  
 
