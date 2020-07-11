@@ -57,7 +57,6 @@ import ProfilePicture from './Images/Profile_picture.jpeg'; newpar,
 
 What I name the file path when I import it does not matter as long as I use the same name when I reference it later on in the component. Where I was using require() before, I can then use 'ProfilePicture' instead to get the same result: newpar,
 
-this-is-code-in-blog 
 <img className='profile-photo' src={ProfilePicture} alt={'Carlie Anglemire'}/> newpar,
 
 Which One Should I Use? /heading newpar,
