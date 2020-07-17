@@ -9,6 +9,250 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg")
 
+post_twenty_five= Post.create(title: "On A Witch Hunt", paragraphs: "
+
+./Images/On_A_Witch_Hunt_Image.jpg this-is-an-image newpar,
+
+Yesterday, I attended She’s Coding (Seattle)’s Data Structures and Algorithms practice meeting, and though I was basically helpless at the time, I woke up determined to solve the problem I was supposed to do during the second breakout session. The themes of trust and judgment were too enticing to resist. This might be an example of how the way you name your variables matters. They can motivate you to do the work! newpar,
+
+    This is a practice problem on Leetcode.com called “Find the Town Judge.” A town judge trusts no one and is trusted by everyone. There can only be one judge in town, but it is possible that there is no judge. The trust array that is passed into the findJudge function maps a set of relationships. It is an array of arrays. The person (represented by a number) in the 0 position of each of the arrays in the trust array trusts the person (also represented by a number) in the 1 position of that array. For example, if the array passed into findJudge is [[1, 2], [1, 3], [2, 1], [2, 3]], that means 1 trusts 2 and 3, 2 trusts 1 and 3, and 3 trusts no one but is trusted by both of the others. N = 3 to represent the number of people involved in the trust triangle. In this case, the function returns 3 to signify that 3 is the judge. If there is no judge, then the function returns -1. newpar,
+
+    Below is my brute force solution. For homework, see if you can improve upon it. newpar,
+
+    var findJudge = function(N, trust) { \n
+       
+    if (N === 1) { \n
+        
+        return 1; \n
+    } \n
+       
+     else { \n
+    
+    let i; \n
+    
+    let arrayForTrusting = []; \n
+    
+    let arrayForTrusted = []; \n
+    
+    for(i = 0; i < trust.length; i++) { \n
+        
+        arrayForTrusting.push(trust[i][0]); \n
+        
+        arrayForTrusted.push(trust[i][1]); \n  
+    } \n
+    
+    let p; \n
+    
+    let trustingArray = arrayForTrusting.sort((a, b) => {return (a - b)}); \n
+    
+    let trustedArray = arrayForTrusted.sort((a, b) => {return (a - b)}); \n
+    
+    let reducedTrustingArray = []; \n
+    
+    let reducedTrustedArray = []; \n
+    
+    for(p = 0; p < trustingArray.length; p++) { \n
+        
+        if (p === trustingArray.length - 1) { \n
+            
+            reducedTrustingArray.push(trustingArray[p]); \n
+        } \n
+        
+        else { \n
+            
+            if(trustingArray[p] !== trustingArray[p + 1]) { \n
+                
+                reducedTrustingArray.push(trustingArray[p]); \n
+            } \n
+        } \n
+    } \n
+    
+      for(p = 0; p < trustedArray.length; p++) { \n
+        
+        if (p === trustedArray.length - 1) { \n
+            
+            reducedTrustedArray.push(trustedArray[p]); \n
+        } \n
+        
+        else { \n
+            
+            if(trustedArray[p] !== trustedArray[p + 1]) { \n
+                
+                reducedTrustedArray.push(trustedArray[p]); \n
+            } \n
+        } \n
+    } \n
+    
+    let s; \n
+    
+    let townJudgeSuspectArray = []; \n
+    
+    for (s = 0; s < reducedTrustedArray.length; s++) { \n
+        
+        if (!(reducedTrustingArray.includes(reducedTrustedArray[s]))) { \n
+            
+            townJudgeSuspectArray.push(reducedTrustedArray[s]); \n
+        } \n
+    } \n
+        
+    if (townJudgeSuspectArray.length === 0) { \n
+        
+        return -1; \n
+    } \n
+    
+    else if (townJudgeSuspectArray.length === 1) { \n
+        
+        let n; \n
+        
+        let arrayOfTrusters = []; \n
+        
+        for (n = 0; n < trust.length; n++) { \n
+            
+            if(trust[n][1] === townJudgeSuspectArray[0]) { \n
+                
+                arrayOfTrusters.push(trust[n][0]); \n
+            } \n
+        } \n
+        
+        
+        if (arrayOfTrusters.length === reducedTrustingArray.length) { \n
+            
+            return townJudgeSuspectArray[0]; \n
+        } \n
+        
+        else { \n
+            
+            return -1; \n
+        } \n 
+    } \n
+         
+         else { \n
+             
+             return -1; \n
+         } \n
+     } \n
+}; newpar,
+
+If N = 1, then that means there is only one person. This is a weird moment in the code. The problem stipulates that the town judge is trusted by everyone and trusts no one. If no one else is around, it seems reasonable to say that the judge trusts no one, but does it make sense to say that the judge is trusted by everyone if no one else is there? The judge is doubted by no one, but is that the same as being trusted by everyone? It is hard to know whether a person can be a judge with no one there to trust her judgment. Is it more important that the judge trusts no one or that the judge is trusted by others? If having faith in the judge matters more than the judge’s aloofness, then I feel like the function should return -1. However, the way I wrote the first condition is what makes it pass on Leetcode, so they must have other ideas. newpar,
+
+After that, I push the numbers in the zero index position of the nested arrays into one array and the numbers in the 1 index position into another array, then sort those arrays, and then reduce them so there are no repeat numbers in either of them. newpar,
+
+Next, I do another for loop to see if any of the trusted numbers are also trusting. If there are numbers that are trusted but not trusting, I push them into the townJudgeSuspect array. If that array ends up having a length of zero, then there is no town judge, and the function returns -1. If there is more than one person who trusts no one, then the function also returns -1, because there can only be one town judge. newpar,
+
+    If the townJudgeSuspect array has a length of one, then I check to see whether all of the other people trust this person, or whether only some of them do. If all of them do, then the judge’s number is returned. Otherwise, the function returns -1, and those who have either a healthy or unhealthy skepticism rule the day . newpar,
+
+        https://www.youtube.com/embed/x3DZLldBY7o newpar,
+
+        https://www.youtube.com/embed/8TOBzT-1LfU newpar,
+    
+
+
+
+")
+
+post_twenty_four= Post.create(title: "Pointers and Common Prefixes in JavaScript", paragraphs: "
+
+./Images/Exit.jpg this-is-an-image newpar,
+
+Last night I finally went to the Data Structures and Algorithms practice hosted on-line by She’s Coding (Seattle) and learned about using pointers to write an algorithm. It was extremely helpful! And it led me to return to LeetCode this morning to try to apply what I learned to another problem. The one I ended up doing prompted me to create a function to return the longest common prefix amongst items in an array. I love the examples they give for input arrays! newpar,
+
+Examples /heading newpar,
+
+./Images/Prefix_Problem.png this-is-an-image newpar,
+
+This is one that I came up with to add to the fun: newpar,
+
+./Images/Prefix_Example.png newpar,
+
+Initializing Variables/Pointers /heading newpar,
+
+In coming up with a solution, I tried to apply my newfound knowledge of pointers. I used three of them to point to different places in the array and to different places within each string. These are the variables at the beginning of the function: newpar,
+
+this-is-code-in-blog
+let prefix = ""; \n
+    
+let i = 0; \n
+    
+let p = (strs.length) - 1; \n
+    
+let n = 0; \n
+        
+let maximumLength = 0; newpar,
+
+The prefix is what will be returned at the end of the function. The maximumLength will be the length of the shortest word in the array, which I get by doing a for loop like this: newpar,
+
+for (let h = 0; h < strs.length; h++) { \n
+        
+        if (maximumLength === 0) { \n
+            
+            maximumLength = strs[h].length; \n  
+        } \n
+        
+        else { \n
+            
+            if (strs[h].length < maximumLength) { \n
+                maximumLength = strs[h].length; \n
+            } \n
+        } \n
+    } newpar,
+
+    The reason for getting the length of the shortest word is that the longest common prefix cannot be longer than the shortest word in the array. Getting this value and specifying it as the condition for the while loop I am about to do allows me to exit the program when the maximumLength is reached. newpar,
+
+        Checking for Matches /heading newpar,
+
+        This is the while loop where the function checks the letters in the first word in the array against the letters in the corresponding places for the words in other positions in the array. newpar,
+
+        if (strs.length === 1) { \n
+        
+        prefix = strs[0]; \n
+        return prefix; \n
+        
+    } \n
+    
+    else{ \n
+while (n < maximumLength) { \n
+                
+        if (strs[i][n] === strs[p][n]) { \n  
+            
+            if (p === i + 1) { \n
+                
+                prefix+=strs[i][n]; \n
+                n++; \n
+                p = (strs.length) - 1; \n
+            } \n
+            
+            else { \n
+            
+            p--; \n
+          
+            } \n
+        } \n
+             
+        else { \n
+            
+           n = maximumLength; \n
+            
+            } \n
+        } \n
+        
+    return prefix; \n
+        
+    } newpar,
+
+    The first ‘if’ statement checks to see if the length of the array is 1. If it is, then the program returns the string stored there. Otherwise, it executes the block of code in the ‘else’ statement. As long as the value of n is less than the length of the shortest word in the array, the while loop runs. The first letter in the first string in the array is checked against the first letter in the last string in the array. strs[i] is the item in the first position of the array when ‘i’ is 0, and strs [i][n] is the first letter in the first item when ‘n’ is also 0. strs[p][n] is the first letter of the last item in the array when the value of ‘p’ is set to the length of the array minus one and the value of ‘n’ is set to 0. newpar,
+
+    If the first letter in the first and last words matches, then it decrements ‘p’ to check the first letter in the second to last string in the array, and so on until there either is a letter that does not match or the value of p is i + 1. If p is i + 1, then that means the pointer has made it through the whole array. In that case, the words in the array all share this letter. At that point, the function adds that common letter to the variable ‘prefix’, and it moves the ‘p’ pointer back to the last word in the array while incrementing ‘n’ to move on to the second letter in the string. This process repeats until either ‘n’ is equal to the maximumLength or there is a letter that does not match. At that point, what is stored in ‘prefix’ is what the program returns before exiting. newpar,
+
+    Example /heading newpar,
+
+    For example, if the input array is [‘cave’, ‘cavil’, ‘camera’], then the while loop will run twice to add ‘c’ and ‘a’ to ‘prefix’. When the ‘v’ in ‘cave’ is checked against the ‘m’ in ‘camera’ on the third loop and found to not be a match, ‘n’ is incremented to the maximumValue to force the while loop to exit. Then the prefix ‘ca’ is returned. newpar,
+
+    Other words that start with ‘ca’ include ‘carlie’, ‘care’, and ‘cat’. Have a good weekend, and as my grandma sometimes says before getting off the phone with me, be good. newpar,
+
+    https://www.youtube.com/embed/kfSQkZuIx84 newpar,
+
+")
+
 post_twenty_three= Post.create(title: "How To Render Images In A React App", paragraphs: " 
 
 ./Images/On_The_Wall.jpg this-is-an-image newpar,
@@ -93,10 +337,6 @@ I can include the image like this: newpar,
 In that case, everything displays fine and no require() or import is needed. newpar,
 
 https://www.youtube.com/embed/qchPLaiKocI newpar,
-
-
-
-
 
 ")
 
