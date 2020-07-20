@@ -27,6 +27,8 @@ ActiveRecord::Schema.define(version: 2020_06_05_021708) do
     t.text "title"
     t.text "video"
     t.text "image"
+    t.text "frontend"
+    t.text "backend"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

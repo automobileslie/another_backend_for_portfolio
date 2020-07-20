@@ -5,6 +5,8 @@ class CreateProjects < ActiveRecord::Migration[6.0]
       t.text :title
       t.text :video
       t.text :image
+      t.text :frontend
+      t.text :backend
       t.timestamps
     end
   end
