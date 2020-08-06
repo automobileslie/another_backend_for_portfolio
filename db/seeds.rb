@@ -9,6 +9,300 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg", frontend: "https://github.com/automobileslie/national_parks_app", backend: "https://github.com/automobileslie/national_parks_api")
 
+post_twenty_seven=Post.create(title: "Let Them Eat (Interview) Cake", paragraphs: "
+
+./Images/Showers_Of_Happiness.jpg this-is-an-image newpar,
+
+Following up on last week, this week’s problem on Interview Cake just gave me an opportunity to review binary search again. The prompt states that passed into a function is an array with words taken from a dictionary that has been opened somewhere near the center. The first words in the array are accordingly starting with a letter somewhere near the middle of the alphabet. Then the person trying to improve her vocabulary keeps flipping through until she reaches the end, at which point she turns to the beginning and goes through it until she gets back to where she started. newpar,
+
+We are asked to write a function taking in one such array and returning the index of the inflection point, the point at which it is evident that the dictionary detective has started again from the beginning. The example array that is given is the following, with the inflection point being at ‘asymptote’: newpar,
+
+this-is-code-in-blog
+const words = [ \n
+'ptolemaic', \n
+'retrograde', \n
+'supplant', \n
+'undulate', \n
+'xenoepist', \n
+'asymptote', \n
+'babka', \n
+'banoffee', \n
+'engender', \n
+'karpatka', \n
+'othellolagkage', \n
+] newpar,
+
+This is the pseudocode for my approach to the problem: newpar,
+
+this-is-code-in-blog
+// start at the middle; check to see if the inflection point is at the median \n
+// the value of the first letter of the word at the median should be less than the value of the first letter of the next word \n
+// if it is not, then the median is the inflection point \n
+// if the median is not the inflection point, go forward or backward depending on how close to the inflection point you are and \n
+// check the median again until you find it newpar,
+
+And this is my solution: newpar,
+
+function rotationPoint (words) { \n
+let start = 0; \n
+let end = words.length - 1; \n
+let median; \n
+while (start <= end){ \n
+median = parseInt((start + end) / 2); \n
+if ((words[median][0] < words[median - 1][0])) { \n
+return median; \n
+} \n
+else if (words[median][0]< words[0][0]) { \n
+end = median - 1; \n
+} \n
+else { \n
+start = median + 1; \n
+} \n
+} \n
+} newpar,
+
+If the median is not the inflection point, then I check to see whether the first letter of the word there is less than the value of the first letter of the first word in the array. If it is, then that means the inflection point is earlier in the array; so, the end is now moved to one position before the current median. Otherwise, the inflection point is further down the line on the right side of the array, so the start becomes the median + 1. newpar,
+
+A note on using greater and less than operators with letters. JavaScript allows us to make this comparison without converting the characters into numbers. If we wanted to, we could, however, use .charCodeAt() instead. For example, newpar,
+
+this-is-code-in-blog
+words[median].charCodeAt(0) < words[median-1].charCodeAt(0) newpar,
+
+works as well as newpar,
+
+this-is-code-in-blog
+words[median][0] < words[median - 1][0] newpar,
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charCodeAt /anchor newpar,
+
+The while loop runs until either the index of the inflection point is returned or the start value becomes greater than the value of the end point (see my last blog post for an explanation of this). newpar,
+
+Though I do not know her, this is the Github profile of the person whose code on LeetCode helped me to understand Binary Search better: newpar,
+
+https://github.com/yuyuhhh /anchor newpar,
+
+Thank you! You deserve a piece of cake. newpar,
+
+")
+
+post_twenty_six=Post.create(title: "Odd Man Out", paragraphs: "
+
+I am working on improving my binary search tactics, and this post documents some of my initial struggles, with updates about the progress I made toward the end. newpar,
+
+First Try: There’s A First Time For Everything /heading newpar,
+
+The code below works in exactly one out of 62 test cases on LeetCode. The problem indicates that we are supposed to give the index position of the target number in a sorted input array or the position where the target number would be if it were included. I am going to keep working on this tomorrow if I can, but this is the code that will make one test pass, in case anyone is interested in getting a 1.61% on the assignment. Some days, that is all we can hope for! newpar,
+
+var searchInsert = function(nums, target) { \n
+                
+    if (nums.length <= 1) { \n
+        
+        if(nums[0]){ \n
+    
+            if (nums[0] === target) { \n
+    
+            return 0; \n
+            } \n
+        } \n
+        
+        else{ \n
+            
+            return 0; \n
+        } \n
+    } \n
+else { \n
+    
+        let startingPoint = 0; \n
+        
+        let endPoint= nums.length - 1; \n
+                
+        let midpoint; \n
+        
+        let finished = 0; \n
+    
+        while (finished < 1) { \n
+                        
+            midpoint = parseInt((endPoint + startingPoint)/2); \n
+if (nums[midpoint] > target){ \n
+               
+               if (midpoint === 0) { \n
+                    
+                    finished+=1; \n
+                                                         
+                   } \n
+               
+               
+               else { \n
+                     
+                    endPoint = midpoint; \n
+                } \n
+           } \n
+        
+            else if (nums[midpoint] < target) { \n
+                
+                if (midpoint === nums.length - 1){ \n
+                    
+                    finished+=1; \n
+                    
+                } \n
+                
+                else if (midpoint === 0){ \n
+                    
+                    if(nums.length === 2){ \n
+                                                
+                        if (nums[midpoint + 1]===target){ \n
+                            
+                            finished+=1; \n
+                            return midpoint+1; \n
+                            
+                        } \n 
+                        
+                        else{ \n
+                            finished+=1; \n
+                        } \n
+                    } \n
+                } \n
+                
+                else{ \n
+            
+                    if (nums[midpoint + 1] > target) { \n
+                        
+                        finished+=1; \n
+                                   } \n
+                    
+                    else{ \n
+                        
+                        startingPoint = midpoint; \n
+                    } \n
+                } \n
+            } \n
+        
+            else if (nums[midpoint] === target){ \n
+                
+                finished+=1; \n
+                                
+                return midpoint; \n                  
+            } \n
+        } \n  
+    } \n
+    
+    return 0; \n
+} newpar,
+
+Try Again /heading newpar,
+
+The following is code that passes 2/62 test cases. I am including it as an example of incremental progress. Enjoy! newpar,
+
+var searchInsert = function(nums, target) { \n
+                
+    if (nums.length <= 1) { \n
+        
+        if(nums[0]){ \n
+            
+            if (nums[0] === target || nums[0] > target) { \n
+    
+            return 0; \n
+            } \n
+            
+            else if (nums[0] < target){ \n
+                
+                return 1; \n
+            } \n
+            
+        } \n
+        
+        
+        else{ \n
+            
+            return 0; \n
+        } \n
+    } \n
+else { \n
+    
+        let startingPoint = 0; \n
+        
+        let endPoint= nums.length - 1; \n
+                
+        let midpoint; \n   
+        
+        let finished = 0; \n
+        
+        let insertionPosition; \n
+            
+        while (finished < 1 && startingPoint !== endPoint) { \n
+                        
+            midpoint = parseInt((endPoint + startingPoint)/2); \n
+if (nums[midpoint] > target){ \n
+                
+                endPoint = midpoint; \n
+               
+               if (midpoint === 0){ \n
+                   
+                   insertionPosition = 0; \n
+                   
+                   finished+=1; \n
+                   
+                   return insertionPosition; \n
+               }
+               
+               else if (nums[midpoint - 1] < target){ \n
+                   
+                   insertionPosition = midpoint; \n
+                   
+                   finished+=1; \n
+                   
+                   return insertionPosition; \n
+                   
+               } \n
+           } \n
+        
+            else if (nums[midpoint] < target) { \n
+                        
+                startingPoint = midpoint; \n
+                
+                if (midpoint === nums.length - 1){ \n
+                   
+                   insertionPosition = nums.length; \n
+                    
+                    return insertionPosition; \n
+               } \n
+                
+                 else if (nums[midpoint + 1] > target){ \n
+                   
+                   insertionPosition = midpoint + 1; \n
+                   
+                   finished+=1; \n
+                   
+                   return insertionPosition; \n
+               } \n
+            } \n
+else if (nums[midpoint] === target){ \n
+                
+                finished+=1; \n
+                                
+                return midpoint; \n                    
+            } \n
+        } \n 
+            
+        return insertionPosition; \n
+    } \n
+    
+} newpar,
+
+What I Learned Later On /heading newpar,
+
+Finally, I decided that for the sake of better understanding how binary searches work I would look at another person’s solution. Because it is not my own, I will not include it here. However, I wanted to point out a couple of things that I learned. The first is that one option for the condition to use for when the while loop will run is startingPoint ≤ endPoint. The second is that if the target is greater than the current midpoint, then the startingPoint should not become the current midpoint but instead the current midpoint + 1 (if you are setting the condition to startingPoint ≤ endPoint). Also, if the target is less than the current midpoint, then the endPoint should become not the current midpoint but the current midpoint - 1. newpar,
+
+Example /heading newpar,
+
+For example, if the input array is [1, 2, 4, 7] and the target number is 0, then the first midpoint will be parseInt((3+0) / 2), or 1. The value at nums[1] is 2, and that is higher than the target number; so the new value for the endPoint is 1–1, or 0. That means that the startingPoint and the endPoint are now both 0. The midpoint is also zero, because parseInt((0+0)/2)=0. The value at nums[0] is 1, and that is still higher than the target. So, the new endPoint becomes 0-1, or -1. However, at this point the while loop will not run, because the endPoint is less than the startingPoint. newpar,
+
+The same happens at the other end of the array, if the target number is larger than the greatest value. For example, if the input array is [1, 2, 4, 7] and the target number is 10, the first midpoint is the same as before, 1. The value at nums[1] is 2, which is less than the target; so the startingPoint changes to 1 + 1, or 2. The midpoint is parseInt((3+2)/2), or 2. The value of nums[2] is 4, and that is lower than the target, so the startingPoint becomes 2 + 1, or 3. The startingPoint and endPoint are now both 3. 3+3=6/2=3, so the midpoint is 3. The value at nums[3] is 7, still lower than the target, so the startingPoint becomes 3+1, or 4. However, the startingPoint is now greater than the endPoint, so the while loop exits. newpar,
+
+I am going to call my failure at solving the binary search problem alone an example of being better together. Have a nice weekend! newpar,
+
+")
+
 post_twenty_five= Post.create(title: "On A Witch Hunt", paragraphs: "
 
 ./Images/On_A_Witch_Hunt_Image.jpg this-is-an-image newpar,
