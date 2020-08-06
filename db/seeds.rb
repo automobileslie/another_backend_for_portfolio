@@ -9,6 +9,107 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg", frontend: "https://github.com/automobileslie/national_parks_app", backend: "https://github.com/automobileslie/national_parks_api")
 
+post_twenty_eight=Post.create(title: "Linked Lists", paragraphs: "
+
+./Images/Linked_List.jpg this-is-an-image newpar,
+
+Over the last week I have had the occasion to start learning about linked lists, doing a couple of problems on Leetcode and also returning to the post-graduation algorithm lessons that Flatiron School has on Learn.co. While I miss the arrays that I am used to, I understand that it is important for me to be familiar with linked lists and to spend more time working with different data structures. newpar,
+
+The Hashes and Variables /heading newpar,
+
+The problems for the Linked List Lab on Learn.co work with a set of data like this: newpar,
+
+let firstNode = {name: 'susie', next: 'rkjasj'} \n
+let secondNode = {name: 'sam', next: 'asnan'} \n
+let newNode = {name: 'jill', next: ''} \n
+let lastNode = {name: 'charlie', next: null} \n
+let collection = {rkjasj: secondNode, asnan: lastNode, whana: firstNode, ajhsak: newNode} \n
+let linkedList = 'whana' newpar,
+
+Each of the nodes are part of the ‘collection’ hash with a key to each of the nodes. Separating out the firstNode, secondNode, etc. makes it more readable. Otherwise, ‘collection’ would look like this: newpar,
+
+{rkjasj: {name: 'sam', next: 'asnan'}, asnan: {name: 'charlie', next: null}, whana: {name: 'susie', next: 'rkjasj'}, ajhsak: {name: 'jill', next: ''}} newpar,
+
+It is a little misleading putting ‘whana’ third in the collection when it is the head of the linked list, but we are given the information that it is the first node, in any case. I think it is either a typo or something for me to ponder the deeper meaning of. Actually, I think the point is that hashes do not have indexes the way that arrays do. newpar,
+
+We are also given the variable ‘linkedList’ which tells us which of the nodes in the hash is the head. In other words, ‘collection[linkedList]’ gives us the first node. newpar,
+
+Function For Deleting a Node /heading newpar,
+
+While the lab asks us to write eight different functions to manipulate the nodes in different ways, I am going to focus here on the function for deleting a node. Here is the code I wrote, which I will explain below. newpar,
+
+function deleteNodeAt (index, linkedList, collection) { \n
+let currentNode = collection[linkedList]; \n
+let currentIndex = 0; \n
+let addressForAddingNext; \n
+let addressToAdd; \n
+while (currentIndex <= index){ \n
+if (currentIndex === index - 1){ \n
+addressForAddingNext = currentNode; \n
+currentIndex +=1; \n
+currentNode = next(currentNode, collection); \n
+} \n
+else if (currentIndex === index){ \n
+addressToAdd = currentNode.next; \n
+addressForAddingNext.next = addressToAdd; \n
+currentIndex +=1; \n
+currentNode= next(currentNode, collection); \n
+} \n
+else{ \n
+index += 1; \n
+currentNode= next(currentNode, collection); \n
+} \n
+} newpar,
+
+Three arguments are passed into the function: index, linkedList, and collection. The index is the position of the node we are supposed to delete in the collection. The other two variables are given above. newpar,
+
+A while loop runs as long as the current index is less than or equal to the index of the node that we are deleting. At the beginning, I set the currentIndex to zero. Then once the while loop is running, if the index position that we are at is 1 less than the target number, the function grabs the address of that node to use later on. The reason we will need it is to change the address that that node’s ‘next’ key points to, since the address currently there is the one that is being deleted. We want to make it point to the address of the node currently after the one that is being deleted. It is kind of like removing a frog from the game of leap frog (disclaimer: I don’t remember how that game actually works). newpar,
+
+Example of First Pass Through the While Loop /heading newpar,
+
+If the index passed in is 1, then the first condition will be met on the first pass through the loop, since currentIndex is 0 to begin with. So, addressForAddingNext = collection[linkedList], or in other words addressForAddingNext = firstNode. The currentIndex goes up by one, and then we use a function that we wrote earlier to get to the next node and reset the value of currentNode to that. newpar,
+
+Getting to the Next Node /heading newpar,
+
+For the sake of not being too mysterious, the function to get to the next node is: newpar,
+
+function next (node, collection){ \n
+return  collection[node.next]; \n
+} newpar,
+
+If we call next() with firstNode (the value of ‘whana’ in ‘collection’) and the whole ‘collection’ passed in, this is the node we are dealing with, the value of firstNode: newpar,
+
+this-is-code-in-blog
+collection['rkjasj'] newpar,
+
+we get the next node, secondNode, with the value of newpar,
+
+{name: “sam”, next: “asnan”} newpar,
+
+SecondNode becomes the currentNode for the next round. newpar,
+
+What To Do When You Hit the Target Index /heading newpar,
+
+On the next pass through the loop in the example above, the index will match the value of ‘currentIndex’. Here, we can grab the key to reset the ‘next’ value for the node at the previous index. newpar,
+
+The ‘currentNode’ now is ‘secondNode’, set to the value of newpar,
+
+{name: “sam”, next: “asnan”} newpar,
+
+and if we call next on it (secondNode.next) we get ‘asnan’, the key of the next node in the linked list ‘collection’. We no longer want the first node to point to the second one, because we want to delete the second one. So, we can make the ‘next’ value of the first node ‘asnan’ to skip over the second node and go right to the third one. newpar,
+
+If on the second loop we had not already gotten to the node we needed to delete, then we would have just incremented the currentIndex, moved on to the next node, and gone through the loop until we got there. newpar,
+
+But doesn’t the second node still live somewhere in the computer’s memory? Isn’t it there even if it is not a part of the linked list anymore, cluttering some neglected corner piled high with everything else I didn’t get to today? newpar,
+
+Teacher, I have a question. newpar,
+
+À propos of trying to remove certain things from our lives. newpar,
+
+https://www.youtube.com/embed/mcF5wl2PlmU newpar,
+
+")
+
 post_twenty_seven=Post.create(title: "Let Them Eat (Interview) Cake", paragraphs: "
 
 ./Images/Showers_Of_Happiness.jpg this-is-an-image newpar,
