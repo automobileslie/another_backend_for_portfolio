@@ -9,6 +9,112 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg", frontend: "https://github.com/automobileslie/national_parks_app", backend: "https://github.com/automobileslie/national_parks_api")
 
+post_twenty_nine=Post.create(title: "Recursion and Class in JavaScript", paragraphs: "
+
+./Images/Kermit.png this-is-an-image newpar,
+
+This week, I have been both reviewing something old and learning something new, and I decided to bring them together in a blog post so that they can get to know each other and you can get to know them. newpar,
+
+Recursion /heading newpar,
+
+Recursion is the new friend I am making this week, and we are still getting used to each other. Ok, it is mostly me getting used to her. newpar,
+
+Recursion is calling on a function that you are still in the process of defining. Below is an example that takes in a number n and a string of text and logs it to the console n amount of times. newpar,
+
+function repeatLine (n, theLine) { \n
+console.log(theLine); \n
+if (n > 1) { \n
+repeatLine(n - 1, theLine); \n
+} \n
+} newpar,
+
+First, theLine is logged once before hitting the if condition. Then, if n is greater than one, the function as it is defined up until that point is called with n being decremented. That means that theLine is console-logged. That call will be repeated until n is no longer greater than one. If you call the function with the the number entered as 5 and the string as 'whosits and whatsits galore', you should see the following in your console. newpar,
+
+./Images/Whosits.png this-is-an-image newpar,
+
+As in: newpar,
+
+https://www.youtube.com/embed/t6Ol7VsZGk4 newpar,
+
+Reminder about Function Input /heading newpar,
+
+Something to keep in mind if you are just starting out with JavaScript is that it is the order of the input that matters. For example, if you had called the function with the input order reversed, like this: newpar,
+
+this-is-code-in-blog
+repeatLine('whosits and whatsitsgalore', 5) newpar,
+
+then the number 5 would have been console-logged one time. If you check the datatype in the console by adding a console.log to the function for the data type, like this newpar,
+
+function repeatLine (n, theLine) { \n
+console.log(theLine); \n
+console.log(typeof theLine); \n
+if (n > 1) { \n
+repeatLine(n - 1, theLine); \n
+} \n
+} newpar,
+
+you will see that the data type of the 5 that is logged is ‘number’. The data type of the input is not specified by the function, so it will log theLine regardless of its type and will not coerce it into being another type. It will not decide to arbitrarily convert the number 5 into a string. But it also will not know that what you wanted was for the input that is a string to be the one that is printed out. newpar,
+
+Why does the function log anything at all? Before the if statement, a console.log is made, so theLine, whatever it is, will print at least one time. Since the value of n is a string and you cannot compare a string to a number, the if statement is not triggered. This is what I get when trying to compare a string to a number in the console. newpar,
+
+./Images/whosits_2.png this-is-an-image newpar,
+
+If we ask whether the variable is less than one, using the less than operator, the answer is 'false'. If we ask whether the variable is greater than one, then the answer is also 'false'. If you use the == and === operators to compare phrase to 1, it is also comes out false. newpar,
+
+In my opinion, this is an example of how in code, as in life, not everything is reducible to numbers. newpar,
+
+Review of Class Constructors /heading newpar,
+
+This is the old friend who I haven’t thought about in awhile but has been there all along. newpar,
+
+In making applications with React a portion of the work of writing code is abstracted away, and I realized that it was a good time for me to review Class and Inheritance to be reminded of what I have been taking for granted. newpar,
+
+While using the current version of React, it has not been necessary for me to use a constructor, so this is a basic review of what a constructor does. Below is an example of the class Frog. newpar,
+
+class Frog { \n
+constructor (name, from, into) { \n
+this.name = name; \n
+this.from = from; \n
+this.into = into; \n
+} \n
+} newpar,
+
+Any instance of the class Frog will have to be initialized with a name and a value for the 'from' and 'into' attributes. The ‘this’ as it appears in the constructor refers to the instance of a frog that is being or has been created. newpar,
+
+For example, below is a new instance of a frog being created: newpar,
+
+./Images/new_Frog.png this-is-an-image newpar,
+
+The ‘new’ signals that a new object that is an instance of a class is about to be created. After that comes the name of the class, in this case ‘Frog’. Then, we need to include input between parentheses to give a value for the name, from, and into attributes. The result of the above is the following, a new frog! newpar,
+
+./Images/Kermit.png this-is-an-image newpar,
+
+That means that if I type newpar,
+
+this-is-code-in-blog
+Kermit.from newpar,
+
+into the console at this point, it should return 'frog'. newpar,
+
+Getting It Together /heading newpar,
+
+Because it is sometimes nice to have a happy ending to a story, let’s bring the above concepts together. newpar,
+
+In the console, if you call repeatLine (the second version that also gives us the data type of what is being logged) with the following input newpar,
+
+this-is-code-in-blog
+repeatLine(5, Kermit.from) newpar,
+
+you should get as the output newpar,
+
+./Images/5_frogs.png this-is-an-image newpar,
+
+Which kind of reminds me of a frog doing jump rope. newpar,
+
+You’re welcome. newpar,
+
+")
+
 post_twenty_eight=Post.create(title: "Linked Lists", paragraphs: "
 
 ./Images/Linked_List.jpg this-is-an-image newpar,
