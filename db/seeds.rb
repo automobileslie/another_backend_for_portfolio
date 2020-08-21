@@ -9,6 +9,77 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg", frontend: "https://github.com/automobileslie/national_parks_app", backend: "https://github.com/automobileslie/national_parks_api")
 
+post_thirty= Post.create(title: "Recursion (Again)", paragraphs: "Recently, I have been working on recursion, a topic I became newly acquainted with last week. While I am looking forward to using it in different ways in the future, below is a problem that I did as I got started. It is part of a lab on the Software Engineering Post-Work Track on Learn.co for the Flatiron School. Though, I don’t have a job yet, this is how much I like the Flatiron School — I wear their Access Labs t-shirt on beautiful summer days. newpar,
+
+./Images/Access_Labs.jpg this-is-an-image newpar,
+
+Plugging Other Posts /heading newpar,
+
+When learning something new, there are a lot of things that help me to understand it. It is nice to have a theoretical overview, to try to solve problem sets, to see multiple examples, and to get explanations of how a concept or tool works in different contexts. While the read-me and lab on Learn.co was a great place to start, examples I found elsewhere on the internet, particularly for doing string manipulation using recursion, made it easier for me to jump in. Below are the two posts that best helped me to get a foothold at the beginning of the lab so that I could then solve the few remaining parts of the problem set on my own. Thanks, guys! newpar,
+
+https://davidtang.io/2019/04/11/learning-recursion-in-javascript-part-4.html /anchor newpar,
+
+https://learnersbucket.com/examples/algorithms/reverse-a-string-using-recursion/ /anchor newpar,
+
+Adding Up To An Index /heading newpar,
+
+One of the functions I wrote adds up the numbers in an array, stopping at a specified index position and returning the sum. Often there is more than one answer to a problem. That is part of what makes life interesting. Below is my first solution. newpar,
+
+Solution 1 /heading newpar,
+
+function addUpTo (arr, index) { \n
+if (arr.length < 1) { \n
+    return 0; \n
+  } \n
+else { \n
+    let reducedArray = arr.slice(0, index + 1); \n
+return reducedArray.pop() + addUpTo(reducedArray, reducedArray.length); \n
+  } \n
+} newpar,
+
+If the length of the array is 0, then the function just returns 0. Otherwise, it takes a slice of the array from the beginning through the specified index position. Since when you take a slice it does not alter the array in place, the result of the slice is stored in the variable reducedArray. newpar,
+
+For example, if the input index is 1, and the input array is [5, 6, 2, 4, 1], the reducedArray would be [5, 6]. Below is a link to the MDN explanation of the slice method. newpar,
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice /anchor newpar,
+
+Then, once we have an array from which all of the values we will not be adding are eliminated, we can go ahead and start adding together the numbers that are left. In the next step, the function removes the last item in the array. Using the pop method returns the eliminated item and alters the array in place. So, [5, 6].pop() returns the number 6, and the value of reducedArray is now just [5]. We do not have to save the altered array to a new variable, unlike when we used the slice method. newpar,
+
+Now, we can finally use recursion! In addition to returning the number that is deleted from the array, we call the function with the new input values of reducedArray and reducedArray.length. newpar,
+
+This is still like magic to me, but what happens next is that the function keeps calling on itself until the array is empty, and there are no more numbers to add together. Though it looks like the function would return several times (and doesn’t a function exit upon the first return?!), the function does not actually return until it has met its base condition and is ready to exit. That means that all of the numbers are popped off of the array and added together. Then the sum of them is returned. newpar,
+
+Solution 2 /heading newpar,
+
+Another way of solving the problem is by using the splice method, which, unlike the slice method, alters an array in place. newpar,
+
+function addUpTo (arr, index) { \n
+if (arr.length === 0) { \n
+return 0 \n
+} \n
+else { \n
+return arr.splice(index)[0] + addUpTo(arr, arr.length - 1); \n
+} \n
+} newpar,
+
+In this solution, the first condition is the same — if the length of the array is 0, then 0 is returned. Otherwise, we splice the array at the input index position. Then, we return the value in the 0 position of the array that is returned from splicing. newpar,
+
+For example, take an input array of [5, 6, 2, 4, 1] and an input index of 3. Calling arr.splice(3) would remove all the items from the array starting from index 3 and would return an array of what has been deleted — [4, 1]. Because we want to add the value at the index position in addition to removing it, we can call arr.splice(index)[0] to only return the 4 from [4, 1]. newpar,
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice /anchor newpar,
+
+Then, we can do recursion again! Since the array has been altered in place using splice, we can just enter ‘arr’ as the input array. The input index is ‘arr.length-1’. That means that when the function calls itself on the next round it will remove the last item in the array and return it, adding it to all the others. The length of the array that is returned from the splice will only be 1 after the first call (before the array is completely emptied), but returning the item at the 0 position will have the same affect as if it were a longer array. newpar,
+
+In Conclusion /heading newpar,
+
+Recursion makes me happy. Have a nice day. newpar,
+
+https://www.youtube.com/embed/JnbfuAcCqpY newpar,
+
+https://www.youtube.com/embed/qHppZ1aXxVc newpar,
+
+")
+
 post_twenty_nine=Post.create(title: "Recursion and Class in JavaScript", paragraphs: "
 
 ./Images/Kermit.png this-is-an-image newpar,
