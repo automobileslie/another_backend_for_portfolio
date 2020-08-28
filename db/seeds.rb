@@ -9,6 +9,97 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg", frontend: "https://github.com/automobileslie/national_parks_app", backend: "https://github.com/automobileslie/national_parks_api")
 
+post_thirty_one= Post.create(title: "Binary Search Tree and Me", paragraphs: " 
+
+./Images/Binary_Search_Tree.png this-is-an-image newpar,
+
+This week, I have been working on binary search trees, so this is an explanation of a problem that I did on Learn.co’s Software Engineering Post-Work track. It builds on the concept of Linked Lists, which I wrote about a couple of weeks ago. Just as a caveat, this is still something I am learning about and getting comfortable with! newpar,
+
+Binary Search Tree Examples /heading newpar,
+
+When using a binary search tree in JavaScript, numbers higher than the root go to the right of it, while numbers less than the root go to the left, as in the picture above. Below is a picture of another tree on the Flatiron School’s Learn.co. newpar,
+
+./Images/Another_Binary_Tree.png this-is-an-image newpar, 
+
+The pictures are just a heuristic. The code for the first tree pictured above looks like this: newpar,
+
+{data: 5, left: \n
+{data: 3, left: null, right: null}, \n
+right: {data: 7, left: null, \n
+right: {data: 9, left: null, right: null} \n
+}} newpar,
+
+Great — now let’s do a problem! newpar,
+
+With a While Loop /heading newpar,
+
+One of the parts of the lab I did asked me to write a function that takes in the root node and one other node; if the other node is found to be in the tree already, then the function returns ‘true.’ Otherwise, it adds the node in the appropriate place on the tree. newpar,
+
+The first approach I took to the problem uses a while loop. The recursive solution is in the works, so we’ll go with this one for now! newpar,
+
+function findOrAdd (currentNode, newNode) { \n
+let quitLoop = 0; \n
+while(quitLoop < 1){ \n
+if(currentNode.data === newNode.data){ \n
+return true \n
+} \n
+else if(newNode.data < currentNode.data){ \n
+if (!currentNode.left){ \n
+currentNode.left = newNode; \n
+quitLoop = 1; \n
+} \n
+else{ \n
+currentNode = currentNode.left; \n
+} \n
+} \n
+else { \n
+if (!currentNode.right) { \n
+currentNode.right = newNode; \n
+quitLoop = 1; \n
+} \n
+else { \n
+currentNode = currentNode.right; \n
+} \n
+} \n
+} \n
+return false; \n
+} newpar,
+
+Before walking through the code, I’d like to direct your attention to our friend the test file. newpar,
+
+Look at the Test File /heading newpar,
+
+What is currentNode.data and newNode.data? If you look in the test file or comment out the rest of the code from the function and just return them, you can see what type of data the problem is expecting as inputs. Below is what we can learn from looking in the test file. newpar,
+
+let rootNode = {data: 5, left: null, right: null} \n
+let firstNewNode = {data: 3, left: null, right: null} \n
+let secondNewNode = {data: 7, left: null, right: null} \n
+let thirdNewNode = {data: 9, left: null, right: null} newpar,
+
+The rootNode is what would be passed in as currentNode, or the head of the binary tree. The other three nodes are all examples of nodes that could be passed in as the second input. The test also shows us what it is expecting if the rootNode is entered as the first input and the firstNewNode is entered as the second input. newpar,
+
+this-is-code-in-blog
+findOrAdd(rootNode, firstNewNode) \n
+expect(rootNode.left).toEqual(firstNewNode) newpar,
+
+The data for firstNewNode is 3, and since that is less than 5, it would go to the left. The test is actually pretty simple, since the left and right of the rootNode are both null. If the data of the second argument is larger, it goes to the right, and if it is smaller it goes to the left. Though my solution works with the current tests, I am not 100% sure that my solution would work the way that it is supposed to with a binary tree that has been built up more before using the function to add additional nodes. I did more testing myself — and though it seems to work, I have to think about it some more and get more practice. newpar,
+
+But for a first try with something new, let’s start small! newpar,
+
+Explanation of the While Loop /heading newpar,
+
+If currentNode.data is equal to newNode.data, then the function can return ‘true’ right away. Otherwise, if newNode.data is less than currentNode.data, if currentNode does not have a value to the left, the newNode can be inserted there. The variable quitLoop is set to 1 so the while loop will exit. However, if newNode.data is less than currentNode.data but there is already a value to the left of currentNode, then the currentNode variable is set to the value of currentNode.left and the while loop runs again until either a place on the tree is found for the newNode or it is discovered that the newNode is actually an old node already on the binary search tree — in which case the function will return true to signify that the tree already contains that node. newpar,
+
+If newNode.data is greater than currentNode.data, then the same process occurs, except it starts looking along the right side of what I am going to start imagining to be a Christmas tree. If the function makes it through the tree, finds a place for the newNode, and does not find data equal to the data in newNode, then it will return false and update the binary search tree to include the newNode in it. newpar,
+
+So, that was my adventure with binary search trees. Don’t get lost in the branches, everyone! newpar,
+
+https://www.youtube.com/embed/VNR72YHWVCk newpar,
+
+https://www.youtube.com/embed/DA_dExJjywk
+
+")
+
 post_thirty= Post.create(title: "Recursion (Again)", paragraphs: "Recently, I have been working on recursion, a topic I became newly acquainted with last week. While I am looking forward to using it in different ways in the future, below is a problem that I did as I got started. It is part of a lab on the Software Engineering Post-Work Track on Learn.co for the Flatiron School. Though, I don’t have a job yet, this is how much I like the Flatiron School — I wear their Access Labs t-shirt on beautiful summer days. newpar,
 
 ./Images/Access_Labs.jpg this-is-an-image newpar,
