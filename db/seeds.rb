@@ -9,6 +9,197 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg", frontend: "https://github.com/automobileslie/national_parks_app", backend: "https://github.com/automobileslie/national_parks_api")
 
+post_thirty_two= Post.create(title: "Gridlock", paragraphs: "
+
+For a coding challenge that I did recently, I wrote a function that took in an input of a matrix of size N x N and output whether or not it was valid. In order for the matrix to be valid, it had to have each of the numbers up until N in both the columns and the rows. For example, this is one possible grid, which would be submitted as an array of arrays: [[1, 2, 3, 4], [2, 3, 4, 1], [3, 4, 1, 2], [4, 1, 2, 3]]. newpar,
+
+./Images/Matrix.png this-is-an-image newpar,
+
+Since this satisfies the conditions, the function would return 'VALID'. newpar,
+
+Sudoku /heading newpar,
+
+Though I have never played it before, this problem was supposed to be designed to check sub-grids in a Sudoku game. Here are a couple of resources about Sudoku in case you would like to learn more. newpar,
+
+https://www.nytimes.com/puzzles/sudoku/easy /anchor newpar,
+
+https://en.wikipedia.org/wiki/Sudoku /anchor newpar,
+
+Solution /heading newpar,
+
+This is my solution to the problem, which I will explain below! newpar,
+
+function checkSubSudoku(matrix) { \n
+let lengthOfMatrix = matrix.length; \n
+let i; \n
+let n; \n
+let theIntegers = []; \n
+let copyOfMatrix = []; \n
+let areTheRowsValid; \n
+let areArraysInMatrixSameSize; \n
+let flattenedMatrix = matrix.flat(); \n
+let allAreIntegers; \n
+//check to see whether all of the items in the arrays are positive integers \n
+for(let a = 0; a < flattenedMatrix.length; a++){ \n
+if (Math.sign(flattenedMatrix[a])===1){ \n
+if (!allAreIntegers || allAreIntegers === true){ \n
+allAreIntegers = true; \n
+} \n
+else { \n
+allAreIntegers = false; \n
+} \n
+} \n
+else { \n
+allAreIntegers = false; \n
+} \n
+} \n
+if(!allAreIntegers){ \n
+return 'INVALID' \n
+} \n
+else{ \n
+//check that the length of each of the arrays within the array are the same size \n
+for(let w = 0; w < lengthOfMatrix; w++){ \n
+if(matrix[w].length === lengthOfMatrix){ \n
+if(!areArraysInMatrixSameSize || areArraysInMatrixSameSize === true){ \n
+areArraysInMatrixSameSize = true; \n
+} \n
+else{ \n
+areArraysInMatrixSameSize = false; \n
+} \n
+} \n
+else{ \n
+areArraysInMatrixSameSize = false; \n
+} \n
+} \n
+if(!areArraysInMatrixSameSize){ \n
+return 'INVALID'} \n
+else{ \n
+//set the variable theIntegers to see what numbers must be in each row and column of the matrix \n
+for(n = 0; n < lengthOfMatrix; n++){ \n
+theIntegers.push(n+1); \n
+} \n
+theIntegers = parseInt(theIntegers.join("")) \n
+//create a copy of the matrix in order to be able to sort without modifying the original array \n
+for(let i = 0; i < lengthOfMatrix; i++){ \n
+let sliceOfMatrix = matrix.slice(i, i+1).flat(); \n
+let sortedSlice = sliceOfMatrix.sort((a, b)=>{ \n
+return a-b}) \n
+copyOfMatrix.push(sortedSlice); \n
+} \n
+//check each row of the copy to make sure it includes each number \n
+for(let h = 0; h < lengthOfMatrix; h++){ \n
+if(parseInt(copyOfMatrix[h].join(""))===theIntegers){ \n
+if(!areTheRowsValid || areTheRowsValid === true){ \n
+areTheRowsValid = true; \n
+} \n
+else{ \n
+areTheRowsValid = false; \n
+} \n
+} \n
+else{ \n
+areTheRowsValid = false; \n
+} \n
+} \n
+//create an array of the columns \n
+let copyForColumns = []; \n
+for(let g = 0; g < lengthOfMatrix; g++){ \n
+let arrayToPush = []; \n
+for (h = 0; h < lengthOfMatrix; h++){ \n
+arrayToPush.push(matrix[h][g]) \n
+} \n
+copyForColumns.push(arrayToPush.sort((a, b)=> {return a-b})) \n
+} \n
+//check each column to make sure it includes all of the numbers \n
+let areTheColumnsValid; \n
+for(let d = 0; d < lengthOfMatrix; d++){ \n
+if(parseInt(copyForColumns[d].join(""))===theIntegers){ \n
+if(!areTheColumnsValid || areTheColumnsValid === true){ \n
+areTheColumnsValid = true; \n
+} \n
+else{ \n
+areTheColumnsValid = false; \n
+} \n
+} \n
+else{ \n
+areTheColumnsValid = false; \n
+} \n
+} \n
+//   return either 'VALID' or 'INVALID' \n
+if(areTheRowsValid && areTheColumnsValid){ \n
+return 'VALID'; \n
+} \n
+else{ \n
+return 'INVALID'; \n
+} \n
+} \n
+} \n
+} newpar,
+
+Damage Control /heading newpar,
+
+In the first couple of steps, I am doing damage control, anticipating edge cases. First, I check to see whether all of the items in the arrays are positive integers. I flatten the nested array to make one long array of items; then I check each of these items and use Math.sign() to determine whether they are positive integers. Math.sign() returns 1 if what is put in between the parentheses is a positive integer, -1 if what is placed there is a negative number, 0 if 0 is put there, and NaN if the value is anything else put in between quotation marks, for example “,”. newpar,
+
+One of many example of why coding is a good time! newpar,
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sign#:~:text=sign%28%29%20function%20returns%20either,%28%2B%29%20will%20not%20be%20returned. /anchor newpar,
+
+If the current item in the loop through the flattened matrix passes the test, and if the variable areAllIntegers either has not been set yet or has been set to true, then it remains true, being set to true again. If areAllIntegers has been set to false, though, it remains false, since one non-positive integer or other value like a punctuation mark means that the whole grid is invalid. If the current item in the for loop does not pass the test of Math.sign(), then whether areAllIntegers has not been set yet, has been set to true, or has already been set to false, it will be set to false. Another way I could have done this would have been to use a while loop, so that once the variable is set to false, the loop exits, as none of the other values need to be checked. newpar,
+
+Next, I see whether the input arrays within the matrix are all the same size. This follows a similar pattern to the first test, though it is on the non-flattened matrix. We don’t have to check the values within the arrays at this point; we just want to take the length of them. This follows the same pattern as the one above as far as setting the variable areArraysInMatrixSameSize to true or false goes. newpar,
+
+If either of those tests fail (if either areArraysInMatrixSameSize or areAllIntegers have a value of false), the function exits, returning “INVALID”. Otherwise, it goes on to the next step. newpar,
+
+https://en.wikipedia.org/wiki/Damage_control /anchor newpar,
+
+The Next Step: Checking the Rows /heading newpar,
+
+After that, I set the value of theIntegers by running a for loop that goes through the length of the input matrix starting from the counter of n = 0 and pushes n+1 into an array that is then joined and parsed into a number with parseInt. The result of this is that if the input matrix is [[1, 2, 3, 4], [2, 3, 4, 1], [3, 4, 1, 2], [4, 1, 2, 3]], then theIntegers is 1234. This will be used as the point of comparison for what is in each of the rows and columns later on. newpar,
+
+Next, I create a copy of the matrix. The reason that I do this is because I am going to be sorting each of the arrays in the matrix to check them against theIntegers to make sure that all of the numbers are included in each row. I do not want to alter the original input matrix, because I will also be checking the column in a separate step and can’t do that if the original input matrix is changed. newpar,
+
+To create a copy of the matrix, I implemented another for loop starting at 0 and incrementing up until the length of the matrix. At each step of the for loop, I took a slice of the matrix — one of the arrays in the wrapping array, starting from the beginning of the matrix and going until the end.* I sorted it and pushed it into copyOfMatrix. So, copyOfMatrix ended up being not an exact replica of the original input matrix but a sorted version of it. This was so that in the next step of the function, I could check each sorted array to see if it included all of the requisite numbers. newpar,
+
+*To review how to make a shallow copy of the matrix, I consulted a few websites. I am not sure which of them convinced me to try using the slice method, so here are links to all of them. newpar,
+
+https://medium.com/@ziyoshams/deep-copying-javascript-arrays-4d5fc45a6e3e /anchor newpar,
+
+https://www.samanthaming.com/tidbits/35-es6-way-to-clone-an-array/ /anchor newpar,
+
+https://www.freecodecamp.org/news/how-to-clone-an-array-in-javascript-1d3183468f6a/ /anchor newpar,
+
+Because the coding challenge ended up being an exercise in my over-attachment to the for loop, I ran another for loop with a counter of zero incrementing up until the length of the matrix. Here is where I join the sorted array at the current location in the loop and parse it with parseInt before comparing it to theIntegers. If it matches theIntegers, then I go through the same true/false process of setting the variable areTheRowsValid as I did earlier in the first two conditions of the function. At the end of the loop, if areTheRowsValid is false, I could (and should) exit and return 'INVALID'. newpar,
+
+However, I did it a little less efficiently, going ahead and checking the columns before making any final determinations one way or another about the validity of this poor matrix which has already been through a lot. newpar,
+
+The Columns /heading newpar,
+
+So! On to the columns! newpar,
+
+Next, I create an array of arrays of columns. This is an act of imagination, since we don’t actually have a grid and have to imagine the nested arrays stacked on top of each other. newpar,
+
+I return to the friendly for loop, but unfortunately for those of you keeping track of time complexity, this time it is a nested for loop. At the first level of the for loop, I initialize an empty array called arrayToPush. Then in the inner loop, I push matrix[h][g] into arrayToPush. What that means is that with a grid that looks like this: newpar,
+
+./Images/Matrix.png this-is-an-image newpar,
+
+matrix[h] will be the column, and [g] will represent the row. So, on the first loop through, matrix[h][g] will be matrix[0][0], then matrix[0][1], matrix[0][2], and matrix[0][3], or [1, 2, 3, 4]. After that first nested loop through, arrayToPush is pushed into the empty array copyForColumns, though it is sorted first. newpar,
+
+The next nested loop through would be matrix[1][0], matrix[1][1], matrix[1][2], and matrix[1][3], or [2, 3, 4, 1]. At this point, you might notice that the rows and columns with the same index position are actually the same (e.g. row one is the same as column one, row two is the same as column two, etc.). I did not let that observation deter me, because, not being familiar with this type of problem beforehand, it was not clear to me whether that is the way it always ends up as a rule. If it is, though, then checking the columns would be unnecessary. newpar,
+
+Report back to me if you would like to discuss or tell me what is what. newpar,
+
+In the next step, I do the same thing that I did to check whether the rows were valid, looping through copyForColumns, joining each array, and parsing the array with parseInt before comparing that value to theIntegers. newpar,
+
+In the final step, if both areColumnsValid and areRowsValid are true, then the function returns 'VALID'. Otherwise, it returns 'INVALID'. newpar,
+
+And that is the end of my story about grids. newpar,
+
+https://en.wikipedia.org/wiki/Gridlock /anchor newpar,
+
+https://www.youtube.com/embed/snsTmi9N9Gs newpar,
+
+")
+
+
 post_thirty_one= Post.create(title: "Binary Search Tree and Me", paragraphs: " 
 
 ./Images/Binary_Search_Tree.png this-is-an-image newpar,
