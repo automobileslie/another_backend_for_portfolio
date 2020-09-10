@@ -103,6 +103,10 @@ In the end, the function returns the finalArray, which is the names of the nodes
 
 Le Voyage /heading newpar,
 
+The only thing I have against this method as a way of life is that it is not always worth it to turn over every stone to find what you are looking for. Sometimes you also do not need the breadth-first search model to go one level deep in everything out there to know either that you are where you already need to be or that you know where it is you want to go. newpar,
+
+But that is not to discourage the intrepid travelers! newpar,
+
 https://fleursdumal.org/poem/231 /anchor newpar,
 
 https://www.poetryfoundation.org/poets/charles-baudelaire /anchor newpar,
