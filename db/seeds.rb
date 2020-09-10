@@ -9,6 +9,106 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg", frontend: "https://github.com/automobileslie/national_parks_app", backend: "https://github.com/automobileslie/national_parks_api")
 
+post_thirty_three = Post.create(title: "Depth First Search", paragraphs: "
+
+./Images/tunnels.jpg this-is-an-image newpar,
+
+In the last week, I have been working on doing breadth-first and depth-first searches of graphs. In my own life outside of coding, I use exactly neither of these methods to get to the bottom of problems, so it was a good learning opportunity! The labs that I did were on The Flatiron School’s Learn.co website, and the following function was written to pass the Depth First Search Lab.* newpar,
+
+*https://learn.co/tracks/software-engineering-post-work/computer-science/data-structures/depth-first-search-lab /anchor newpar,
+
+Vertices and Edges /heading newpar,
+
+The lab prompt gives us a set of vertices and edges, vertices being objects that are meant to represent points on a graph with a ‘name’ and ‘discovered’ attribute, and edges being arrays of the names of two vertices that represent a path between them. In other words, a line could be drawn between the two vertices that form an ‘edge.’ The ‘discovered’ attribute of the vertices is set to a boolean of true, false, or null. Once the vertex has been ‘visited’ by running the function and entering the sets of vertices and edges as input, that value is set to true. newpar,
+
+These are the edges and vertices that Learn.co gives us as example input: newpar,
+
+let edges = [[‘14th&6th’, ‘23rd&6th’], [‘23rd&6th’, ‘34th&6th’], [‘34th&6th’, \n
+‘28th&Bwy’], [‘28th&Bwy’, ‘23rd&Bwy’], [‘23rd&Bwy’, \n
+‘14th&Lex’],[‘14th&Lex’, ‘23rd&Lex’]] \n
+  \n
+
+let vertices = [{name: ‘34th&6th’, discovered: null}, {name: \n
+‘23rd&6th’, discovered: null}, {name: ‘14th&6th’, discovered: null}, \n
+{name: ‘28th&Bwy’, discovered: null}, {name: ‘23rd&Bwy’, discovered: \n
+null}, {name: ‘14th&Lex’, discovered: null}, {name: ‘23rd&Lex’, \n
+discovered: null}] newpar,
+
+./Images/depth_first_search_2_paths.png this-is-an-image newpar,
+
+The goal of a depth-first search is to go all the way down one path at a time, rather than going down one level of each of the paths branching from a particular vertex at a time. So, this is the function that I came up with to return an array of the names of the vertices in the order that they are visited in a depth-first search. newpar,
+
+Solution /heading newpar,
+
+function depthFirstSearch (rootNode, vertices, edges){ \n
+function findAdjacentNodes(rootNode, vertices, edges){ \n
+let adjacentNodeNames = []; \n
+let i; \n
+for (i = 0; i < edges.length; i++){ \n
+if(edges[i].includes(rootNode)){ \n
+if(edges[i][0] === rootNode){ \n
+adjacentNodeNames.push(edges[i][1]) \n
+} \n
+else{ \n
+adjacentNodeNames.push(edges[i][0]) \n
+} \n
+} \n
+} \n
+let adjacentNodes = []; \n
+for (let t = 0; t < vertices.length; t++){ \n
+if (adjacentNodeNames.includes(vertices[t].name)){ \n
+if(vertices[t].discovered === null) \n
+adjacentNodes.push(vertices[t]); \n
+vertices[t].discovered = true; \n
+} \n
+else if (vertices[t].name === rootNode){ \n
+vertices[t].discovered = true; \n
+} \n
+} \n
+return adjacentNodes; \n
+} \n
+let theQueue = []; \n
+let finalArray = []; \n
+theQueue.push(rootNode); \n
+finalArray.push(rootNode); \n
+let i; \n
+while(theQueue.length > 0){ \n
+let arrayForQueue = findAdjacentNodes(theQueue[theQueue.length - 1].name, vertices, edges); \n
+theQueue.pop(); \n
+for(i = 0; i < arrayForQueue.length; i++){ \n
+theQueue.push(arrayForQueue[i]); \n
+finalArray.push(arrayForQueue[i]) \n
+} \n
+} \n
+return finalArray; \n
+} newpar,
+
+The Nested Function /heading newpar,
+
+First, there is a function nested inside of depthFirstSearch called findAdjacentNodes that finds the vertices that branch off of the rootNode. In the first step of that function, there is a for loop that searches the array of edges. If the rootNode’s name appears in an edge, then the name of the node that it shares the edge with is pushed into adjacentNodeNames, which was initialized as an empty array. newpar,
+
+Next, there is a for loop to search through the vertices. If a vertex has a name matching one of the names in adjacentNodeNames, two things happen. First, if it has not yet been marked as ‘discovered’, then that attribute is changed to ‘true.’ It is also pushed into adjacentNodes if it is being discovered for the first time. If it has already been discovered, then nothing happens. If the name of the vertex that the loop is on matches the rootNode, then it is marked as ‘discovered’ without being pushed into the array. newpar,
+
+Finally, at the end of the function, the adjacentNodes array is returned. newpar,
+
+The Rest of the Function /heading newpar,
+
+Next, I set up two empty arrays, one theQueue and the other the finalArray. The variable theQueue will have a value of different names of nodes to be visited, with the nodes to be visited first coming last in the array. The first node name that enters theQueue is the rootNode that was given as input. That name is also immediately pushed into finalArray. newpar,
+
+Then, there is a while loop that will run as long as theQueue has a length greater than 0. In the while loop, the findAdjacentNodes function runs, with the name of the last node in theQueue being entered as the first input value. The return value of findAdjacentNodes is set to a variable called arrayForQueue, and the last item in theQueue is removed from that array using the pop() method. newpar,
+
+Since arrayForQueue will be an array of items, there is then a for loop that will run to push the values in that array into theQueue. newpar,
+
+In the end, the function returns the finalArray, which is the names of the nodes in the order they were visited. That should start with the rootNode (the one given as input as a starting point for the exploration of the graph), then include any vertices that branch off of that node, then all of the nodes down one branch, then all of the nodes down another branch, until all of the nodes that can be visited have been. newpar,
+
+Le Voyage /heading newpar,
+
+https://fleursdumal.org/poem/231 /anchor newpar,
+
+https://www.poetryfoundation.org/poets/charles-baudelaire /anchor newpar,
+
+")
+
 post_thirty_two= Post.create(title: "Gridlock", paragraphs: "
 
 For a coding challenge that I did recently, I wrote a function that took in an input of a matrix of size N x N and output whether or not it was valid. In order for the matrix to be valid, it had to have each of the numbers up until N in both the columns and the rows. For example, this is one possible grid, which would be submitted as an array of arrays: [[1, 2, 3, 4], [2, 3, 4, 1], [3, 4, 1, 2], [4, 1, 2, 3]]. newpar,
