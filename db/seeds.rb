@@ -9,6 +9,56 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg", frontend: "https://github.com/automobileslie/national_parks_app", backend: "https://github.com/automobileslie/national_parks_api")
 
+post_thirty_four = Post.create(title: "Python", paragraphs: "
+
+./Images/s_bread.jpeg this-is-an-image newpar,
+
+S is for Snake /heading newpar,
+
+This week I have been learning Python thanks to Google’s Crash Course on Python that is offered on Coursera. So far, I have found that there are a lot of similarities between Python and other languages I have worked with like JavaScript and Ruby. For this blog post, I am going to compare for loops and conditionals in JavaScript and Python to review part of what I have learned. newpar,
+
+For Loops and Conditionals /heading newpar,
+
+Python and JavaScript both have for and while loops, and they work in a similar way, though the syntax is a little bit different. newpar,
+
+For example, I could write a for loop in JavaScript that looks like this to check how many even numbers there are between a given starting point and ending point. The way it is written right now, it is not inclusive of the ending number. newpar,
+
+function checkForEvens(startingNum, endingNum){ \n
+  let i; \n
+  let numberOfEvens = 0; \n
+  for (i = startingNum; i < endingNum ; i++){ \n
+    if (i % 2 == 0){ \n
+      numberOfEvens+=1; \n
+    } \n
+  } \n
+  return numberOfEvens \n
+} \n
+checkForEvens(0, 10) \n
+//returns 5 newpar,
+
+Something that I like about Python is that we do not have to keep track of curly braces. Instead of different parts of the function being wrapped in curly braces, there are colon marks followed by indented blocks of code. I imagine that keeping track of indentations could become just as complicated, but right now it is something that I appreciate! What I learned from the Google course is that the number of times the block of code is indented does not matter as long as it is the same for each line of code in the block. newpar,
+
+Other differences include the for loop syntax. It is understood that the for loop will increment up until the number in the second parameter but not including it. The first number sets the counter. There is a third, optional parameter that indicates a pattern for skipping through numbers. For example, instead of looping through each of the numbers in the range, we can have the loop stop at every fifth or tenth number in the interval by entering a third parameter of 5 or 10. To check every fifth number, the for loop would be set up like this: newpar,
+
+this-is-code-in-blog
+for i in range(startingNum, endingNum, 5): newpar,
+
+In the checkForEvens function, I only used an if statement in JavaScript and if else statements in Python. If I had wanted to add more conditions in JavaScript, I would have used else if statements, and in Python elif does the same thing. To break out of a loop in JavaScript before it completes its cycle, I would return some value, and the function would exit. To exit a loop in Python, you can type break in the body of the loop, and it will exit the loop without exiting the whole function. You would enter ‘break’ just as I entered ‘continue’ in the code above. Which brings me to… newpar,
+
+Continue /heading newpar,
+
+Something else that is different in Python is the continue statement. That just means to skip the number that we are on in the loop and move on to the next one. The for loop in JavaScript above implicitly does this by only giving an if condition. If the number is not even, then the for loop will move on to the next number. The equivalent of typing out ‘continue’ in JavaScript might be having an empty else statement or something inside of the curly braces of an else statement that effectively does nothing. But why write unnecessary code? I already do that all the time inadvertently and can’t think of a good reason to do it on purpose. newpar,
+
+https://www.youtube.com/embed/5iln6fkwJOU newpar,
+
+https://en.wikipedia.org/wiki/Shari_Lewis /anchor newpar,
+
+Fun fact: once when I was little, I asked my grandmother how she chose my mother’s name, and she said she was named after Shari Lewis. I don’t know if that is true, but I hope it is! newpar,
+
+
+
+")
+
 post_thirty_three = Post.create(title: "Depth First Search", paragraphs: "
 
 ./Images/tunnels.jpg this-is-an-image newpar,
