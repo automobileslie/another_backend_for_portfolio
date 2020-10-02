@@ -9,6 +9,48 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg", frontend: "https://github.com/automobileslie/national_parks_app", backend: "https://github.com/automobileslie/national_parks_api")
 
+post_thirty_five = Post.create(title: "Simpler Times?", paragraphs: "
+
+This week I am going to return to simpler times — which reminds me of the beer my husband and I used to get at Trader Joe’s — and write about a string manipulation problem that I did for a Hackerrank coding challenge. newpar,
+
+The Problem /heading newpar,
+
+The instructions were to write a function that takes in a string, rotates it a total number of times equal to one less than the length of the string, then return how many resulting strings start and end with the same letter. The first string is the input string, and then the function forms additional strings by moving the first letter of the input to the end of it. For example, if the input string is 'abgha', that string is rotated four times to produce the resulting strings: 'bghaa', 'ghaab', 'haabg', and 'aabgh'. The return value would be 1, because only the original string starts and ends with the same letter. newpar,
+
+My Solution /heading newpar,
+
+Below is my solution; I am not sure if it passes every edge case, but it appears to work when I test it in my terminal. The first condition could be different depending on how you would like to handle input strings that have a length of 0 or 1. I signaled that the function should return 1 in those cases. My reasoning for that was that a string like 'a' has the same first and last character. The string '' does not really have any characters, so what you would like to return in that situation might be more debatable. Like with so many other things in life it is contextual and depends what you are trying to accomplish by using this function. And as usual, I do not know what this sort of function would actually be useful for other than torturing — I mean training — emerging software engineers. newpar,
+
+    function countStrings(s) { \n
+        let lengthOfString = s.length; \n
+        if(lengthOfString === 1 || lengthOfString === 0){ \n
+        return 1 \n
+        } \n
+        else{ \n
+        let i = 1; \n
+        let count = 0; \n
+        if(s[0]===s[lengthOfString-1]){ \n
+        count+=1; \n
+        } \n
+        while (i < lengthOfString){ \n
+        s= s.slice(1, lengthOfString)+s[0] \n
+        if(s[0]===s[lengthOfString-1]){ \n
+        count+=1; \n
+        } \n
+        i++ \n
+        } \n
+        return count; \n
+        } \n
+        } newpar,
+
+        Explanation /heading newpar,
+
+        In the first if statement, I am handling the case of input strings that have a length of 0 or 1. If the function meets that condition, it exits, returning 1. Otherwise, the next part of the function in the else statement runs. First, I set a ‘count’ variable for adding up the number of strings that start and end with the same letter. Then, the function looks at the input string; if it starts and ends with the same letter, the count goes up by one. Next, a while loop runs while the variable i is less than the length of the input string. In the while loop, the additional strings are produced using the slice method, which cuts out the slice of s from the 1 index position until the end of the string and then adds the character in the 0 index position to the end of that slice. The new string is reassigned as the value of ‘s’. Then that string is checked to see whether the first and last characters are the same. If they are, the count goes up, and the i variable is incremented. The while loop runs again until the exit condition is met. At the end the count is returned. newpar,
+
+        And that is all there is to it. Have a nice weekend! newpar,
+
+")
+
 post_thirty_four = Post.create(title: "Python", paragraphs: "
 
 ./Images/s_bread.jpeg this-is-an-image newpar,
