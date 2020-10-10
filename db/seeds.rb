@@ -9,6 +9,69 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg", frontend: "https://github.com/automobileslie/national_parks_app", backend: "https://github.com/automobileslie/national_parks_api")
 
+post_thirty_six = Post.create(title: "Are We There Yet?", paragraphs: "
+
+./Images/flatten_arrays.png this-is-an-image newpar,
+
+Last week, I did a mock technical interview with someone on Pramp who suggested that I practice recursion by writing a function such that when the input is an array of nested arrays such as [[1],[[2]],[[[3]]]], it returns an array of numbers, such as [1, 2, 3]. Thanks, buddy, wherever you are! Here is what I came up with. newpar,
+
+The .flat() Method /heading newpar,
+
+My first instinct was to use the .flat() method, but that only collapses the first layer of nesting. It would work on an array like [[1], [2], [3]], but it would not break through all of the layers of a more deeply nested array. That is why this problem is a good candidate for recursion; we have to keep calling the .flat() method on the item in an input array until it has shed all of its unnecessary layers to live a more unencumbered life…sort of like a butterfly emerging from a cocoon. newpar,
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat /anchor newpar,
+
+Solution /heading newpar,
+
+Below is my solution. I will let you look over it and meet you again afterward to discuss! newpar,
+
+https://giphy.com/gifs/W2RrY1KhTS05G/html5 newpar,
+
+function flatten_arrays (array){ \n
+let i; \n
+let flatten_array = array.flat(); \n
+let length = flatten_array.length; \n
+let changedElement; \n
+let newArray = []; \n
+for (i=0; i<length; i++){ \n
+if(typeof flatten_array[i]=== 'object'){ \n
+if (!(typeof flatten_array[i][0] === 'number')){ \n
+changedElement = flatten_array[i].flat() \n
+flatten_arrays(changedElement) \n
+} \n
+else{ \n
+changedElement = flatten_array[i].flat(); \n
+} \n
+} \n
+else{ \n
+changedElement = flatten_array[i]; \n
+} \n
+newArray.push(changedElement) \n
+} \n
+let finalArray = newArray.flat(); \n
+return finalArray; \n
+} newpar,
+
+Explanation /heading newpar,
+
+This problem makes use of a for loop, and it sets up a number of variables right before it starts. First, I flatten the input array to cut through the initial barrier between us and the number we want to retrieve, and it is saved to a variable since the .flat() method is non-destructive. newpar,
+
+The first condition in the for loop states that if the item we are currently on in the loop is of data type 'object' (if you call typeof on an array, it will return 'object'), then this block of code will execute. Then, there is another if statement nested inside of this one stating that the next block of code should execute if the data type of array[i][0] is not a number. I included this condition, because if the item in the array is an object, I will want to treat it in one of two ways depending on how deeply nested it is. newpar,
+
+If it is only one layer deep, like [1], then I can just call the .flat() method on it. If flatten_array[i] is [1], and I call typeof on flatten_array[i][0], or typeof [1][0], it will return “number.” So, that is the condition I am controlling for in this step. If flatten_array[i][0] === “number” then the function will move to the else statement where changedElement is set equal to flatten_array[i].flat(). newpar,
+
+However, if flatten_array[i] is more deeply nested than that, like the poor unfortunate [[[1]]], then it will have to be given the recursion treatment. In that case changedElement is set equal to flatten_array[i].flat(), but then a recursive call is made, passing in changedElement, which looks like this: flatten_arrays(changedElement) newpar,
+
+This will run until .flat() cannot be called on the element anymore. The variable ‘changedElement’ will be updated at every turn to reveal a less and less nested number. Because .flat() returns an array, we still will not be down to the bare number yet, but at this point we have gotten as close as we need to. newpar,
+
+If the current element in the array is not an object, then I am assuming for the sake of argument that it is a number and can be pushed as is into newArray. Therefore, in that case, I set changedElement equal to the element flatten_array[i] without having to transform it. newpar,
+
+And that is the story of how butterflies are born. newpar,
+
+https://www.youtube.com/embed/BM5Xa1FvNQQ newpar,
+
+")
+
 post_thirty_five = Post.create(title: "Simpler Times?", paragraphs: "
 
 This week I am going to return to simpler times — which reminds me of the beer my husband and I used to get at Trader Joe’s — and write about a string manipulation problem that I did for a Hackerrank coding challenge. newpar,
