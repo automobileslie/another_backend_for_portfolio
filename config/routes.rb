@@ -3,4 +3,8 @@ Rails.application.routes.draw do
   resources :posts
   resources :paragraphs
   resources :projects
+
+  get '/projects/:id', to: 'projects#show'
+  get '/posts/:id', to: 'posts#show'
+
 end
