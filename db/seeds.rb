@@ -9,6 +9,74 @@ project_two=Project.create(title: "Book and Movie Memory Bank", description: "Th
 
 project_three=Project.create(title:  "National Park Trip Planner", description: "National Parks Trip Planner provides information about national parks in the United States, fetching from the National Park Service API and also linking to the National Park Service website. Users can save parks that they would like to go to or to learn more about and take notes on saved parks as they plan a trip. The idea for this application came from my eagerness to get outdoors. I like that National Parks are low-cost and offer educational opportunities about both history and nature.", video: "NationalParksDemo", image: "./Images/United_States.jpg", frontend: "https://github.com/automobileslie/national_parks_app", backend: "https://github.com/automobileslie/national_parks_api")
 
+
+post_thirty_seven = Post.create(title: "Ordering Strings for the Good of the People", paragraphs: "
+
+./Images/for the good of the people.png this-is-an-image newpar,
+
+During a Mock Technical Interview session yesterday, I got a chance to practice string and array manipulation, and afterward I tried optimizing the solution. The solution given was a nested for loop, and I wanted to see if I could improve the run time, even if there would be memory trade-offs. newpar,
+
+Below is what I came up with, but if anyone else has thoughts on this, I would love to discuss! newpar,
+
+The Problem /heading newpar,
+
+The problem asked for us to reorder an input string that had words with numbers mashed up with them. The output was supposed to order the mashed up words so that the string displayed a sentence with the numbers in order. As an example, an input string of '4you he1llo are3 h2ow' should be reordered to read 'he1llo h2ow are3 4you'. Or in the example that was given '4of Fo1r pe6ople g3ood th5e the2' becomes 'Fo1r the2 g3ood 4of th5e pe6ople'. Note that the words are not 'indexed' from 0 but start at 1. newpar,
+
+Below is my solution to the problem. Shout out to Franklin Bado newpar,
+
+https://www.linkedin.com/in/franklin-bado/  /anchor newpar,
+
+who I worked on the problem with yesterday. newpar,
+
+function sortString (str){ \n
+let positionForStrings = {} \n
+let currentKey = ''; \n
+let currentNumber = 0; \n
+for (let i = 0; i <= str.length; i++){ \n
+if (i === str.length){ \n
+positionForStrings[currentKey] = currentNumber \n
+} \n
+else{ \n
+if (str[i] === ''){ \n
+positionForStrings[currentKey] = currentNumber \n
+currentKey = '' \n
+currentNumber = 0 \n
+} \n
+else if (parseInt(str[i])%1 == 0){ \n
+currentNumber = parseInt(str[i]) \n
+currentKey += str[i] \n
+} \n
+else { \n
+currentKey += str[i] \n
+} \n
+} \n
+} \n
+let arrayOfStrings = str.split('') \n
+let finalArray = [] \n
+let count = 1 \n
+while (count <= arrayOfStrings.length){ \n
+for (each in positionForStrings){ \n
+if (positionForStrings[each] === count){ \n
+finalArray.push(each) \n
+} \n
+} \n
+count+=1 \n
+} \n
+return finalArray.join('') \n
+} newpar,
+
+Explanation /heading newpar,
+
+In the first loop, what I am doing is creating an object with keys of each of the words in the sentence and values of the number that is in that word. To do this, I loop over the input string. There is a variable to keep track of the current key and a variable to set the value for that key. If the character is an empty space separating the words, then at that point, I set the key-value pair in the variable for the object that is being created, and the value for currentKey and currentValue is reset. The first condition stipulates that if we are on the last character in the string, the current key-value pair is set before the loop exits (since there is no space after it to signal that it should be set as it is for the other words). newpar,
+
+The second condition in the wrapping else statement of the for loop checks whether the character is a number by using parseInt(str[i])%1 == 0. If the character is a letter, then that expression will evaluate to NaN, not 0. Another way to check whether it is a number would be to use Number.isInteger(). If it is a number, then it is both added to the currentKey and is set as the value of currentNumber. If the character is not a number, then it is just added to the currentKey. newpar,
+
+After the loop exits, I split the input string to get an array of strings. This allows me to get the target length for an array that is initialized in the next line. I set up a count that starts at one, and then I begin a while loop that exits once the finalArray is filled with the target number of strings. Inside of the while loop a for loop runs to check each of the key-value pairs in the positionForStrings object to see if its value matches the current count value. If it matches, then the key is pushed into finalArray. Each of the key-value pairs is checked, and then at the end of that loop, the count is incremented by 1, so that the words are pushed into the array in order. newpar,
+
+In the end, we end up with an array of words in the target order. Then, they are joined to form one string that is returned, to give us a nice message like 'Fo1r the2 g3ood 4of th5e pe6ople'. newpar,
+")
+
+
 post_thirty_six = Post.create(title: "Are We There Yet?", paragraphs: "
 
 ./Images/flatten_arrays.png this-is-an-image newpar,
